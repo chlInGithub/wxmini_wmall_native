@@ -1,0 +1,261 @@
+/**app.wxss**/
+
+@import "/font-awesome/font-awesome.wxss";
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10rpx 0;
+  box-sizing: border-box;
+  margin-left: 5px;
+  margin-right: 5px;
+} 
+
+.fl{
+  float: left;
+}
+.fr{
+  float: right;
+}
+
+.item-list-outer{
+  width: 100%; 
+}
+
+.outter-view{
+  width: 100%;
+  background-color: white;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.not-first-outter{
+  margin-top: 5px;
+}
+
+.title-view{
+  background-color: white;
+  font-size: .7rem;
+  text-align: left;
+  padding: 5px 10px;
+  font-weight: 600;
+  border-radius: 10px;
+}
+
+.title-view-no-background{
+  font-size: .7rem;
+  text-align: left;
+  padding: 5px 10px;
+  font-weight: 600;
+}
+
+.search{
+  border: 1px solid #CCCCCC;
+  border-radius: 10px;
+  height: 20px;
+  padding-left: 10px;
+  font-size: .6rem;
+  text-align: left;
+}
+
+.swiper{
+  height: 100px
+}
+
+.swiper swiper-item .swiper-view{
+  height: 100%;
+  border-radius: 10px;
+  margin: 0 2px;
+}
+
+.swiper swiper-item .swiper-view .activy-img{
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.coupons-swiper{
+  height: 70px
+}
+
+.coupons-swiper swiper-item .swiper-view{
+  height: 100%;
+  border-radius: 10px;
+  margin: 0 2px;
+  text-align: center;
+}
+
+.coupons-swiper swiper-item .swiper-view .coupons{
+  height: 100%;
+  display: inline-block;
+  border-radius: 5px;
+  background-color: red;
+  padding: 0 10px;
+  color: white;
+  float: left;
+  width: 60vw;
+}
+
+.coupons-swiper swiper-item .swiper-view .coupons-get{
+  width: 40px;
+  background-color: red;
+  display: inline-block;
+  font-size: .7rem;
+  color: white;
+  height: 100%;
+  float: left;
+  border-radius: 5px;
+}
+
+.coupons-swiper swiper-item .swiper-view .coupons-discount{
+  font-size: 1rem;
+  padding-right: 20px;
+}
+.coupons-swiper swiper-item .swiper-view .coupons-desc{
+  font-size: .7rem;
+}
+.coupons-swiper swiper-item .swiper-view .coupons-name{
+  font-size: .7rem;
+}
+.coupons-swiper swiper-item .swiper-view .coupons-period{
+  font-size: .5rem;
+}
+
+.cate-view{
+  width: 100%;
+}
+.cate-view .item{
+  width:20%;
+  text-align: center;
+  float: left;
+}
+.cate-view .item .img{
+  border-radius: 50%;
+  border: 1px solid gold;
+  width: 15vw;
+  height: 15vw;
+}
+.cate-view .item .name{
+  font-size: .6rem;
+  margin-top: -5px;
+}
+
+.item-list {
+  width:100%;
+  text-align: center;
+}
+.item-list .item-list-right {
+  width:48%;
+  float: right;
+}
+.item-list .item-list-left {
+  width:48%;
+}
+.item-list .item{
+  background-color: white;
+  border-radius: 10px; 
+  margin-top: 5px;
+  text-align: left;
+  padding:8px;
+}
+.item-list .item .img-view {
+  text-align: center;
+}
+.item-list .item .img {
+  border-radius: 5px;
+  display: inline-block;
+  max-width: 40vw;
+  max-height: 40vw
+}
+.item-list .item .title {
+  font-size: .7rem;
+}
+.item-list .item .tag {
+  color: red;
+  background-color: yellow;
+  font-size: .5rem;
+  display: inline-block;
+  margin: 0 2px;
+  border-radius: 10%;
+}
+.item-list .item .labelPrice {
+  color: darkgray;
+  font-size: .6rem;
+  text-decoration: line-through;
+}
+.item-list .item .price {
+  color: red;
+  font-size: .8rem;
+  display: inline-block;
+  font-weight: 600;
+  margin-right: 2px;
+}
+.item-list .item .sale {
+  color: gray;
+  font-size: .5rem;
+  display: inline-block;
+  margin-right: 2px;
+}
+.item-list .item .cart {
+  color: #00CC00;
+  border-radius: 50%;
+  border: 1px solid #00CC00;
+  display: inline-block;
+  margin-right: 5px;
+  margin-left: 5px;
+  font-size: 1.2rem;
+  padding: 2px;
+}
+.item-list .item .saleOut {
+  color: gray;
+  border-radius: 50%;
+  border: 1px solid gray;
+  display: inline-block;
+  margin-right: 5px;
+  margin-left: 5px;
+  font-size: .8rem;
+  padding: 2px;
+}
+
+.today-item-view{
+  width: 98%;
+  background-color: white;
+  display: inline-block;
+}
+.today-item-view .item{
+  width:25%;
+  text-align: center;
+  float: left;
+}
+.today-item-view .item .img-view {
+  text-align: center;
+}
+.today-item-view .item .img{
+  width: 18vw;
+  height: 18vw;
+  border-radius: 5px;
+}
+.today-item-view .item .price {
+  border-radius: 5px;
+  color: red;
+  background-color:  #FFFFCC;
+  font-size: .6rem;
+  font-weight: 600;
+}
+.today-item-view .item .name{
+  font-size: .6rem;
+  margin-top: -5px;
+}
+
+
+.hasGotAll{
+  font-size: .5rem;
+  text-align: center;
+  margin-top: 10px;
+}
+

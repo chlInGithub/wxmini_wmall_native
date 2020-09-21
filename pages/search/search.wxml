@@ -1,0 +1,16 @@
+<view class="container">
+  <view class="outter-view">
+    <input model:value="{{val}}" class="search" type="text" maxlength="10" confirm-type="搜索" bindconfirm="bindconfirm" placeholder="输入你要搜索的关键字"></input>
+  </view>
+  <view class="outter-view not-first-outter">
+    <view style="text-align: left;">
+      <text style="font-size: .5rem;">搜索历史</text>
+    </view>
+    <view style="margin: 0 20px;text-align: left;">
+      <block wx:for="{{history}}" wx:key="*this">
+        <text bindtap="historyChosed" style="margin: 5px 15px;font-size: .5rem;" data-val='{{item}}'>{{item}}</text>
+      </block>
+    </view>
+    
+  </view>
+</view>
