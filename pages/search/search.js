@@ -1,4 +1,5 @@
 // pages/search/search.js
+const app = getApp()
 Page({
 
   /**
@@ -8,6 +9,10 @@ Page({
     history: ["搜索1", "搜索1b", "搜索1c","搜索1d"],
     val: "",
     historyCacheKey: "historyCacheKey"
+  },
+
+  goShop: function(){
+    app.common.goPage.goShop()
   },
 
   /**
@@ -104,8 +109,9 @@ Page({
       })
       return
     }
-    wx.showToast({
-      title: val,
+
+    wx.navigateTo({
+      url: '../itemList/itemList?itemName=' + val
     })
   },
 

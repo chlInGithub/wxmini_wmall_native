@@ -1,0 +1,17 @@
+/* pages/itemList/itemList.wxss */
+.activity-title{
+  text-align: left;
+  font-size: .6rem;
+  font-weight: 400;
+  margin: 5px;
+  overflow: auto;
+  color: gray;
+}
+
+.cate-view .item-of-itemlist{
+  width:15% !important;
+}
+.cate-view .item .img-of-itemlist{
+  width: 10vw !important;
+  height: 10vw !important;
+}

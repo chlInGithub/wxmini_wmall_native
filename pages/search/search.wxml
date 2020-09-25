@@ -1,6 +1,7 @@
 <view class="container">
-  <view class="outter-view">
-    <input model:value="{{val}}" class="search" type="text" maxlength="10" confirm-type="搜索" bindconfirm="bindconfirm" placeholder="输入你要搜索的关键字"></input>
+  <view class="outter-view search-view">
+    <input model:value="{{val}}" class="search fl col80" type="text" maxlength="10" confirm-type="搜索" bindconfirm="bindconfirm" placeholder="输入你要搜索的关键字，最多10个字"></input>
+    <view bindtap="goShop" class="cancle fl fs8 col10 ta-c">取消</view>
   </view>
   <view class="outter-view not-first-outter">
     <view style="text-align: left;">

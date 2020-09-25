@@ -1,0 +1,109 @@
+<page-meta page-style="background-color:#EEEEEE" page-style="min-height: 100%;display: flex;flex-direction: column;">
+</page-meta>
+
+<view class="flex-container">
+  <!-- 活动 -->
+  <view wx:if="{{detail.imgs.length > 0}}" class="outter-view borderradius0">
+    <swiper class="detail-swiper" indicator-color="#BBBBBB" indicator-active-color="white" indicator-dots="true" autoplay="true" circular="true" easing-function="easeInOutCubic">
+      <block wx:for="{{detail.imgs}}" wx:key="*this">
+        <swiper-item>
+          <view class="swiper-view">
+            <image bindtap="showImg" data-img="{{item}}" src="{{imgPrefix + item}}" class="img"></image>
+          </view>
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+
+  <view wx:if="{{preStrategy}}" class="outter-view presale-view borderradius0">
+    <view class="col25 h100 fl">
+      <view class="preDesc fl pl10">预售</view>
+      <view class="triangle-left fl"></view>
+    </view>
+    <view class="col70 h100 fl" style="margin-top: 5px">
+      <view wx:if="preStrategy.endTime">
+        <text class="label mr10">截止时间</text>
+        <text class="desc">{{preStrategy.endTime}}</text>
+      </view>
+      <view wx:if="preStrategy.sentTime">
+        <text class="label mr10">开始发货时间</text>
+        <text class="desc">{{preStrategy.sentTime}}</text>
+      </view>
+      <view wx:if="preStrategy.minCount">
+        <text class="label mr10">成立条件</text>
+        <text class="desc">预售截止时，商品销量不低于{{preStrategy.minCount}}件</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="outter-view borderradius0">
+    <view class="pl10 ta-l">
+      <text class="price fs10">￥{{choosedSku != undefined ? choosedSku.price : detail.price}}</text>
+      <text class="labelPrice">￥{{detail.labelPrice}}</text>
+    </view>
+
+    <view class="pl10 inline-block">
+      <text class="col70 fl ta-l fs8">{{detail.title}}</text>
+      <view class="col25 fr fs5 cgray">
+        <view class="inline-block">
+          <view class="fs8 fa fa-share-alt inline-block"></view>
+          <view>分享</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="pl10 inline-block">
+      <view class="col50 fl ta-l">
+        <view class="fs6">快递:{{detail.express}}</view>
+        <view class="fs5 cred">快递费用仅供参考，以结算页为准</view>
+      </view>
+      <view class="col45 fl">
+        <view class="fs5 cgray">
+          已售{{detail.salesTotal}}件/剩余{{detail.inventory}}件
+        </view>
+      </view>
+    </view>
+
+    <view class="pl10 ta-l fs8" wx:if="{{tags}}">
+      <block wx:for="{{tags}}" wx:key="*this">
+        <view class="itemDetailTag">
+          {{item}}
+        </view>
+      </block>
+      <view wx:if="{{detail.existSku}}" class="tag">
+        款式多
+      </view>
+    </view>
+
+  </view>
+
+  <view wx:if="detail.skus" class="outter-view borderradius0" style="margin-top:10px;">
+    <view class="pl10 ta-l fs6">
+      <view class="fa fa-hand-o-right fa-lg fl col10 pl10 cred"></view>
+      <picker class="fl pl10 col70" mode="selector" range="{{skuTitles}}" value="0" bindchange="chooseSku">
+        <view class="picker inline-block" style="border-bottom: 1px solid gray">
+          {{choosedSku.title}}
+        </view>
+      </picker>
+      <view class="fa fa-angle-right cgray fa-lg"></view>
+    </view>
+  </view>
+
+
+  <view class="outter-view borderradius0 fs8" style="padding-top:10px;overflow: scroll;">
+    <rich-text nodes="{{detail.detail}}" style="overflow: scroll;"></rich-text>
+  </view>
+</view>
+<view class="footer">
+  <view bindtap="goShop" class="col30 fl">
+    <image mode="aspectFit" src="/img/shop.png" class="img"></image>
+    <view class="fs8">首页</view>
+  </view>
+  <view bindtap="goCart" class="col30 fl">
+    <image mode="aspectFit" src="/img/cart.png" class="img"></image>
+    <view class="fs8">购物车</view>
+  </view>
+  <view bindtap="addCart" class="col40 fl h100" style="color: white;background-color: red;line-height: 50px;height: 100vh;text-align: center;">
+    <view>加入购物车</view>
+  </view>
+</view>

@@ -1,0 +1,76 @@
+<view wx:if="{{items}}">
+    <view wx:if="{{title}}" class="title-view-no-background">
+      {{title}}
+    </view>
+    <view class="item-list">
+      <view class="item-list-right">
+        <block wx:for="{{items}}" wx:key="*this">
+          <view wx:if="{{index%2 == 1}}" class="item" bindtap="goItemDetail" data-id="{{item.id}}">
+            <view class="img-view">
+              <image mode="aspectFit" class="img" src="{{imgPrefix + item.img}}"></image>
+            </view>
+            <view class="title">
+              {{item.title}}
+            </view>
+            <view wx:if="{{item.tags}}">
+              <block wx:for="{{item.tags}}"  wx:key="*this">
+                <view class="tag">
+                  {{item}}
+                </view>
+              </block>
+              <view wx:if="{{item.existSku}}" class="tag">
+                  款式多
+              </view>
+            </view>
+            <view wx:if="{{item.labelPrice != undefined}}" class="labelPrice">
+              ￥{{item.labelPrice}}
+            </view>
+            <view class="price">
+              ￥{{item.price}}
+            </view>
+            <view class="sale">
+              已售{{item.sale}}件
+            </view>
+            <view wx:if="{{item.inventory > 0}}" class="fa fa-shopping-cart  cart fr"></view>
+            <view wx:else class="saleOut fr">售罄</view>
+          </view>
+        </block>
+      </view>
+      <view class="item-list-left">
+        <block wx:for="{{items}}" wx:key="*this">
+          <view wx:if="{{index%2 == 0}}" class="item" bindtap="goItemDetail" data-id="{{item.id}}">
+            <view class="img-view">
+              <image mode="aspectFit" class="img" src="{{imgPrefix + item.img}}"></image>
+            </view>
+            <view class="title">
+              {{item.title}}
+            </view>
+            <view wx:if="{{item.tags}}">
+              <block wx:for="{{item.tags}}"  wx:key="*this">
+                <view class="tag">
+                  {{item}}
+                </view>
+              </block>
+              <view wx:if="{{item.existSku}}" class="tag">
+                  款式多
+              </view>
+            </view>
+            <view wx:if="{{item.labelPrice != undefined}}" class="labelPrice">
+              ￥{{item.labelPrice}}
+            </view>
+            <view class="price">
+              ￥{{item.price}}
+            </view>
+            <view class="sale">
+              已售{{item.sale}}件
+            </view>
+            <view wx:if="{{item.inventory > 0}}" class="fa fa-shopping-cart  cart fr"></view>
+            <view wx:else class="saleOut fr">售罄</view>
+          </view>
+        </block>
+      </view>
+    </view>
+    <view class="hasGotAll" wx:if="hasGotAll">
+      已经触及我的底线啦
+    </view>
+  </view>

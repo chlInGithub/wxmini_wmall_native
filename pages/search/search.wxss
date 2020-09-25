@@ -1,1 +1,10 @@
 /* pages/search/search.wxss */
+.search-view{
+  height: 25px;
+}
+.search-view input{
+  line-height: 25px;
+}
+.search-view .cancle{
+  line-height: 25px;
+}

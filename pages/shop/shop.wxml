@@ -2,7 +2,16 @@
 </page-meta>
 
 <view class="container">
-  <view wx:if="{{activies.length > 0}}" class="outter-view">
+<!-- 搜索 -->
+  <view class="outter-view">
+    <view type="text" bindtap="search_focus" class="search">
+      <icon size="20" type="search fl"/>
+      <view class="fr desc">搜索</view>
+    </view>
+  </view>
+
+<!-- 活动 -->
+  <view wx:if="{{activies.length > 0}}" class="outter-view not-first-outter">
     <swiper class="swiper" indicator-color="#BBBBBB" indicator-active-color="white" indicator-dots="true" autoplay="true" circular="true" easing-function="easeInOutCubic" >
       <block wx:for="{{activies}}" wx:key="*this">
           <swiper-item>
@@ -14,53 +23,27 @@
     </swiper>
   </view>
 
-  <view class="outter-view not-first-outter">
-    <view type="text" bindtap="search_focus" class="search">
-      <icon size="20" type="search"/>
-    </view>
-  </view>
-
-  <view wx:if="{{cates}}" class="outter-view not-first-outter cate-view">
+<!-- 类目 -->
+  <view style="display:none;" wx:if="{{cates}}" class="outter-view not-first-outter cate-view cate-view-1">
     <block wx:for="{{cates}}" wx:key="*this">
-      <view class="item" style="margin-top: 5px;" data-id="{{item.id}}" bindtap="goCate">
+      <view class="item item-1" style="margin-top: 5px;" data-id="{{item.id}}" bindtap="goCate">
         <image mode="aspectFit" class="img" src="{{imgPrefix + item.img}}"></image>
         <view class="name">{{item.name}}</view>
       </view>
     </block>
   </view>
 
-  <view wx:if="{{coupons}}" class="outter-view not-first-outter">
-    <swiper class="coupons-swiper" interval="3000" vertical="true" autoplay="true" circular="true" easing-function="easeInOutCubic" >
-      <block wx:for="{{coupons}}" wx:key="*this">
-          <swiper-item>
-            <view class="swiper-view">
-              <view bindtap="getCoupons" data-id='{{item.id}}' style="height:60px;margin-top:5px;display: inline-block;">
-                <view class="coupons">
-                  <view>
-                    <text class="coupons-discount">{{item.discount}}元</text>
-                    <text class="coupons-desc">满{{item.meet}}元减{{item.discount}}元</text>
-                  </view>
-                  <view class="coupons-name">{{item.name}}</view>
-                  <view class="coupons-period">{{item.validTime}}-{{item.invalidTime}}</view>
-                </view>
-                <view class="coupons-get">
-                  <block wx:if="{{item.got == 1}}">
-                    <view style="margin-top: 5px">已</view>
-                    <view>领</view>
-                    <view>取</view>
-                  </block>
-                  <block wx:else>
-                    <view style="margin-top: 5px">立</view>
-                    <view>刻</view>
-                    <view>抢</view>
-                  </block>
-                </view> 
-              </view>
+  <scroll-view scroll-x="true" style="white-space: nowrap;" class="outter-view not-first-outter cate-view">
+      <block wx:for="{{cates}}" wx:key="*this">
+            <view class="item {{selectedCateId == item.id ? 'selectedCate' : ''}}" style="display: inline-block;" data-id="{{item.id}}" bindtap="goCate">
+              <image mode="aspectFit" class="img" src="{{imgPrefix + item.img}}"></image>
+              <view class="name">{{item.name}}</view>
             </view>
-          </swiper-item>
       </block>
-    </swiper>
-  </view>
+  </scroll-view>
+
+  <couponsComponent coupons="{{coupons}}" invalidGoCoupons="{{true}}" class="outter-view not-first-outter">
+  </couponsComponent>
 
   <view class="outter-view not-first-outter">
     <view class="title-view">
@@ -80,81 +63,7 @@
     </view>
   </view>
   
+  <itemListComponent title="精品推荐" items="{{items}}"  class="item-list-outer not-first-outter">
+  </itemListComponent>
 
-  <view wx:if="{{items}}" class="item-list-outer not-first-outter">
-    <view class="title-view-no-background">
-      精品推荐
-    </view>
-    <view class="item-list">
-      <view class="item-list-right">
-        <block wx:for="{{items}}" wx:key="*this">
-          <view wx:if="{{index%2 == 1}}" class="item" bindtap="goItemDetail" data-id="{{item.id}}">
-            <view class="img-view">
-              <image mode="aspectFit" class="img" src="{{imgPrefix + item.img}}"></image>
-            </view>
-            <view class="title">
-              {{item.title}}
-            </view>
-            <view wx:if="{{item.tags}}">
-              <block wx:for="{{item.tags}}"  wx:key="*this">
-                <view class="tag">
-                  {{item}}
-                </view>
-              </block>
-              <view wx:if="{{item.existSku}}" class="tag">
-                  款式多
-              </view>
-            </view>
-            <view wx:if="{{item.labelPrice != undefined}}" class="labelPrice">
-              ￥{{item.labelPrice}}
-            </view>
-            <view class="price">
-              ￥{{item.price}}
-            </view>
-            <view class="sale">
-              已售{{item.sale}}件
-            </view>
-            <view wx:if="{{item.inventory > 0}}" class="fa fa-shopping-cart  cart fr"></view>
-            <view wx:else class="saleOut fr">售罄</view>
-          </view>
-        </block>
-      </view>
-      <view class="item-list-left">
-        <block wx:for="{{items}}" wx:key="*this">
-          <view wx:if="{{index%2 == 0}}" class="item" bindtap="goItemDetail" data-id="{{item.id}}">
-            <view class="img-view">
-              <image mode="aspectFit" class="img" src="{{imgPrefix + item.img}}"></image>
-            </view>
-            <view class="title">
-              {{item.title}}
-            </view>
-            <view wx:if="{{item.tags}}">
-              <block wx:for="{{item.tags}}"  wx:key="*this">
-                <view class="tag">
-                  {{item}}
-                </view>
-              </block>
-              <view wx:if="{{item.existSku}}" class="tag">
-                  款式多
-              </view>
-            </view>
-            <view wx:if="{{item.labelPrice != undefined}}" class="labelPrice">
-              ￥{{item.labelPrice}}
-            </view>
-            <view class="price">
-              ￥{{item.price}}
-            </view>
-            <view class="sale">
-              已售{{item.sale}}件
-            </view>
-            <view wx:if="{{item.inventory > 0}}" class="fa fa-shopping-cart  cart fr"></view>
-            <view wx:else class="saleOut fr">售罄</view>
-          </view>
-        </block>
-      </view>
-    </view>
-    <view class="hasGotAll" wx:if="hasGotAll">
-      已经触及我的底线啦
-    </view>
-  </view>
 </view>

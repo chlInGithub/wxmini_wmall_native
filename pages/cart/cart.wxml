@@ -1,2 +1,97 @@
-<!--pages/cart/cart.wxml-->
-<text>pages/cart/cart.wxml</text>
+<page-meta page-style="background-color:#EEEEEE;min-height: 100%;display: flex;flex-direction: column;">
+</page-meta>
+<checkbox-group bindchange="bindchange">
+
+  <view class="container flex-container">
+    <block wx:if="{{items}}" wx:for="{{items}}" wx:key="*this">
+      <view class="outter-view cart-view">
+        <view class="col10 fl checkbox-view">
+          <checkbox class="fs8" value="{{index}}" model:checked="{{item.checked}}" model:disabled="{{disabledAllCheckBox}}"></checkbox>
+        </view>
+        <view class="col30 fl img-view">
+          <image class="cart-item-img" src="{{imgPrefix + item.img}}" bindtap="goItemDetail" data-index="{{index}}"></image>
+        </view>
+        <view class="fl col55 content">
+          <view class="fs7" bindtap="goItemDetail" data-index="{{index}}">{{item.title}}</view>
+          <view class="cgray fs6" wx:if="{{item.skuTitle}}">{{item.skuTitle}}</view>
+          <view class="fs6" wx:if="{{item.tags}}">
+            <block wx:for="{{item.tags}}" wx:key="*this">
+              <view class="itemDetailTag">
+                {{item}}
+              </view>
+            </block>
+          </view>
+          <view class="fs6 cgray">库存{{item.inventory}}</view>
+          <view class="pr10 price-view">
+            <view class="price fs8 inline-block fl">￥{{item.price}}</view>
+            <view class="fs8 fa fa-trash fr icon" bindtap="deleteCount" data-index="{{index}}"></view>
+          </view>
+          <view class="count-view cgray">
+            <view class="fl operate-view plus" bindtap="addCount" data-index="{{index}}">+</view>
+            <input type="number" model:value="{{item.count}}" class="count" bindconfirm="changeCount" data-index="{{index}}"></input>
+            <view class="fl operate-view deduct" bindtap="deductCount" data-index="{{index}}" disabled="{{item.count > 0 ? true : false}}">-</view>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+  <view class="footer">
+    <view bindtap="goShop" class="col30 fl" style="line-height:50px;">
+      <checkbox class="fs8" value="{{checkAllVal}}" model:checked="{{checkedAll}}" model:disabled="{{disabledAllCheckBox}}"></checkbox>
+      <view class="fs8 inline-block">全选</view>
+    </view>
+    <view wx:if="{{computeResult.couponDetail}}" bindtap="goCart" class="col40 fl fs6" style="margin-top:.5rem;">
+      <view>
+        <text>合计:</text>
+        <text class="cred">￥</text>
+        <text class="cred">{{computeResult.total}}</text>
+      </view>
+      <view>
+        <text>共减￥{{computeResult.couponDetail.coupon}}</text>
+        <text class="cred pl10" bindtap="triggleModal">优惠明细<text class="fa fa-angle-up" style="font-size:1rem;"></text></text>
+      </view>
+    </view>
+    <view wx:else bindtap="goCart" class="col40 fl fs6" style="line-height:50px;">
+      <view>
+        <text>合计:</text>
+        <text class="cred">￥</text>
+        <text class="cred">{{computeResult.total}}</text>
+      </view>
+    </view>
+    <view bindtap="addCart" class="col30 fl" style="border-radius: 1.5rem;color: white;background-color: red;line-height: 40px;text-align: center;margin-top:4px;">
+      <view>结算({{computeResult.itemCount}})</view>
+    </view>
+  </view>
+
+</checkbox-group>
+
+  <view wx:if="{{showModal}}" class="modal-cover-top">
+  </view>
+  <view wx:if="{{showModal}}" class="modal">
+    <view class="close"><text class=" fa fa-times" bindtap="triggleModal"></text></view>
+    <view class="header">
+      优惠详情
+    </view>
+    <scroll-view scroll-y="true" class="body">
+      <view class="cell">
+        <view class="coupons-name col45 fl fs6 ta-l">商品总价</view>
+        <view class="coupons-fee col45 fr fs8 ta-r cred">￥{{computeResult.couponDetail.totalNoCoupon}}</view>
+      </view>
+      <block wx:for="{{computeResult.couponDetail.coupons}}" wx:key="*this">
+        <view class="cell">
+          <view class="coupons-name col45 fl fs6 ta-l">{{item.desc}}</view>
+          <view class="coupons-fee col45 fr fs8 ta-r cred">￥{{item.amount}}</view>
+        </view>
+      </block>
+      <view class="cell">
+        <view class="coupons-name col45 fl fs8 ta-l">共优惠</view>
+        <view class="coupons-fee col45 fr fs8 ta-r cred">￥{{computeResult.couponDetail.coupon}}</view>
+      </view>
+      <view class="cell">
+        <view class="coupons-name col45 fl fs8 ta-l">合计</view>
+        <view class="coupons-fee col45 fr fs8 ta-r">￥{{computeResult.couponDetail.total}}</view>
+      </view>
+    </scroll-view>
+  </view>
+  <view wx:if="{{showModal}}" class="modal-cover-bottom">
+  </view>

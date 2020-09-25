@@ -1,0 +1,33 @@
+<!-- 优惠券 -->
+  <view wx:if="{{coupons}}">
+    <swiper class="coupons-swiper" interval="3000" vertical="true" autoplay="true" circular="true" easing-function="easeInOutCubic" >
+      <block wx:for="{{coupons}}" wx:key="*this">
+          <swiper-item>
+            <view class="swiper-view">
+              <view bindtap="dealCoupons" data-id='{{item.id}}' style="height:60px;margin-top:5px;display: inline-block;">
+                <view class="coupons">
+                  <view>
+                    <text class="coupons-discount">{{item.discount}}元</text>
+                    <text class="coupons-desc">满{{item.meet}}元减{{item.discount}}元</text>
+                  </view>
+                  <view class="coupons-name">{{item.name}}</view>
+                  <view class="coupons-period">{{item.validTime}}-{{item.invalidTime}}</view>
+                </view>
+                <view class="coupons-get">
+                  <block wx:if="{{item.got == 1}}">
+                    <view style="margin-top: 5px">已</view>
+                    <view>领</view>
+                    <view>取</view>
+                  </block>
+                  <block wx:else>
+                    <view style="margin-top: 5px">立</view>
+                    <view>刻</view>
+                    <view>抢</view>
+                  </block>
+                </view> 
+              </view>
+            </view>
+          </swiper-item>
+      </block>
+    </swiper>
+  </view>

@@ -1,0 +1,42 @@
+<page-meta page-style="background-color:#EEEEEE">
+  
+</page-meta>
+
+<view class="container">
+  <!-- 活动详情 -->
+  <view wx:if="{{activity}}" class="outter-view">
+    <image style="height:100px;" src="{{imgPrefix + activity.img}}" class="activy-img"></image>
+    <view class="activity-title">
+      <view>
+        {{activity.name}}
+      </view>
+      <view>
+        活动周期: {{activity.validTime}} - {{activity.invalidTime}}
+      </view>
+      <view>
+        活动详情: {{activity.desc}}
+      </view>
+    </view>
+  </view>
+
+<!-- 类目list -->
+  <scroll-view wx:if="{{cates}}" scroll-x="true" style="white-space: nowrap;" class="outter-view not-first-outter cate-view">
+      <block wx:for="{{cates}}" wx:key="*this">
+            <view class="item item-of-itemlist {{selectedCateId == item.id ? 'selectedCate' : ''}}" style="display: inline-block;" data-id="{{item.id}}" bindtap="chooseCate">
+              <image mode="aspectFit" class="img img-of-itemlist" src="{{imgPrefix + item.img}}"></image>
+              <view class="name">{{item.name}}</view>
+            </view>
+      </block>
+  </scroll-view>
+
+<!-- 优惠券详情 -->
+  <couponsComponent wx:if="{{coupons}}" coupons="{{[coupons]}}" invalidGoCoupons="{{false}}" class="outter-view not-first-outter">
+  </couponsComponent>
+  
+<!-- 商品list -->
+  <itemListComponent wx:if="{{items}}" items="{{items}}"  class="item-list-outer not-first-outter">
+  </itemListComponent>
+  <view wx:else style="text-align:center;font-size:.8rem;color:gray;">
+    暂无宝贝
+  </view>
+</view>
