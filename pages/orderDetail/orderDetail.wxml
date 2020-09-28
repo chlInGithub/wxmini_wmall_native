@@ -1,0 +1,105 @@
+<page-meta page-style="background-color:#EEEEEE;">
+</page-meta>
+
+<view class="container">
+  <view class="outter-view">
+    <view class="cwhite ptb10" style="background-color: rgb(255, 0, 54)">
+      <view class="col30 ta-l fl fs8 pl10">
+        {{detail.statusDes}}
+      </view>
+      <view class="col60 ta-c fr fs7 pr10">{{detail.payVO.typeDesc}}</view>
+      <view class="clearboth"></view>
+    </view>
+  </view>
+
+  <view wx:if="{{detail.deliverVO}}" class="outter-view not-first-outter">
+    <view class="ptb10 pr10 pl10">
+      <view class="fs8 col30 ta-l fl">{{detail.deliverVO.name}}</view>
+      <view class="fs8 col60 ta-l">{{detail.deliverVO.mobile}}</view>
+      <view class="fs8 ta-l mt5">{{detail.deliverVO.city}} {{detail.deliverVO.address}}</view>
+      <view class="clearboth"></view>
+    </view>
+  </view>
+
+  <view wx:if="{{detail.subOrderVOS}}" class="outter-view not-first-outter ptb10">
+    <view wx:for="{{detail.subOrderVOS}}">
+      <view class="inline-block">
+        <view class="col25 fl img-view">
+          <image class="cart-item-img" src="{{imgPrefix + item.itemImg}}"></image>
+        </view>
+        <view class="fr col70 content ta-l">
+          <view class="fs7 mt3">{{item.itemTitle}}</view>
+          <view class="cgray fs6 mt3" wx:if="{{item.skuTitle}}">{{item.skuTitle}}</view>
+          <view class="fs6 mt3" wx:if="{{item.presell}}">
+            <view class="cred">
+              预售，预计发货日期 {{item.presell.sentTime}}
+            </view>
+          </view>
+          <view class="pr10 price-view mt3">
+            <view class="fs8 inline-block fl">￥{{item.price}}</view>
+            <view class="fs6 inline-block fl mt3 ml3"> x {{item.count}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{detail.deliverVO}}" class="outter-view not-first-outter">
+    <view class="fs8 ptb10">
+      <view class="col50 fl ta-l pl10">
+        配送方式
+      </view>
+      <view class="col40 ta-r fr pr10">
+        {{detail.deliverVO.typeDesc}}
+      </view>
+      <view class="clearboth"></view>
+    </view>
+  </view>
+
+  <view class="outter-view not-first-outter ptb10">
+    <view>
+      <view class="col50 ta-l pl10 fs8 fl">商品总价</view>
+      <view class="col40 ta-r fs7 fr pr10">￥{{detail.totalFee}}</view>
+      <view class="clearboth"></view>
+    </view>
+    <view class="mt5">
+      <view class=" col50 ta-l pl10 fs8 fl">运费(快递)</view>
+      <view class="col40 ta-r fs7 fr pr10">￥{{detail.deliverVO.freight}}</view>
+      <view class="clearboth"></view>
+    </view>
+    <view class="mt5" wx:for="{{detail.coupons}}" wx:key="*this">
+      <view class="col50 ta-l pl10 fs8 fl">{{item.desc}}</view>
+      <view class="col40 ta-r fs7 fr pr10">￥{{item.discount}}</view>
+      <view class="clearboth"></view>
+    </view>
+    <view class="mt5">
+      <view class="col50 ta-l pl10 fs9 fl">订单总计</view>
+      <view class="col40 ta-r fs8 fr pr10">￥{{detail.realFee}}</view>
+      <view class="clearboth"></view>
+    </view>
+  </view>
+
+    <view class="outter-view not-first-outter ptb10 ">
+      <button wx:if="{{detail.status==10}}" class="big-button fs8 cwhite" style="background-color: red">付款</button>
+      <view class="operate-view pr10 ptb10 fs7 ">
+        <view class="col15 ta-c fr button ">删除</view>
+        <view class="clearboth"></view>
+      </view>
+    </view>
+
+  <view class="outter-view not-first-outter ptb10 ">
+    <view class="fs8">
+      <view class="pl10 ta-l col30 fl">订单编号</view>
+      <view class="pr10 ta-r col60 fr">{{detail.id}}</view>
+      <view class="clearboth"></view>
+    </view>
+    <view class="fs8 mt5">
+      <view class="pl10 ta-l col30 fl">创建时间</view>
+      <view class="pr10 ta-r col60 fr">{{detail.createTime}}</view>
+      <view class="clearboth"></view>
+    </view>
+  </view>
+
+  <itemListComponent title="精品推荐" items="{{items}}" class="item-list-outer not-first-outter">
+  </itemListComponent>
+</view>

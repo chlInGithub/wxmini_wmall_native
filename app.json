@@ -7,9 +7,15 @@
     "pages/cart/cart",
     "pages/me/me",
     "pages/itemList/itemList",
-    "pages/itemDetail/itemDetail"
+    "pages/itemDetail/itemDetail",
+    "pages/settle/settle",
+    "pages/orderList/orderList",
+    "pages/couponsList/couponsList",
+    "pages/wxLogin/wxLogin",
+    "pages/userInfo/userInfo",
+    "pages/orderDetail/orderDetail"
   ],
-  "entryPagePath": "pages/cart/cart",
+  "entryPagePath": "pages/orderDetail/orderDetail",
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
@@ -20,7 +26,8 @@
   },
   "usingComponents": {
     "itemListComponent": "/components/itemListComponent/itemListComponent",
-    "couponsComponent": "/components/couponsComponent/couponsComponent"
+    "couponsComponent": "/components/couponsComponent/couponsComponent",
+    "infoModalComponent": "/components/infoModalComponent/infoModalComponent"
   },
   "tabBar": {
     "color": "#AAAAAA",

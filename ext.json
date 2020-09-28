@@ -1,0 +1,21 @@
+{
+  "extEnable": true,
+  "extAppid": "wx66e252cb46abe8e4",
+  "directCommit": false,
+  "ext": {
+    "shopId": "1",
+    "tId": 0,
+    "appId": "wx66e252cb46abe8e4",
+    "shopName": "测试店铺中文",
+    "shopImg": "39059c4feb06ee3ed00b1e859f4c3264",
+    "domain": "wx66e252cb46abe8e4.5jym.com",
+    "requestDomain": "wmall.5jym.com",
+    "attr": {
+      "host": "open.weixin.qq.com",
+      "users": [
+        "user_1",
+        "user_2"
+      ]
+    }
+  }
+}

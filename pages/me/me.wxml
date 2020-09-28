@@ -1,2 +1,74 @@
-<!--pages/me/me.wxml-->
-<text>pages/me/me.wxml</text>
+<page-meta page-style="background-color:#EEEEEE">
+</page-meta>
+
+<view class="container">
+  <!-- 会员卡 -->
+  <view class="outter-view">
+    <view class="vip-card cwhite" wx:if="{{simple.user.id}}">
+      <view class="title fs9">VIP会员卡</view>
+      <view wx:if="{{simple.user.img}}" class="wx-info">
+        <view class="col30 fl">
+          <image src="{{simple.user.img}}"></image>
+        </view>
+        <view class="col60 ta-l fs8 fl name">
+          {{simple.user.name}}
+        </view>
+      </view>
+      <view wx:else class="ptb10">
+        <button class="fs8 big-button" type="primary" bindtap="goWXLogin">使用微信登录</button>
+      </view>
+      <view class="ta-c fs8 userid">
+        {{simple.user.id}}
+      </view>
+    </view>
+    <view wx:else class="fs8 ta-c cred">缺少用户ID，须重新启动小程序</view>
+  </view>
+
+  <!-- 订单类型 -->
+  <view>
+    <view class="title-view-no-background not-first-outter">我的订单</view>
+    <view class="outter-view ordertype ptb10 inline-block">
+      <block wx:for="{{orderStatusCount}}" wx:key="*this">
+        <view wx:if="{{item.code == 10}}" class="col20 ta-c fs6 fl" data-code="{{item.code}}" bindtap="goOrderList">
+          <image mode="aspectFit" src="/img/ordertype/needpay.png" class="img"></image>
+          <view wx:if="{{item.count > 0}}" class="count badge">{{item.count}}</view>
+          <view class="desc">待付款</view>
+        </view>
+        <view wx:elif="{{item.code == 20}}" class="col20 ta-c fs6 fl" data-code="{{item.code}}" bindtap="goOrderList">
+          <image mode="aspectFit" src="/img/ordertype/notsent.png" class="img"></image>
+          <view wx:if="{{item.count > 0}}" class="count badge">{{item.count}}</view>
+          <view class="desc">待发货</view>
+        </view>
+        <view wx:elif="{{item.code == 30}}" class="col20 ta-c fs6 fl" data-code="{{item.code}}" bindtap="goOrderList">
+          <image mode="aspectFit" src="/img/ordertype/sent.png" class="img"></image>
+          <view wx:if="{{item.count > 0}}" class="count badge">{{item.count}}</view>
+          <view class="desc">待收货</view>
+        </view>
+        <view wx:elif="{{item.code == 60}}" class="col20 ta-c fs6 fl" data-code="{{item.code}}" bindtap="goOrderList">
+          <image mode="aspectFit" src="/img/ordertype/refund.png" class="img"></image>
+          <view wx:if="{{item.count > 0}}" class="count badge">{{item.count}}</view>
+          <view class="desc">退款</view>
+        </view>
+        <view wx:else></view>
+      </block>
+      <view class="col20 ta-c fs6 fl" bindtap="goOrderList">
+        <image mode="aspectFit" src="/img/ordertype/allorder.png" class="img"></image>
+        <view class="desc">全部订单</view>
+      </view>
+    </view>
+  </view>
+
+
+  <!-- 优惠券入口 -->
+  <view class="outter-view not-first-outter ptb10">
+    <view class="col20 fs7 ta-l pl10 fl">
+      我的优惠券
+    </view>
+    <view class="col70 fs6 cblue ta-r pr10 fl" bindtap="goCouponsList">
+      所有优惠券 >
+    </view>
+  </view>
+
+  <itemListComponent title="精品推荐" items="{{items}}" class="item-list-outer not-first-outter">
+  </itemListComponent>
+</view>

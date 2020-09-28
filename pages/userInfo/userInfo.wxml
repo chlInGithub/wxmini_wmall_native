@@ -1,0 +1,29 @@
+<!--index.wxml-->
+<view class="container">
+  <view class="page-body" style="width:90%">
+    <view class="page-section">
+      <view class="page-section-title" style="margin: 1rem 0 0 0;text-align:center;padding: .5rem 0;background-color: #FF0000;color: white;">
+        VIP头像与昵称
+      </view>
+      <view class="flex-wrp" style="flex-direction:column;border: 1px solid #ddd;border-top: none;padding: .5rem;">
+        <view class="flex-item flex-item-V" style="text-align:center;">
+          <text>{{shopName}}</text>
+        </view>
+        <view class="flex-item flex-item-V ta-c" style="margin-top:.5rem;">
+          <image style="width:50vw;height:50vw;border-radius: 50%;border: 1px solid gold" src="{{shopImg}}"></image>
+        </view>
+        <view class="flex-item flex-item-V" style="text-align:center;margin-top:1rem;">
+          <view class="userInfo">
+            <text style="font-size:.8rem;">给您提供炫酷体验</text>
+            <button type="primary" class="big-button mt10 fs8" wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 申请微信头像 </button>
+          </view>
+          <view>
+            <button bindtap="goShop" class="big-button mt10 fs8">
+              继续逛逛
+            </button>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

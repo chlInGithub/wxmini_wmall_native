@@ -1,0 +1,13 @@
+  <view wx:if="{{showModal}}" class="modal-cover-top">
+  </view>
+  <view wx:if="{{showModal}}" class="modal">
+    <view class="close"><image src="/img/close.png"  mode="aspectFit" style="width:16px;height:16px;margin-right: 2vw;" bindtap="triggleModal"></image></view>
+    <view class="header">
+      {{title}}
+    </view>
+    <scroll-view scroll-y="true" class="body">
+      <slot name="slot-body"></slot>
+    </scroll-view>
+  </view>
+  <view wx:if="{{showModal}}" class="modal-cover-bottom">
+  </view>

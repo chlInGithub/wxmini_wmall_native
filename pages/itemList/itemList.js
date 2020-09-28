@@ -11,7 +11,7 @@ Page({
 
   getItems: function(){
     this.setData({
-      items: app.common.getData.getItems()
+      items: app.common.getData.getItems(this.data.param)
     })
   },
 
@@ -30,34 +30,40 @@ Page({
   onLoad: function (options) {
     this.setData(app.globalData)
 
+    var param = {}
     if(options.cate != undefined){
       var cate = JSON.parse(options.cate)
       this.setData({
         selectedCateId: cate.id,
         cates: app.common.getData.getAllCates(),
       })
+
+      param["cateId"] = cate.id
     }
     if (options.coupons != undefined) {
       var coupons = JSON.parse(options.coupons)
       this.setData({
         coupons: coupons
       })
-      console.log(this.data.couponsList)
+      param["couponId"] = coupons.id
     }
     if (options.activity != undefined) {
       var activity = JSON.parse(options.activity)
       this.setData({
         activity: activity
       })
+      param["activityId"] = activity.id
     }
     if (options.itemName != undefined) {
       this.setData({
         itemName: options.itemName
       })
+      param["title"] = itemName
     }
 
     this.setData({
-      items: app.common.getData.getItems({})
+      param: param,
+      items: app.common.getData.getItems(param)
     })
   },
 

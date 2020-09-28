@@ -1,0 +1,14 @@
+<!--pages/couponsList/couponsList.wxml-->
+<view class="container">
+  <block wx:if="{{coupons}}" wx:for="{{coupons}}" wx:key="*this">
+  <!-- 优惠券详情 -->
+  <couponsComponent coupons="{{[item]}}" invalidGoCoupons="{{true}}" class="outter-view not-first-outter">
+  </couponsComponent>
+  </block>
+  <view wx:if="{{coupons == undefined || coupons.length < 1}}" class="outter-view fs8 ta-c cred">没有优惠券哦</view>
+
+  <itemListComponent title="精品推荐" items="{{items}}" class="item-list-outer not-first-outter">
+  </itemListComponent>
+</view>
+
+

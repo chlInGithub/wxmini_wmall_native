@@ -8,7 +8,6 @@ Page({
   data: {
     disabledAllCheckBox: false,
     checkAllVal: -1,
-    showModal: false,
     preCheckedAll: false,
     checkedAll: false,
     computeResult: {
@@ -31,14 +30,36 @@ Page({
       itemCount: 10
     }
   },
+
+  goSettle: function(){
+    app.common.goPage.goSettle("?items=" + this.get_settle_data())
+  },
+  get_settle_data: function () {
+    var items = this.data.items
+    console.log(items)
+    var checkedItems = []
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i]
+      if (item.checked) {
+        checkedItems.push(item)
+      }
+    }
+
+    var temp = []
+    for (var i = 0; i < checkedItems.length; i++) {
+      var item = checkedItems[i]
+      var v = item.itemId + "_" + item.skuId
+      temp.push()
+    }
+
+    return temp.toString()
+  },
   /**
    * modal
    */
   triggleModal: function() {
-    this.setData({
-      showModal: !this.data.showModal
-    })
-    console.log(this.data.showModal)
+    var t = this.selectComponent(".infoModalComponent")
+    t.triggleModal()
   },
   updateItems: function(items) {
     if (undefined == items) {
@@ -76,7 +97,7 @@ Page({
 
     var data = this.get_checked_item_string(checkedItems)
 
-    if (data == "") {
+    if (data === "") {
       return false
     }
 
@@ -94,7 +115,7 @@ Page({
     for (var i = 0; i < checkedItems.length; i++) {
       var item = checkedItems[i]
       var v = item.itemId + "_" + item.skuId + "_" + item.count
-      temp.push()
+      temp.push(v)
 
       if (item.strategyJson.presell != undefined) {
         presellItems++
@@ -106,7 +127,7 @@ Page({
       return "";
     }
 
-    return temp.toString
+    return temp.toString()
   },
   /**
    * 检查已选购车车商品是否满足限制条件
@@ -162,14 +183,13 @@ Page({
       if (checkedBoxItemSize > 0) {
         for (var i = 0; i < checkedIndexs.length; i++) {
           var temp = checkedIndexs[i]
-          if (temp == this.data.checkAllVal) {
+          if (temp === this.data.checkAllVal) {
             continue
           }
 
           var item = items[temp]
           item.checked = true
         }
-        // this.updateItems()
       }
 
       if (!preCheckedAll) {
@@ -182,9 +202,6 @@ Page({
           // this.updateItems()
         } else if (!checkedAll && currentCheckedAll) {
           checkedAll = true
-          /*this.setData({
-            checkedAll: true
-          })*/
         }
       } else {
         // 之前 是 全选 情况
@@ -193,16 +210,11 @@ Page({
             var item = items[i]
             item.checked = false
           }
-          // this.updateItems()
         } else if (!currentCheckedAll) {
           checkedAll = false
-          /*this.setData({
-            checkedAll: false
-          })*/
         }
       }
-
-    } {
+    }else {
       checkedAll = false
       preCheckedAll = false
     }
@@ -241,7 +253,8 @@ Page({
       }
       this.setData({
         items: items,
-        checkedAll: this.data.preCheckedAll
+        checkedAll: this.data.preCheckedAll,
+        preCheckedVals: preCheckedVals
       })
     }
 

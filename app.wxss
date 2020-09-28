@@ -1,7 +1,34 @@
 /**app.wxss**/
 
 @import "/font-awesome/font-awesome.wxss";
-@import "/modal/modal.wxss";
+
+.clearboth{
+  clear: both
+}
+
+/** 徽章 **/
+.badge{
+  min-width: .7rem;
+  height: .7rem;
+  display: inline-block;
+  border: 1px solid red;
+  border-radius: 50%;
+  font-size:.6rem;
+  line-height: .7rem;
+  color: red;
+  text-align: center;
+  vertical-align: middle;
+  margin-left: -10%;
+  margin-top: -40%;
+  font-weight: 600;
+  background-color: white;
+}
+
+
+infoModalComponent .cell{
+  display: inline-block;
+  padding: 1vw 2vw;
+}
 
 .container {
   height: 100%;
@@ -55,6 +82,9 @@
     border-bottom: 40px solid transparent;
 }
 
+.big-button{
+  width: 90% !important
+}
 
 .inline-block{
   display: inline-block
@@ -65,20 +95,36 @@
 .pr10{
   padding-right: 10px;
 }
+.ptb10{
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
 .mr10{
   margin-right: 10px;
 }
+.mt10{
+  margin-top: 10px;
+}
+.mt3{
+  margin-top: 3px;
+}
+.ml3{
+  margin-left: 3px;
+}
+.mt5{
+  margin-top: 5px;
+}
 .col80{
-  width:80vw;
+  width:79vw;
 }
 .col50{
-  width:50vw;
+  width:49vw;
 }
 .col55{
   width:55vw;
 }
 .col60{
-  width:60vw;
+  width:59vw;
 }
 .col10{
   width:10vw;
@@ -87,13 +133,13 @@
   width:15vw;
 }
 .col20{
-  width:20vw;
+  width:19vw;
 }
 .col25{
   width:25vw;
 }
 .col30{
-  width:30vw;
+  width:29vw;
 }
 .col40{
   width:40vw;
@@ -102,7 +148,7 @@
   width:45vw;
 }
 .col70{
-  width:70vw;
+  width:69vw;
 }
 .ta-l{
   text-align: left
@@ -136,6 +182,9 @@
 .fs8{
   font-size: .8rem;
 }
+.fs9{
+  font-size: .9rem;
+}
 .fs10{
   font-size: 1.2rem !important;
 }
@@ -148,6 +197,9 @@
 }
 .cwhite{
   color: white;
+}
+.cblue{
+  color: #0099CC
 }
 
 .borderradius0{
@@ -190,6 +242,7 @@ checkbox .wx-checkbox-input {
   text-align: left;
   padding: 5px 10px;
   font-weight: 600;
+  width: 100%;
 }
 
 .search{

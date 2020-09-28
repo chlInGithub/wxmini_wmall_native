@@ -1,10 +1,14 @@
 //app.js
 App({
   onLaunch: function () {
-    // 展示本地存储能力
-    var logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
+    this.globalData.shopId = wx.getExtConfigSync().shopId,
+    this.globalData.tId = wx.getExtConfigSync().tId,
+    this.globalData.appId = wx.getExtConfigSync().appId
+    this.globalData.shopName = wx.getExtConfigSync().shopName
+    this.globalData.domain = wx.getExtConfigSync().domain
+    this.globalData.requestDomain = wx.getExtConfigSync().requestDomain
+    this.globalData.shopImg = "https://" + this.globalData.requestDomain + "/img/" + wx.getExtConfigSync().shopImg
+
 
     // 登录
     wx.login({
@@ -32,6 +36,9 @@ App({
         }
       }
     })
+
+    var simple = this.common.getData.getShopSimpleInfo()
+    this.globalData.simple = simple
   },
   globalData: {
     userInfo: null,
@@ -48,6 +55,18 @@ App({
       }
     },
     getData: {
+      getShopSimpleInfo: function(){
+        var result = { "d": { "shop": { "id": "1", "img": "39059c4feb06ee3ed00b1e859f4c3264", "name": "\u5E97\u94FA\u540D\u79F02" }, "user": { "hasPhone": true, "id": "4520070814340810001", "img": "https:\/\/wx.qlogo.cn\/mmopen\/vi_32\/DYAIOgq83eoHhjCfjpicq5Aynkhqcsr84GVtMSxB5AePA5JBnWqSyRUzZ6T5BMEVxJx68WqAtfN1HHFbKnibLD0A\/132", "name": "Henry" } }, "s": true }
+        return result.d
+      },
+      getDelivers: function(){
+        var result = { "d": [{ "address": "\u5065\u5065\u5EB7\u5EB7\u5FEB\u5FEB\u4E50\u4E50", "city": "\u5929\u6D25\u5E02 \u5E02\u8F96\u533A \u6CB3\u4E1C\u533A", "code": "120000 120100 120102", "defaultSelected": true, "id": "4620071015041510001", "mobile": "18500425785", "name": "\u6D4B\u8BD5" }], "s": true }
+        return result.d
+      },
+      getPayTypes: function(){
+        var result = { "d": [{ "code": 2, "desc": "\u7EBF\u4E0B\u652F\u4ED8" }, { "code": 0, "desc": "\u5FAE\u4FE1\u652F\u4ED8" }], "s": true }
+        return result.d
+      },
       getAllCates: function(){
         var cates = [
           {
@@ -133,7 +152,7 @@ App({
         return activies
       },
       /**
-       * param : {}
+       * param : {type:热卖 1、推荐 2,title:xxx,couponId:xx,activityId:xx,cateId:xx}
        */
       getItems: function(param){
         var items = [
@@ -201,6 +220,27 @@ App({
       }
     },
     goPage: {
+      /**
+       * param ( ?key=xx&key=xx...)
+       */
+      goSettle: function (param) {
+        if (undefined == param) {
+          param = ""
+        }
+        wx.navigateTo({
+          url: '../settle/settle' + param
+        })
+      },
+      goWXLogin: function(){
+        wx.navigateTo({
+          url: '../wxLogin/wxLogin'
+        })
+      },
+      goCouponsList: function() {
+        wx.navigateTo({
+          url: '../couponsList/couponsList'
+        })
+      },
       goShop: function () {
         wx.switchTab({
           url: '../shop/shop'
@@ -217,9 +257,23 @@ App({
         })
       },
       /**
+       * param: '?code=val&key=val&...'
+       */
+      goOrderList: function (param) {
+        if(undefined == param){
+          param = ""
+        }
+        wx.navigateTo({
+          url: '../orderList/orderList' + param
+        })
+      },
+      /**
        * param: '?key=val&key=val&...'
        */
       goItemList: function (param) {
+        if (undefined == param) {
+          param = ""
+        }
         wx.navigateTo({
           url: '../itemList/itemList' + param
         })
@@ -228,6 +282,18 @@ App({
         wx.navigateTo({
           url: '../itemDetail/itemDetail?id=' + id
         })
+      }
+    },
+    getParaFromEvent: function (event, name, must) {
+      var id = event.currentTarget.dataset[name]
+      if (getApp().common.StringUtil.isNotEmpty(id)) {
+        return id
+      }
+      if(must){
+        wx.showToast({
+          title: '缺少'+name,
+        })
+        throw new Error()
       }
     },
     getShortStr: function(v, l){

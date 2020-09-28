@@ -1,6 +1,14 @@
-// pages/me/me.js
+// pages/couponsList/couponsList.js
 const app = getApp()
 Page({
+
+  getCanUsedCoupons: function(){
+    // TODO 
+    var coupons = app.common.getData.getAllCoupons()
+    this.setData({
+      coupons: coupons
+    })
+  },
 
   /**
    * 页面的初始数据
@@ -9,33 +17,14 @@ Page({
 
   },
 
-  goWXLogin: function(){
-    app.common.goPage.goWXLogin()
-  },
-  goCouponsList: function(){
-    app.common.goPage.goCouponsList()
-  },
-  goOrderList: function(event){
-    var code = app.common.getParaFromEvent(event, "code", false)
-    console.log(code)
-    app.common.goPage.goOrderList("?code=" + code)
-  },
-  getOrderStatusCount: function(){
-    var result = { "d": "[{\"code\":10,\"count\":10},{\"code\":20,\"count\":10},{\"code\":30,\"count\":5},{\"code\":60,\"count\":1}]", "s": true }
-    var val = JSON.parse(result.d)
-    this.setData({
-      orderStatusCount: val
-    })
-  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.setData(app.globalData)
-    this.getOrderStatusCount()
     this.setData({
       items: app.common.getData.getItems({type:2})
     })
+    this.getCanUsedCoupons()
   },
 
   /**
@@ -70,7 +59,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    this.getOrderStatusCount()
+    this.getCanUsedCoupons()
   },
 
   /**

@@ -70,7 +70,7 @@
         </block>
       </view>
     </view>
-    <view class="hasGotAll" wx:if="hasGotAll">
+    <view class="hasGotAll" wx:if="{{hasGotAll}}">
       已经触及我的底线啦
     </view>
   </view>
