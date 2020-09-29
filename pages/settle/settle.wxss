@@ -1,1 +1,28 @@
 /* pages/settle/settle.wxss */
+.cart-item-img {
+  width: 23vw;
+  height: 23vw;
+  display: inline-block;
+}
+
+.receive-view {
+  min-height: 6vh;
+}
+.receive-view .icon{
+  line-height: 6vh;
+}
+.receive-view .content{
+  line-height: 3vh;
+}
+.receive-view .goedit{
+  line-height: 6vh;
+}
+.modal-top{
+  top:0 !important;
+  height: 100vh !important;
+}
+
+.deliverEditModal .input-view{
+  border-bottom: .3px solid #cccccc;
+  padding-bottom: 3px;
+}

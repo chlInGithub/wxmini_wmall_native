@@ -5,6 +5,9 @@
 .clearboth{
   clear: both
 }
+.block{
+  display: block !important;
+}
 
 /** 徽章 **/
 .badge{
@@ -56,6 +59,7 @@ infoModalComponent .cell{
   /**height: 100vh;**/
   text-align: center;
   top: -50px;
+  height: 50px;
 }
 .footer .img{
   display: inline-block;
@@ -162,6 +166,9 @@ infoModalComponent .cell{
 
 .h100{
   height: 100%;
+}
+.w100{
+  width: 100%;
 }
 .fl{
   float: left;

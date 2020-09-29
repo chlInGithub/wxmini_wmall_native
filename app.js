@@ -60,8 +60,21 @@ App({
         return result.d
       },
       getDelivers: function(){
-        var result = { "d": [{ "address": "\u5065\u5065\u5EB7\u5EB7\u5FEB\u5FEB\u4E50\u4E50", "city": "\u5929\u6D25\u5E02 \u5E02\u8F96\u533A \u6CB3\u4E1C\u533A", "code": "120000 120100 120102", "defaultSelected": true, "id": "4620071015041510001", "mobile": "18500425785", "name": "\u6D4B\u8BD5" }], "s": true }
+        var result = { "d": [{ "address": "\u5065\u5065\u5EB7\u5EB7\u5FEB\u5FEB\u4E50\u4E50", "city": "\u5929\u6D25\u5E02 \u5E02\u8F96\u533A \u6CB3\u4E1C\u533A", "code": "120000 120100 120102", "defaultSelected": true, "id": "4620071015041510001", "mobile": "18500425781", "name": "\u6D4B\u8BD5" }, { "address": "\u5065\u5065\u5EB7\u5EB7\u5FEB\u5FEB\u4E50\u4E50", "city": "\u5929\u6D25\u5E02 \u5E02\u8F96\u533A \u6CB3\u4E1C\u533A", "code": "120000 120100 120102", "defaultSelected": false, "id": "4620071015041510002", "mobile": "18500425782", "name": "\u6D4B\u8BD5" }, { "address": "\u5065\u5065\u5EB7\u5EB7\u5FEB\u5FEB\u4E50\u4E50", "city": "\u5929\u6D25\u5E02 \u5E02\u8F96\u533A \u6CB3\u4E1C\u533A", "code": "120000 120100 120102", "defaultSelected": false, "id": "4620071015041510003", "mobile": "18500425783", "name": "\u6D4B\u8BD5" }, { "address": "\u5065\u5065\u5EB7\u5EB7\u5FEB\u5FEB\u4E50\u4E50", "city": "\u5929\u6D25\u5E02 \u5E02\u8F96\u533A \u6CB3\u4E1C\u533A", "code": "120000 120100 120102", "defaultSelected": false, "id": "4620071015041510004", "mobile": "18500425784", "name": "\u6D4B\u8BD5" }, { "address": "\u5065\u5065\u5EB7\u5EB7\u5FEB\u5FEB\u4E50\u4E50", "city": "\u5929\u6D25\u5E02 \u5E02\u8F96\u533A \u6CB3\u4E1C\u533A", "code": "120000 120100 120102", "defaultSelected": false, "id": "4620071015041510005", "mobile": "18500425785", "name": "\u6D4B\u8BD5" }, { "address": "\u5065\u5065\u5EB7\u5EB7\u5FEB\u5FEB\u4E50\u4E50", "city": "\u5929\u6D25\u5E02 \u5E02\u8F96\u533A \u6CB3\u4E1C\u533A", "code": "120000 120100 120102", "defaultSelected": false, "id": "4620071015041510006", "mobile": "18500425786", "name": "\u6D4B\u8BD5" }], "s": true }
         return result.d
+      },
+      getDeliverTypes: function () {
+        var result = [
+          {
+            desc: '自提',
+            code: 0
+          },
+          {
+            desc: '快递/配送',
+            code: 2
+          }
+        ]
+        return result
       },
       getPayTypes: function(){
         var result = { "d": [{ "code": 2, "desc": "\u7EBF\u4E0B\u652F\u4ED8" }, { "code": 0, "desc": "\u5FAE\u4FE1\u652F\u4ED8" }], "s": true }
@@ -330,6 +343,9 @@ App({
     getEleById: function (arrays, id) {
       var ele = arrays.find((ele, index, arrays) => ele.id == id)
       return ele
+    },
+    addEle: function (arrays, ele) {
+      arrays.push(ele)
     },
     delEleById: function (arrays, id) {
       var eleIndex = -1

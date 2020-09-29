@@ -1,3 +1,5 @@
+@import "/font-awesome/font-awesome.wxss";
+
 .modal-cover-top{
   position: absolute;
   top: 0;
@@ -8,7 +10,7 @@
 }
 .modal-cover-bottom{
   position: absolute;
-  top: 100vh;
+  top: 70vh;
   background-color: #EEEEEE;
   opacity: .9;
   height: 50vh;
@@ -22,6 +24,7 @@
   height: 70vh;
   border-radius: 5px 5px 0 0;
   overflow: scroll;
+  z-index: 100;
 }
 .modal .header{
   text-align: center;

@@ -1,2 +1,177 @@
-<!--pages/settle/settle.wxml-->
-<text>pages/settle/settle.wxml</text>
+<page-meta page-style="background-color:#EEEEEE;min-height: 100%;display: flex;flex-direction: column;">
+</page-meta>
+
+<view class="container flex-container" style="display:block !important;">
+  <view class="outter-view">
+    <view class="ptb10 receive-view" bindtap="showChooseReceiveModal">
+      <view class="col10 fl ta-c icon">
+        <view class="fa fa-map-marker fa-lg cred"></view>
+      </view>
+      <view class="col80 fl ta-l">
+        <view wx:if="{{choosedDeliver}}" class="content">
+          <view class="fs8 col30 ta-l fl">{{choosedDeliver.name}}</view>
+          <view class="fs8 col60 ta-l">{{choosedDeliver.mobile}}</view>
+          <view class="fs8 ta-l mt5">{{choosedDeliver.city}} {{choosedDeliver.address}}</view>
+          <view class="clearboth"></view>
+        </view>
+        <view wx:else class="cred ta-c" style="line-height:6vh">请选择收货地址</view>
+      </view>
+      <text class="fr pr10 cgray goedit">></text>
+      <view class="clearboth"></view>
+    </view>
+
+  </view>
+
+  <view wx:if="{{items}}" class="outter-view not-first-outter ptb10">
+    <view wx:for="{{items}}" wx:key="*this" class="mt10">
+      <view class="inline-block">
+        <view class="col30 fl img-view">
+          <image class="cart-item-img" src="{{imgPrefix + item.img}}"></image>
+        </view>
+        <view class="fr col60 content ta-l">
+          <view class="fs7 mt3">{{item.title}}</view>
+          <view class="cgray fs6 mt3" wx:if="{{item.skuTitle}}">{{item.skuTitle}}</view>
+          <view class="fs6 mt3" wx:if="{{item.tags}}">
+            <block wx:for="{{item.tags}}" wx:key="*this">
+              <view class="itemDetailTag">
+                {{item}}
+              </view>
+            </block>
+          </view>
+          <view class="pr10 price-view mt3">
+            <view class="fs8 inline-block fl">￥{{item.price}}</view>
+            <view class="fs6 inline-block fl mt3 ml3"> x {{item.count}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="outter-view not-first-outter">
+    <view class="fs8 ptb10">
+      <view class="col30 fl ta-l pl10">
+        配送方式
+      </view>
+      <view class="col60 ta-r fl pr10">
+        <picker mode="selector" range="{{deliverDescs}}" value="0" bindchange="chooseDeliverType">
+          <view wx:if="{{choosedDeliverType}}" class="picker inline-block ta-c">
+            {{choosedDeliverType.desc}}
+            <text class="pl10 pr10 cgray">></text>
+          </view>
+          <view wx:else class="cred">选择配送方式
+            <text class="pl10 pr10 cgray">></text>
+          </view>
+        </picker>
+      </view>
+      <view class="clearboth"></view>
+    </view>
+  </view>
+
+  <view class="outter-view not-first-outter">
+    <view class="fs8 ptb10">
+      <view class="col30 fl ta-l pl10">
+        支付方式
+      </view>
+      <view class="col60 ta-r fl pr10">
+        <picker mode="selector" range="{{payDescs}}" value="0" bindchange="choosePayType">
+          <view wx:if="{{choosedPayType}}" class="picker inline-block ta-c">
+            {{choosedPayType.desc}}
+            <text class="pl10 pr10 cgray">></text>
+          </view>
+          <view wx:else class="cred">选择支付方式
+            <text class="pl10 pr10 cgray">></text>
+          </view>
+        </picker>
+      </view>
+      <view class="clearboth"></view>
+    </view>
+  </view>
+
+  <view class="outter-view not-first-outter ptb10">
+    <view class="mt5">
+      <view class=" col50 ta-l pl10 fs8 fl">运费(快递)</view>
+      <view class="col40 ta-r fs7 fr pr10">{{computeResult.deliverDesc}}</view>
+      <view class="clearboth"></view>
+    </view>
+    <view class="mt5" wx:for="{{computeResult.couponDetailList}}" wx:key="*this">
+      <view class="col50 ta-l pl10 fs8 fl">{{item.name}}</view>
+      <view class="col40 ta-r fs7 fr pr10 cred">-￥{{item.coupon}}</view>
+      <view class="clearboth"></view>
+    </view>
+    <view class="mt5">
+      <view class="col40 ta-r fs8 w100">
+        <text class="fs6 mr10">共{{computeResult.itemCount}}件</text>
+        <text class="mr10">小计:</text>
+        <text class="cred pr10 ">￥{{computeResult.total}}</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="footer">
+  <view class="col60 fl fs8 ta-r" style="line-height:50px;">
+    <text class="fs6 mr10">共{{computeResult.itemCount}}件</text>
+    <text class="mr10">合计:</text>
+    <text class="cred">￥</text>
+    <text class="cred">{{computeResult.total}}</text>
+  </view>
+  <view bindtap="createOrder" class="col30 fr mr10" style="border-radius: 1.5rem;color: white;background-color: red;line-height: 40px;text-align: center;margin-top:4px;">
+    <view>提交订单</view>
+  </view>
+</view>
+
+<!-- 必须设置class，以便 this.selectComponent(".className") -->
+<infoModalComponent title="我的收货地址" class="deliverListModal" modal-top="modal-top">
+  <view slot="slot-body">
+    <view wx:for="{{delivers}}" wx:key="*this" class="cell receive-view mt10">
+      <view class="col80 fl ta-l content" data-index="{{index}}" bindtap="chooseReceiver">
+        <view>
+          <view class="fs8 col30 ta-l fl">{{item.name}}</view>
+          <view class="fs6 col60 ta-l">{{item.mobile}}</view>
+          <view class="fs7 ta-l mt5"><text wx:if="{{item.defaultSelected}}" class="pr10 cred">默认</text>{{item.city}} {{item.address}}</view>
+          <view class="clearboth"></view>
+        </view>
+      </view>
+      <view class="col15 goedit cgray fs7 fr ta-c" style="border-left: .5px solid #cccccc" data-index="{{index}}" bindtap="editReceiver">编辑</view>
+      <view class="clearboth"></view>
+    </view>
+    
+    <view class="fs8 ta-c ptb10" bindtap="addReceiver">
+      添加新地址
+    </view>
+  </view>
+</infoModalComponent>
+
+<!-- 必须设置class，以便 this.selectComponent(".className") -->
+<infoModalComponent title="编辑收货地址" class="deliverEditModal" modal-top="modal-top">
+  <view slot="slot-body">
+    <view class="cell mt10 fs8 pl10 pr10">
+        <view class="col20 fl">收货人</view>
+        <view class="col70 fl input-view"><input type="text" model:value="{{currentEditDeliverName}}" placeholder="收货人姓名"></input></view>
+    </view>
+    <view class="cell mt10 fs8 pl10 pr10">
+        <view class="col20 fl">手机号码</view>
+        <view class="col70 fl input-view"><input type="number" maxlength="11" minlength="11" model:value="{{currentEditDeliverMobile}}" placeholder="收货人手机号"></input></view>
+    </view>
+    <view class="cell mt10 fs8 pl10 pr10">
+        <view class="col20 fl">所在地区</view>
+        <view class="col70 fl input-view">
+          <picker mode="region" bindchange="regionChange"><view wx:if="{{currentEditDeliverCity}}">{{currentEditDeliverCity}}</view><view wx:else>请选择</view></picker>
+        </view>
+    </view>
+    <view class="cell mt10 fs8 pl10 pr10">
+        <view class="col20 fl">详细地址</view>
+        <view class="col70 fl input-view"><input type="text" model:value="{{currentEditDeliverAddress}}" placeholder="收货人地址，如xx街道xx小区xx号"></input></view>
+    </view>
+    <view class="cell mt10 fs8 pl10 pr10">
+        <view class="col20 fl">设为默认地址</view>
+        <view class="col70 fl input-view ta-r"><switch type="switch" model:checked="{{currentEditDeliverDefaultSelected}}"></switch></view>
+    </view>
+    <view class="cell mt10 fs8 pl10 pr10 block" wx:if="{{currentEditDeliver.id}}">
+        <view class="cred" bindtap="deleteDeliver" data-id="{{currentEditDeliver.id}}">删除收货地址</view>
+    </view>
+    <view class="cell mt10 fs8 pl10 pr10 block">
+        <button class="big-button" type="primary" bindtap="saveDeliver">保存</button>
+    </view>
+  </view>
+</infoModalComponent>

@@ -1,7 +1,7 @@
   <view wx:if="{{showModal}}" class="modal-cover-top">
   </view>
-  <view wx:if="{{showModal}}" class="modal">
-    <view class="close"><image src="/img/close.png"  mode="aspectFit" style="width:16px;height:16px;margin-right: 2vw;" bindtap="triggleModal"></image></view>
+  <view wx:if="{{showModal}}" class="modal modal-top">
+    <view class="close"><view class=" fa fa-times fa-lg ta-r" style="margin-right: 8vw;margin-top: 5vw;color: #cccccc;" bindtap="triggleModal"></view></view>
     <view class="header">
       {{title}}
     </view>

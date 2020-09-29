@@ -63,11 +63,11 @@
 
 
   <view class="footer">
-    <view bindtap="goShop" class="col30 fl" style="line-height:50px;">
+    <view class="col30 fl" style="line-height:50px;">
       <checkbox class="fs8" value="{{checkAllVal}}" model:checked="{{checkedAll}}" model:disabled="{{disabledAllCheckBox}}"></checkbox>
       <view class="fs8 inline-block">全选</view>
     </view>
-    <view wx:if="{{computeResult.couponDetail}}" bindtap="goCart" class="col40 fl fs6" style="margin-top:.5rem;">
+    <view wx:if="{{computeResult.couponDetail}}" class="col40 fl fs6" style="margin-top:.5rem;">
       <view>
         <text>合计:</text>
         <text class="cred">￥</text>
@@ -78,7 +78,7 @@
         <text class="cred pl10" bindtap="triggleModal">优惠明细<text class="fa fa-angle-up" style="font-size:1rem;"></text></text>
       </view>
     </view>
-    <view wx:else bindtap="goCart" class="col40 fl fs6" style="line-height:50px;">
+    <view wx:else class="col40 fl fs6" style="line-height:50px;">
       <view>
         <text>合计:</text>
         <text class="cred">￥</text>

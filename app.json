@@ -15,7 +15,7 @@
     "pages/userInfo/userInfo",
     "pages/orderDetail/orderDetail"
   ],
-  "entryPagePath": "pages/orderDetail/orderDetail",
+  "entryPagePath": "pages/shop/shop",
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
