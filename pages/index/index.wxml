@@ -1,13 +1,16 @@
-<!--index.wxml-->
 <view class="container">
-  <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-    </block>
-  </view>
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
+  <view class="page-body">
+  <view>
+      <cover-image src="{{shopImg}}" class="shopImg"></cover-image>
+      <view style="text-align:center;margin-top:5px;">
+        <text>{{shopName}}</text>
+      </view>
+      <view style="margin-top:20px">{{progressText}}</view>
+      <view class="progress-box">
+        <progress percent="95" active stroke-width="3" />
+      </view>
+    </view>
+    <web-view src="{{src}}" bindload="bindload" binderror="binderror">
+    </web-view>
   </view>
 </view>

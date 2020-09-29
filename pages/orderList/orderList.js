@@ -10,9 +10,7 @@ Page({
   },
   goOrderDetail:function(event){
     var id = app.common.getId(event)
-    wx.navigateTo({
-      url: '../orderDetail/orderDetail?id='+id,
-    })
+    app.common.goPage.goOrderDetail(id)
   },
   goShop: function(){
     app.common.goPage.goShop()

@@ -1,0 +1,43 @@
+
+<view class="container">
+  <view class="page-body" style="width:90%">
+    <view class="page-section">
+      <view class="page-section-title" style="margin: 1rem 0 0 0;text-align:center;padding: .5rem 0;background-color: #FF0000;color: white;">
+        支付详情
+      </view>
+      <view class="flex-wrp" style="flex-direction:column;border: 1px solid #ddd;border-top: none;padding: .5rem;">
+        <view class="ta-c mt10" style="font-size:2rem;">
+          <text>￥{{total}} 元</text>
+        </view>
+        <view class="pr10 pl10 fs8 mt10">
+          <view class="fl cgray">
+            <text>收款店铺</text> 
+          </view>
+          <view class="ta-r fr">
+            <text>{{shopName}}</text>
+          </view>
+          <view class="clearboth"></view>
+        </view>
+        <view class="pr10 pl10 fs8 mt5">
+          <view class="fl cgray">
+            <text>订单编号</text> 
+          </view>
+          <view class="ta-r fr">
+            <text>{{orderId}}</text>
+          </view>
+          <view class="clearboth"></view>
+        </view>
+        <view class="mt10">
+          <view>
+            <button type="primary" bindtap="goOrderDetail" class="big-button fs8">
+            已完成支付
+            </button>
+            <button bindtap="goOrderDetail" class="big-button mt10 fs8 cgray">
+            暂不支付
+            </button>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

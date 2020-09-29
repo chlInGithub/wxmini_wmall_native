@@ -1,21 +1,19 @@
 //app.js
 App({
-  onLaunch: function () {
+  onLaunch: function() {
     this.globalData.shopId = wx.getExtConfigSync().shopId,
     this.globalData.tId = wx.getExtConfigSync().tId,
     this.globalData.appId = wx.getExtConfigSync().appId
     this.globalData.shopName = wx.getExtConfigSync().shopName
     this.globalData.domain = wx.getExtConfigSync().domain
     this.globalData.requestDomain = wx.getExtConfigSync().requestDomain
-    this.globalData.shopImg = "https://" + this.globalData.requestDomain + "/img/" + wx.getExtConfigSync().shopImg
+    this.globalData.requestUrlPrefix = "https://" + this.globalData.requestDomain + "/"
+    this.globalData.shopImg = this.globalData.requestUrlPrefix + "/img/" + wx.getExtConfigSync().shopImg
+    this.globalData.imgPrefix = this.globalData.requestUrlPrefix + "/img/"
 
 
     // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-      }
-    })
+    this.refreshLoginCode()
     // 获取用户信息
     wx.getSetting({
       success: res => {
@@ -42,30 +40,211 @@ App({
   },
   globalData: {
     userInfo: null,
-    imgPrefix: "https://wx66e252cb46abe8e4.5jym.com/img/"
+    progressText: "正在努力打开页面……"
   },
+  refreshLoginCode: function () {
+    wx.login({
+      success: res => {
+        console.log(res)
+        var code = res.code
+        getApp().globalData.loginCode = loginCode
+        console.log("globalData : " + this.globalData)
+      }
+    })
+  },
+  setOpenId: function (openId) {
+    this.globalData.openId = openId
+    console.log("globalData : " + this.globalData)
+  },
+  setScene: function (scene) {
+    this.globalData.scene = scene
+  },
+  getAndClearScene: function () {
+    var scene = this.globalData.scene
+    this.globalData.scene = null
+    return scene
+  },
+
   common: {
-    postData:{
+    request: function(context) {
+      var url = context.url
+      if(common.ObjectCommonUtil.isEmpty(url)){
+        common.showMsg("缺少URL")
+        return
+      }
+      var data = context.data
+      var method = context.method
+      if (common.ObjectCommonUtil.isEmpty(method)){
+        method = "GET"
+      }
+      var successCallBack = context.successCallBack
+      if(typeof successCallBack !== 'function'){
+        successCallBack= function(){}
+      }
+      var failCallBack = context.failCallBack
+      if (typeof failCallBack !== 'function') {
+        failCallBack = function () { }
+      }
+
+      wx.showLoading({
+        title: '努力处理中',
+      })
+
+      wx.request({
+        url: url,
+        data: data,
+        header: {
+          'content-type': 'application/json' // 默认值
+        },
+        method: method,
+        complete(res) {
+          wx.hideLoading()
+        },
+        fail(res) {
+          var resultStr = JSON.stringify(res)
+          if (resultStr.indexOf("登录") || resultStr.indexOf("no Login")) {
+            wx.showToast({
+              title: '登录失效',
+            })
+            app.goPage.goShop()
+            return
+          }
+
+          wx.showModal({
+            title: '错误提示',
+            content: resultStr,
+            showCancel: false,
+            success(res) {
+              if (res.confirm) {
+                console.log('用户点击确定')
+              } else if (res.cancel) {
+                console.log('用户点击取消')
+              }
+
+
+              failCallBack(res)
+            }
+          })
+        },
+        success(res) {
+          var resultStr = JSON.stringify(res)
+
+          console.log(res.data)
+          if (res.data.s) {
+            successCallBack(res)
+          } else {
+            if (resultStr.indexOf("登录") || resultStr.indexOf("no Login")) {
+              wx.showToast({
+                title: '登录失效',
+              })
+              app.goPage.goShop()
+              return
+            }
+
+            wx.showModal({
+              title: '提示',
+              content: JSON.stringify(res),
+              showCancel: false,
+              success(res) {
+                if (res.confirm) {
+                  console.log('用户点击确定')
+                } else if (res.cancel) {
+                  console.log('用户点击取消')
+                }
+
+                failCallBack(res)
+              }
+            })
+          }
+        }
+      })
+    },
+    postData: {
       /**
        * param : {itemId: xx, skuId: xx, count: xx}
        */
-      addCart: function(param){
+      addCart: function(param) {
         console.log("addCart")
         console.log(param)
       }
     },
     getData: {
-      getShopSimpleInfo: function(){
-        var result = { "d": { "shop": { "id": "1", "img": "39059c4feb06ee3ed00b1e859f4c3264", "name": "\u5E97\u94FA\u540D\u79F02" }, "user": { "hasPhone": true, "id": "4520070814340810001", "img": "https:\/\/wx.qlogo.cn\/mmopen\/vi_32\/DYAIOgq83eoHhjCfjpicq5Aynkhqcsr84GVtMSxB5AePA5JBnWqSyRUzZ6T5BMEVxJx68WqAtfN1HHFbKnibLD0A\/132", "name": "Henry" } }, "s": true }
+      getShopSimpleInfo: function() {
+        var result = {
+          "d": {
+            "shop": {
+              "id": "1",
+              "img": "39059c4feb06ee3ed00b1e859f4c3264",
+              "name": "\u5E97\u94FA\u540D\u79F02"
+            },
+            "user": {
+              "hasPhone": true,
+              "id": "4520070814340810001",
+              "img": "https:\/\/wx.qlogo.cn\/mmopen\/vi_32\/DYAIOgq83eoHhjCfjpicq5Aynkhqcsr84GVtMSxB5AePA5JBnWqSyRUzZ6T5BMEVxJx68WqAtfN1HHFbKnibLD0A\/132",
+              "name": "Henry"
+            }
+          },
+          "s": true
+        }
         return result.d
       },
-      getDelivers: function(){
-        var result = { "d": [{ "address": "\u5065\u5065\u5EB7\u5EB7\u5FEB\u5FEB\u4E50\u4E50", "city": "\u5929\u6D25\u5E02 \u5E02\u8F96\u533A \u6CB3\u4E1C\u533A", "code": "120000 120100 120102", "defaultSelected": true, "id": "4620071015041510001", "mobile": "18500425781", "name": "\u6D4B\u8BD5" }, { "address": "\u5065\u5065\u5EB7\u5EB7\u5FEB\u5FEB\u4E50\u4E50", "city": "\u5929\u6D25\u5E02 \u5E02\u8F96\u533A \u6CB3\u4E1C\u533A", "code": "120000 120100 120102", "defaultSelected": false, "id": "4620071015041510002", "mobile": "18500425782", "name": "\u6D4B\u8BD5" }, { "address": "\u5065\u5065\u5EB7\u5EB7\u5FEB\u5FEB\u4E50\u4E50", "city": "\u5929\u6D25\u5E02 \u5E02\u8F96\u533A \u6CB3\u4E1C\u533A", "code": "120000 120100 120102", "defaultSelected": false, "id": "4620071015041510003", "mobile": "18500425783", "name": "\u6D4B\u8BD5" }, { "address": "\u5065\u5065\u5EB7\u5EB7\u5FEB\u5FEB\u4E50\u4E50", "city": "\u5929\u6D25\u5E02 \u5E02\u8F96\u533A \u6CB3\u4E1C\u533A", "code": "120000 120100 120102", "defaultSelected": false, "id": "4620071015041510004", "mobile": "18500425784", "name": "\u6D4B\u8BD5" }, { "address": "\u5065\u5065\u5EB7\u5EB7\u5FEB\u5FEB\u4E50\u4E50", "city": "\u5929\u6D25\u5E02 \u5E02\u8F96\u533A \u6CB3\u4E1C\u533A", "code": "120000 120100 120102", "defaultSelected": false, "id": "4620071015041510005", "mobile": "18500425785", "name": "\u6D4B\u8BD5" }, { "address": "\u5065\u5065\u5EB7\u5EB7\u5FEB\u5FEB\u4E50\u4E50", "city": "\u5929\u6D25\u5E02 \u5E02\u8F96\u533A \u6CB3\u4E1C\u533A", "code": "120000 120100 120102", "defaultSelected": false, "id": "4620071015041510006", "mobile": "18500425786", "name": "\u6D4B\u8BD5" }], "s": true }
+      getDelivers: function() {
+        var result = {
+          "d": [{
+            "address": "\u5065\u5065\u5EB7\u5EB7\u5FEB\u5FEB\u4E50\u4E50",
+            "city": "\u5929\u6D25\u5E02 \u5E02\u8F96\u533A \u6CB3\u4E1C\u533A",
+            "code": "120000 120100 120102",
+            "defaultSelected": true,
+            "id": "4620071015041510001",
+            "mobile": "18500425781",
+            "name": "\u6D4B\u8BD5"
+          }, {
+            "address": "\u5065\u5065\u5EB7\u5EB7\u5FEB\u5FEB\u4E50\u4E50",
+            "city": "\u5929\u6D25\u5E02 \u5E02\u8F96\u533A \u6CB3\u4E1C\u533A",
+            "code": "120000 120100 120102",
+            "defaultSelected": false,
+            "id": "4620071015041510002",
+            "mobile": "18500425782",
+            "name": "\u6D4B\u8BD5"
+          }, {
+            "address": "\u5065\u5065\u5EB7\u5EB7\u5FEB\u5FEB\u4E50\u4E50",
+            "city": "\u5929\u6D25\u5E02 \u5E02\u8F96\u533A \u6CB3\u4E1C\u533A",
+            "code": "120000 120100 120102",
+            "defaultSelected": false,
+            "id": "4620071015041510003",
+            "mobile": "18500425783",
+            "name": "\u6D4B\u8BD5"
+          }, {
+            "address": "\u5065\u5065\u5EB7\u5EB7\u5FEB\u5FEB\u4E50\u4E50",
+            "city": "\u5929\u6D25\u5E02 \u5E02\u8F96\u533A \u6CB3\u4E1C\u533A",
+            "code": "120000 120100 120102",
+            "defaultSelected": false,
+            "id": "4620071015041510004",
+            "mobile": "18500425784",
+            "name": "\u6D4B\u8BD5"
+          }, {
+            "address": "\u5065\u5065\u5EB7\u5EB7\u5FEB\u5FEB\u4E50\u4E50",
+            "city": "\u5929\u6D25\u5E02 \u5E02\u8F96\u533A \u6CB3\u4E1C\u533A",
+            "code": "120000 120100 120102",
+            "defaultSelected": false,
+            "id": "4620071015041510005",
+            "mobile": "18500425785",
+            "name": "\u6D4B\u8BD5"
+          }, {
+            "address": "\u5065\u5065\u5EB7\u5EB7\u5FEB\u5FEB\u4E50\u4E50",
+            "city": "\u5929\u6D25\u5E02 \u5E02\u8F96\u533A \u6CB3\u4E1C\u533A",
+            "code": "120000 120100 120102",
+            "defaultSelected": false,
+            "id": "4620071015041510006",
+            "mobile": "18500425786",
+            "name": "\u6D4B\u8BD5"
+          }],
+          "s": true
+        }
         return result.d
       },
-      getDeliverTypes: function () {
-        var result = [
-          {
+      getDeliverTypes: function() {
+        var result = [{
             desc: '自提',
             code: 0
           },
@@ -76,13 +255,21 @@ App({
         ]
         return result
       },
-      getPayTypes: function(){
-        var result = { "d": [{ "code": 2, "desc": "\u7EBF\u4E0B\u652F\u4ED8" }, { "code": 0, "desc": "\u5FAE\u4FE1\u652F\u4ED8" }], "s": true }
+      getPayTypes: function() {
+        var result = {
+          "d": [{
+            "code": 2,
+            "desc": "\u7EBF\u4E0B\u652F\u4ED8"
+          }, {
+            "code": 0,
+            "desc": "\u5FAE\u4FE1\u652F\u4ED8"
+          }],
+          "s": true
+        }
         return result.d
       },
-      getAllCates: function(){
-        var cates = [
-          {
+      getAllCates: function() {
+        var cates = [{
             id: 1236,
             img: "f1dbe88e164b1f7e3cc9110dd503e311",
             name: "名称"
@@ -120,32 +307,28 @@ App({
         ]
         return cates
       },
-      getAllCoupons: function(){
-        var coupons = [
-          {
-            id: 11,
-            meet: 50,
-            discount: 5,
-            name: "某某优惠券1",
-            validTime: "2020-09-11 00:00:00",
-            invalidTime: "2020-10-11 00:00:00",
-            got: 1
-          }
-          , {
-            id: 21,
-            meet: 50,
-            discount: 10,
-            name: "某某优惠券2",
-            validTime: "2020-09-11 00:00:00",
-            invalidTime: "2020-10-11 00:00:00",
-            got: 1
-          }
-        ]
+      getAllCoupons: function() {
+        var coupons = [{
+          id: 11,
+          meet: 50,
+          discount: 5,
+          name: "某某优惠券1",
+          validTime: "2020-09-11 00:00:00",
+          invalidTime: "2020-10-11 00:00:00",
+          got: 1
+        }, {
+          id: 21,
+          meet: 50,
+          discount: 10,
+          name: "某某优惠券2",
+          validTime: "2020-09-11 00:00:00",
+          invalidTime: "2020-10-11 00:00:00",
+          got: 1
+        }]
         return coupons
       },
-      getAllActivities: function(){
-        var activies = [
-          {
+      getAllActivities: function() {
+        var activies = [{
             id: 111,
             name: "中秋活动",
             img: "4d90e412c5297ccdcaae2ac200614794",
@@ -167,62 +350,56 @@ App({
       /**
        * param : {type:热卖 1、推荐 2,title:xxx,couponId:xx,activityId:xx,cateId:xx}
        */
-      getItems: function(param){
-        var items = [
-          {
-            id: 1111,
-            title: "商品名称xxxxsxx",
-            tags: ['预售', '限购2件'],
-            labelPrice: 199,
-            price: 99,
-            sale: 10,
-            existSku: true,
-            inventory: 100,
-            img: "6233047154ce38f33a4a50987191250e"
-          }
-          , {
-            id: 1111,
-            title: "商品名称xxxxxxx",
-            price: 99,
-            tags: ['预售', '2件起售', '订单最低99元'],
-            sale: 100,
-            existSku: true,
-            inventory: 0,
-            img: "6233047154ce38f33a4a50987191250e"
-          }
-          , {
-            id: 1111,
-            title: "商品名称xxxdddddxxxx",
-            price: 99,
-            sale: 1000,
-            existSku: true,
-            inventory: 100,
-            img: "6233047154ce38f33a4a50987191250e"
-          }
-          , {
-            id: 1111,
-            title: "商品名称xxx333333333333xxxx",
-            price: 99,
-            sale: 1,
-            existSku: true,
-            inventory: 100,
-            img: "6233047154ce38f33a4a50987191250e"
-          }
-          , {
-            id: 1111,
-            title: "商品名称xxxd22222222xxxx",
-            price: 99,
-            sale: 100,
-            existSku: true,
-            inventory: 100,
-            img: "6233047154ce38f33a4a50987191250e"
-          }
-        ]
+      getItems: function(param) {
+        var items = [{
+          id: 1111,
+          title: "商品名称xxxxsxx",
+          tags: ['预售', '限购2件'],
+          labelPrice: 199,
+          price: 99,
+          sale: 10,
+          existSku: true,
+          inventory: 100,
+          img: "6233047154ce38f33a4a50987191250e"
+        }, {
+          id: 1111,
+          title: "商品名称xxxxxxx",
+          price: 99,
+          tags: ['预售', '2件起售', '订单最低99元'],
+          sale: 100,
+          existSku: true,
+          inventory: 0,
+          img: "6233047154ce38f33a4a50987191250e"
+        }, {
+          id: 1111,
+          title: "商品名称xxxdddddxxxx",
+          price: 99,
+          sale: 1000,
+          existSku: true,
+          inventory: 100,
+          img: "6233047154ce38f33a4a50987191250e"
+        }, {
+          id: 1111,
+          title: "商品名称xxx333333333333xxxx",
+          price: 99,
+          sale: 1,
+          existSku: true,
+          inventory: 100,
+          img: "6233047154ce38f33a4a50987191250e"
+        }, {
+          id: 1111,
+          title: "商品名称xxxd22222222xxxx",
+          price: 99,
+          sale: 100,
+          existSku: true,
+          inventory: 100,
+          img: "6233047154ce38f33a4a50987191250e"
+        }]
         return items
       }
     },
     parseDate: {
-      getItemTags: function(strategyArray){
+      getItemTags: function(strategyArray) {
         var tags = []
         // test
         tags.push("限购10件")
@@ -236,7 +413,7 @@ App({
       /**
        * param ( ?key=xx&key=xx...)
        */
-      goSettle: function (param) {
+      goSettle: function(param) {
         if (undefined == param) {
           param = ""
         }
@@ -244,7 +421,7 @@ App({
           url: '../settle/settle' + param
         })
       },
-      goWXLogin: function(){
+      goWXLogin: function() {
         wx.navigateTo({
           url: '../wxLogin/wxLogin'
         })
@@ -254,17 +431,17 @@ App({
           url: '../couponsList/couponsList'
         })
       },
-      goShop: function () {
+      goShop: function() {
         wx.switchTab({
           url: '../shop/shop'
         })
       },
-      goMe: function () {
+      goMe: function() {
         wx.switchTab({
           url: '../me/me'
         })
       },
-      goCart: function(){
+      goCart: function() {
         wx.switchTab({
           url: '../cart/cart'
         })
@@ -272,18 +449,23 @@ App({
       /**
        * param: '?code=val&key=val&...'
        */
-      goOrderList: function (param) {
-        if(undefined == param){
+      goOrderList: function(param) {
+        if (undefined == param) {
           param = ""
         }
         wx.navigateTo({
           url: '../orderList/orderList' + param
         })
       },
+      goOrderDetail: function(id) {
+        wx.navigateTo({
+          url: '../orderDetail/orderDetail?id=' + id,
+        })
+      },
       /**
        * param: '?key=val&key=val&...'
        */
-      goItemList: function (param) {
+      goItemList: function(param) {
         if (undefined == param) {
           param = ""
         }
@@ -291,41 +473,41 @@ App({
           url: '../itemList/itemList' + param
         })
       },
-      goItemDetail: function (id) {
+      goItemDetail: function(id) {
         wx.navigateTo({
           url: '../itemDetail/itemDetail?id=' + id
         })
       }
     },
-    getParaFromEvent: function (event, name, must) {
+    getParaFromEvent: function(event, name, must) {
       var id = event.currentTarget.dataset[name]
       if (getApp().common.StringUtil.isNotEmpty(id)) {
         return id
       }
-      if(must){
+      if (must) {
         wx.showToast({
-          title: '缺少'+name,
+          title: '缺少' + name,
         })
         throw new Error()
       }
     },
-    getShortStr: function(v, l){
-      if(v == undefined){
+    getShortStr: function(v, l) {
+      if (v == undefined) {
         return ""
       }
-      if(l == undefined){
+      if (l == undefined) {
         l = 8
       }
-      if(v.length > l){
+      if (v.length > l) {
         return v.substring(0, l)
       }
       return v
     },
-    getEleByIndex: function (arrays, index) {
+    getEleByIndex: function(arrays, index) {
       var ele = arrays[index]
       return ele
     },
-    getIndex: function (event) {
+    getIndex: function(event) {
       var id = event.currentTarget.dataset.index
       if (getApp().common.StringUtil.isNotEmpty(id)) {
         return id
@@ -335,38 +517,38 @@ App({
       })
       throw new Error()
     },
-    delEleByIndex: function (arrays, index) {
+    delEleByIndex: function(arrays, index) {
       var ele = arrays[index]
       arrays.splice(index, 1)
       return ele
     },
-    getEleById: function (arrays, id) {
+    getEleById: function(arrays, id) {
       var ele = arrays.find((ele, index, arrays) => ele.id == id)
       return ele
     },
-    addEle: function (arrays, ele) {
+    addEle: function(arrays, ele) {
       arrays.push(ele)
     },
-    delEleById: function (arrays, id) {
+    delEleById: function(arrays, id) {
       var eleIndex = -1
       var ele
-      for(var i=0; i<arrays.length; i++){
+      for (var i = 0; i < arrays.length; i++) {
         ele = arrays[i]
-        if(ele.id == id){
+        if (ele.id == id) {
           eleIndex = i
           break
         }
       }
-      
-      if(eleIndex != -1){
+
+      if (eleIndex != -1) {
         arrays.splice(eleIndex, 1)
       }
 
       return ele
     },
-    getId: function (event) {
+    getId: function(event) {
       var id = event.currentTarget.dataset.id
-      if(getApp().common.StringUtil.isNotEmpty(id)){
+      if (getApp().common.StringUtil.isNotEmpty(id)) {
         return id
       }
       wx.showToast({
@@ -374,27 +556,27 @@ App({
       })
       throw new Error()
     },
-    showMsg: function(msg){
+    showMsg: function(msg) {
       wx.showModal({
         title: '提示',
         content: msg,
       })
     },
-    StringUtil : {
-      isNotEmpty: function (str) {
+    StringUtil: {
+      isNotEmpty: function(str) {
         var r = undefined !== str && "" !== str
         return r
       },
-      abbreviatory: function (str, maxL) {
+      abbreviatory: function(str, maxL) {
         if (!ObjectCommonUtil.isEmpty(str) && str.length > (undefined == maxL ? 10 : maxL)) {
           return str.substring(0, 10) + '…'
         }
         return str
       },
-      moneyDesc: function (money) {
+      moneyDesc: function(money) {
         return "￥" + money + "元"
       },
-      simplePrint: function (str) {
+      simplePrint: function(str) {
         if (StringUtil.isNotEmpty(str)) {
           return str
         }
@@ -402,17 +584,20 @@ App({
       }
     },
     ObjectCommonUtil: {
-      isNotUndefined: function(v){
+      isNotUndefined: function(v) {
         return undefined != v
+      },
+      verifyValidObject: function (o) {
+        return o != null && o != undefined && o != "" && o != "null"
       }
     },
     JsonUtil: {
-      toJson: function(v){
+      toJson: function(v) {
         return JSON.parse(v)
       }
     },
     saleStrategyUtil: {
-      parseList: function (itemListJson) {
+      parseList: function(itemListJson) {
         for (var i = 0; i < itemListJson.length; i++) {
           itemListJson[i]["tags"] = getApp().common.saleStrategyUtil.getSaleStrategyTags(itemListJson[i])
         }
@@ -421,7 +606,7 @@ App({
        * 结果为 { presell : attrJson, minFee : attrJson, minCount : attrJson, maxCount : attrJson, ...}
        * @param strategyList
        */
-      parse: function (itemJson) {
+      parse: function(itemJson) {
         var ObjectCommonUtil = getApp().common.ObjectCommonUtil
         var JsonUtil = getApp().common.JsonUtil
         if (ObjectCommonUtil.isNotUndefined(itemJson.strategyJson)) {
@@ -453,7 +638,7 @@ App({
         itemJson["strategyJson"] = result
         console.log(itemJson)
       },
-      getSaleStrategyTags: function (itemJson) {
+      getSaleStrategyTags: function(itemJson) {
         var ObjectCommonUtil = getApp().common.ObjectCommonUtil
         var JsonUtil = getApp().common.JsonUtil
 

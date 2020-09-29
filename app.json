@@ -13,7 +13,8 @@
     "pages/couponsList/couponsList",
     "pages/wxLogin/wxLogin",
     "pages/userInfo/userInfo",
-    "pages/orderDetail/orderDetail"
+    "pages/orderDetail/orderDetail",
+    "pages/pay/pay"
   ],
   "entryPagePath": "pages/shop/shop",
   "window": {
