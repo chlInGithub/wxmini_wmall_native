@@ -1,4 +1,10 @@
 // pages/me/me.js
+const util = require('../../utils/util.js')
+const goPageUtil = require('../../utils/goPage.js')
+const requestUtil = require('../../utils/request.js')
+const requestDataUtil = require('../../utils/requestData.js')
+const tokenUtil = require('../../utils/token.js')
+const saleStrategyUtil = require('../../utils/saleStrategy.js')
 const app = getApp()
 Page({
 
@@ -10,21 +16,22 @@ Page({
   },
 
   goWXLogin: function(){
-    app.common.goPage.goWXLogin()
+    goPageUtil.goPage.goWXLogin()
   },
   goCouponsList: function(){
-    app.common.goPage.goCouponsList()
+    goPageUtil.goPage.goCouponsList()
   },
   goOrderList: function(event){
-    var code = app.common.getParaFromEvent(event, "code", false)
+    var code = util.eventUtil.getParaFromEvent(event, "code", false)
     console.log(code)
-    app.common.goPage.goOrderList("?code=" + code)
+    goPageUtil.goPage.goOrderList("?code=" + code)
   },
   getOrderStatusCount: function(){
-    var result = { "d": "[{\"code\":10,\"count\":10},{\"code\":20,\"count\":10},{\"code\":30,\"count\":5},{\"code\":60,\"count\":1}]", "s": true }
-    var val = JSON.parse(result.d)
-    this.setData({
-      orderStatusCount: val
+    var that = this
+    requestDataUtil.getData.getOrderStatusCount(function(data){
+      that.setData({
+        orderStatusCount: data
+      })
     })
   },
   /**
@@ -33,9 +40,14 @@ Page({
   onLoad: function (options) {
     this.setData(app.globalData)
     this.getOrderStatusCount()
-    this.setData({
-      items: app.common.getData.getItems({type:2})
+
+    var that = this
+    requestDataUtil.getData.getRecommendedItemList(function(data){
+      that.setData({
+        items: data
+      })
     })
+    
   },
 
   /**
@@ -49,7 +61,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.setData(app.globalData)
   },
 
   /**
@@ -70,7 +82,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    this.getOrderStatusCount()
+    // this.getOrderStatusCount()
   },
 
   /**

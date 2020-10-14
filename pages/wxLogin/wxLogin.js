@@ -1,4 +1,10 @@
 //获取应用实例
+const util = require('../../utils/util.js')
+const goPageUtil = require('../../utils/goPage.js')
+const requestUtil = require('../../utils/request.js')
+const requestDataUtil = require('../../utils/requestData.js')
+const tokenUtil = require('../../utils/token.js')
+const saleStrategyUtil = require('../../utils/saleStrategy.js')
 const app = getApp()
 
 Page({
@@ -10,7 +16,7 @@ Page({
   },
 
   goShop: function(){
-    app.common.goPage.goShop()
+    goPageUtil.goPage.goShop()
   },
 
   onLoad: function (option) {
@@ -32,16 +38,11 @@ Page({
     }
 
     var okIndex = Number.parseInt(e.detail.errMsg.indexOf("ok"));
-    /**
+    
     if (okIndex >= 0) {
       var data = {
-        shopId: app.globalData.shopId,
-        appId: app.globalData.appId,
-        tId: app.globalData.tId,
-        loginCode: app.globalData.loginCode,
-        iv: e.detail.iv,
-        encryptedData: e.detail.encryptedData,
-        domain: app.globalData.domain
+        encryptedData: util.replace4Spe(e.detail.encryptedData),
+        iv: util.replace4Spe(e.detail.iv)
       };
 
       this.setData({
@@ -49,79 +50,50 @@ Page({
         buttonText: "正在处理……"
       })
 
-      var url = app.getRequestDomain() + '/wmall/wx/phone'
-      wx.request({
-        url: url,
-        data: data,
-        header: {
-          'content-type': 'application/json' // 默认值
-        },
-        method: 'post',
-        fail(res) {
-          wx.showModal({
-            title: '错误提示',
-            content: JSON.stringify(res),
-            showCancel: false,
-            success(res) {
-              if (res.confirm) {
-                console.log('用户点击确定')
-              } else if (res.cancel) {
-                console.log('用户点击取消')
-              }
-            }
-          })
-        },
-        success(res) {
-          console.log(res.data)
-          if (res.data.s) {
-            app.globalData.phone = res.data.d.mobile
+      var url = '/wmall/wx/phoneV2'
+      requestUtil.request(
+        {
+          url: url,
+          data: data,
+          method: 'POST',
+          successCallBack: function(data){
+            var app = getApp()
+            app.globalData.phone = data.mobile
             // app.globalData.shopImg = app.globalData.domain + "/img/" + res.data.d.shopImg
             // app.globalData.shopName = res.data.d.shopName
-            if (app.verifyValidObject(res.data.d.thirdImg)) {
+            if (util.objectUtil.verifyValidObject(data.thirdImg)) {
               app.globalData.userInfo = {
                 avatarUrl: res.data.d.thirdImg,
                 nickName: res.data.d.thirdNick
               }
+              app.globalData.simple.user['img'] = res.data.d.thirdImg
+              app.globalData.simple.user['name'] = res.data.d.thirdNick
             }
 
             currentPage.setData({
               done: true,
-              hasPhone: true
+              hasPhone: true,
+              buttonText: currentPage.data.buttonTextDefault
             })
 
-            if (app.verifyValidObject(app.globalData.userInfo)) {
-              wx.redirectTo({
-                url: '../index/index'
-              })
+            if (util.objectUtil.verifyValidObject(app.globalData.userInfo)) {
+              goPageUtil.goPage.goIndex()
             } else {
-              wx.redirectTo({
-                url: '../userInfo/userInfo'
-              })
+              goPageUtil.goPage.goUserInfo()
             }
-          } else {
-            wx.showModal({
-              title: '登录失败',
-              content: JSON.stringify(res),
-              showCancel: false,
-              success(res) {
-                if (res.confirm) {
-                  console.log('用户点击确定')
-                } else if (res.cancel) {
-                  console.log('用户点击取消')
-                }
-              }
+          },
+          failCallBack: function(res){
+            util.showMsg(JSON.stringify(res))
+
+            currentPage.setData({
+              done: true,
+              buttonText: this.data.buttonTextDefault
             })
           }
         }
-      })
-
-      this.setData({
-        done: true,
-        buttonText: this.data.buttonTextDefault
-      })
+      )
     }
-    **/
     // 操作一次后获取新的code
-    app.refreshLoginCode()
+    // app.refreshLoginCode()
   }
 })

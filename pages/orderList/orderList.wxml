@@ -41,6 +41,9 @@
   <block wx:if="{{orders == undefined || orders.length < 1}}">
     <button class="fs8 big-button" type="primary" bindtap="goShop">暂无订单，赶快去下单吧。</button>
   </block>
+  <block wx:if="{{orders.length > 0 && hasGotAll === false}}">
+    <button class="fs8 big-button not-first-outter" type="primary" bindtap="getOrders">更多</button>
+  </block>
 
   <itemListComponent title="精品推荐" items="{{items}}" class="item-list-outer not-first-outter">
   </itemListComponent>

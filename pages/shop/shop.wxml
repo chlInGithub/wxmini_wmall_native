@@ -26,14 +26,14 @@
 <!-- 类目 -->
   <view style="display:none;" wx:if="{{cates}}" class="outter-view not-first-outter cate-view cate-view-1">
     <block wx:for="{{cates}}" wx:key="*this">
-      <view class="item item-1" style="margin-top: 5px;" data-id="{{item.id}}" bindtap="goCate">
+      <view class="item item-1 fl" style="margin-top: 5px;" data-id="{{item.id}}" bindtap="goCate">
         <image mode="aspectFit" class="img" src="{{imgPrefix + item.img}}"></image>
         <view class="name">{{item.name}}</view>
       </view>
     </block>
   </view>
 
-  <scroll-view scroll-x="true" style="white-space: nowrap;" class="outter-view not-first-outter cate-view">
+  <scroll-view scroll-x="true" style="white-space: nowrap;" class="outter-view not-first-outter cate-view ta-l">
       <block wx:for="{{cates}}" wx:key="*this">
             <view class="item {{selectedCateId == item.id ? 'selectedCate' : ''}}" style="display: inline-block;" data-id="{{item.id}}" bindtap="goCate">
               <image mode="aspectFit" class="img" src="{{imgPrefix + item.img}}"></image>

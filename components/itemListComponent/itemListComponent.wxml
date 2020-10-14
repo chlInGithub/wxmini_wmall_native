@@ -29,7 +29,7 @@
               ￥{{item.price}}
             </view>
             <view class="sale">
-              已售{{item.sale}}件
+              已售{{item.sales}}件
             </view>
             <view wx:if="{{item.inventory > 0}}" class="fa fa-shopping-cart  cart fr"></view>
             <view wx:else class="saleOut fr">售罄</view>
@@ -62,7 +62,7 @@
               ￥{{item.price}}
             </view>
             <view class="sale">
-              已售{{item.sale}}件
+              已售{{item.sales}}件
             </view>
             <view wx:if="{{item.inventory > 0}}" class="fa fa-shopping-cart  cart fr"></view>
             <view wx:else class="saleOut fr">售罄</view>

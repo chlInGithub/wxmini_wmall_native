@@ -1,4 +1,10 @@
 // pages/pay/pay.js
+const util = require('../../utils/util.js')
+const goPageUtil = require('../../utils/goPage.js')
+const requestUtil = require('../../utils/request.js')
+const requestDataUtil = require('../../utils/requestData.js')
+const tokenUtil = require('../../utils/token.js')
+const saleStrategyUtil = require('../../utils/saleStrategy.js')
 const app = getApp()
 
 Page({
@@ -12,54 +18,65 @@ Page({
   },
 
   goOrderDetail: function(){
-    app.common.goPage.goOrderDetail(this.data.orderId)
+    goPageUtil.goPage.goOrderDetail(this.data.orderId)
+  },
+  payResult : function (data) {
+    this.setData(data)
+    // TODO goPageUtil.goPage.goOrderDetail()
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (option) {
-    // TODO
-    option.orderId = 1837749573939282
-    option.total = 109.10
+    if (!util.objectUtil.verifyValidObject(option.orderId)){
+      return util.showMsg("缺少订单ID")
+    }
 
     this.setData(app.globalData)
-    var that = this
-    var packageVal = 'prepay_id=' + option.prepay_id
-
     this.setData({
-      total: option.total,
       orderId: option.orderId
     })
 
-    var payResult = function (data) {
-      that.setData(data)
-      // TODO app.common.goPage.goOrderDetail()
-    }
+    // 
+    var orderId = option.orderId
+    // 获取统一支付结果
+    var that = this
+    requestDataUtil.getData.getPrePay(orderId,
+      function(data){
 
-    wx.requestPayment(
-      {
-        'timeStamp': option.timeStamp,
-        'nonceStr': option.nonceStr,
-        'package': packageVal,
-        'signType': option.signType,
-        'paySign': option.paySign,
-        'success': function (res) {
-          console.log(res)
-          payResult({
-            done: true,
-            payed: true
+        var packageVal = 'prepay_id=' + data.prepayId
+
+        that.setData({
+          total: data.total
+        })
+
+        wx.requestPayment(
+          {
+            'timeStamp': data.timeStamp,
+            'nonceStr': data.nonceStr,
+            'package': packageVal,
+            'signType': data.signType,
+            'paySign': data.paySign,
+            'success': function (res) {
+              console.log(res)
+              that.payResult({
+                done: true,
+                payed: true
+              })
+            },
+            'fail': function (res) {
+              console.log(res)
+              that.payResult({
+                done: true,
+                payed: false
+              })
+            },
+            'complete': function (res) {
+            }
           })
-        },
-        'fail': function (res) {
-          console.log(res)
-          payResult({
-            done: true,
-            payed: false
-          })
-        },
-        'complete': function (res) {
-        }
-      })
+      }
+    )
+
   },
 
 

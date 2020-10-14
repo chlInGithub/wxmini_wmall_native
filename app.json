@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/shop/shop",
     "pages/index/index",
+    "pages/shop/shop",
     "pages/logs/logs",
     "pages/search/search",
     "pages/cart/cart",
@@ -16,7 +16,7 @@
     "pages/orderDetail/orderDetail",
     "pages/pay/pay"
   ],
-  "entryPagePath": "pages/shop/shop",
+  "entryPagePath": "pages/index/index",
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",

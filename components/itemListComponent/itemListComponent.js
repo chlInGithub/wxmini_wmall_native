@@ -1,3 +1,6 @@
+const util = require('../../utils/util.js')
+const goPageUtil = require('../../utils/goPage.js')
+
 const app = getApp()
 
 Component({
@@ -27,9 +30,9 @@ Component({
    */
   methods: {
     goItemDetail: function (event) {
-      var id = app.common.getId(event)
+      var id = util.eventUtil.getId(event)
       console.log("ID = " + id)
-      app.common.goPage.goItemDetail(id)
+      goPageUtil.goPage.goItemDetail(id)
     }
   }
 })

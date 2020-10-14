@@ -1,13 +1,21 @@
 // pages/couponsList/couponsList.js
+const util = require('../../utils/util.js')
+const goPageUtil = require('../../utils/goPage.js')
+const requestUtil = require('../../utils/request.js')
+const requestDataUtil = require('../../utils/requestData.js')
+const tokenUtil = require('../../utils/token.js')
+const saleStrategyUtil = require('../../utils/saleStrategy.js')
 const app = getApp()
 Page({
 
   getCanUsedCoupons: function(){
-    // TODO 
-    var coupons = app.common.getData.getAllCoupons()
-    this.setData({
-      coupons: coupons
+    var that = this
+    requestDataUtil.getData.getAllCoupons(function(coupons){
+      that.setData({
+        coupons: coupons
+      })
     })
+    
   },
 
   /**
@@ -21,10 +29,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.setData({
-      items: app.common.getData.getItems({type:2})
-    })
     this.getCanUsedCoupons()
+    
+    var that = this
+    requestDataUtil.getData.getRecommendedItemList(function (items){
+      that.setData({
+        items: items
+      })
+    })
   },
 
   /**

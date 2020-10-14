@@ -155,7 +155,7 @@ infoModalComponent .cell{
   width:69vw;
 }
 .ta-l{
-  text-align: left
+  text-align: left !important
 }
 .ta-c{
   text-align: center
@@ -249,7 +249,6 @@ checkbox .wx-checkbox-input {
   text-align: left;
   padding: 5px 10px;
   font-weight: 600;
-  width: 100%;
 }
 
 .search{

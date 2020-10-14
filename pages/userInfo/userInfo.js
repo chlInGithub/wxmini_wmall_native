@@ -1,4 +1,10 @@
 //获取应用实例
+const util = require('../../utils/util.js')
+const goPageUtil = require('../../utils/goPage.js')
+const requestUtil = require('../../utils/request.js')
+const requestDataUtil = require('../../utils/requestData.js')
+const tokenUtil = require('../../utils/token.js')
+const saleStrategyUtil = require('../../utils/saleStrategy.js')
 const app = getApp()
 
 Page({
@@ -33,7 +39,7 @@ Page({
   },
 
   goShop() {
-    app.common.goPage.goShop()
+    goPageUtil.goPage.goShop()
   },
 
   getUserInfo: function(e) {
@@ -43,51 +49,33 @@ Page({
   },
 
   dealUserInfo: function(userInfo) {
-    /**
-
     app.globalData.userInfo = userInfo
     var currentPage = this
 
     var data = {
       avatarUrl: userInfo.avatarUrl,
-      nickName: userInfo.nickName,
-      loginCode: app.globalData.loginCode,
-      shopId: app.globalData.shopId,
-      appId: app.globalData.appId,
-      tId: app.globalData.tId,
-      domain: app.globalData.domain
+      nickName: userInfo.nickName
     }
 
-    var url = app.getRequestDomain() + '/wmall/wx/userInfo'
-    wx.request({
-      url: url,
-      data: data,
-      method: 'post',
-      fail(res) {
-        wx.showModal({
-          title: '错误提示',
-          content: JSON.stringify(res),
-          showCancel: false,
-          success(res) {
-            if (res.confirm) {
-              console.log('用户点击确定')
-            } else if (res.cancel) {
-              console.log('用户点击取消')
-            }
-          }
-        })
-      },
-      success(res) {
-        console.log(res.data)
-        currentPage.setData({
-          userInfo: userInfo,
-          hasUserInfo: true
-        })
-        wx.redirectTo({
-          url: '../index/index'
-        })
+    var url = '/wmall/wx/userInfoV2'
+    requestUtil.request(
+      {
+        url: url,
+        data: data,
+        method: 'POST',
+        successCallBack: function(data){
+          currentPage.setData({
+            userInfo: userInfo,
+            hasUserInfo: true
+          })
+          app.globalData.simple.user['img'] = userInfo.avatarUrl
+          app.globalData.simple.user['name'] = userInfo.nickName
+          goPageUtil.goPage.goIndex()
+        },
+        failCallBack: function (res) {
+          util.showMsg(JSON.stringify(res))
+        }
       }
-    })
-    **/
+    )
   }
 })

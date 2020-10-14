@@ -20,7 +20,7 @@
   </view>
 
 <!-- 类目list -->
-  <scroll-view wx:if="{{cates}}" scroll-x="true" style="white-space: nowrap;" class="outter-view not-first-outter cate-view">
+  <scroll-view wx:if="{{cates}}" scroll-x="true" style="white-space: nowrap;" class="outter-view not-first-outter cate-view ta-l">
       <block wx:for="{{cates}}" wx:key="*this">
             <view class="item item-of-itemlist {{selectedCateId == item.id ? 'selectedCate' : ''}}" style="display: inline-block;" data-id="{{item.id}}" bindtap="chooseCate">
               <image mode="aspectFit" class="img img-of-itemlist" src="{{imgPrefix + item.img}}"></image>

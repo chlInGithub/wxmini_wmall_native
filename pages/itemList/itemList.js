@@ -1,4 +1,10 @@
 // pages/itemList/itemList.js
+const util = require('../../utils/util.js')
+const goPageUtil = require('../../utils/goPage.js')
+const requestUtil = require('../../utils/request.js')
+const requestDataUtil = require('../../utils/requestData.js')
+const tokenUtil = require('../../utils/token.js')
+const saleStrategyUtil = require('../../utils/saleStrategy.js')
 const app = getApp()
 
 Page({
@@ -9,19 +15,19 @@ Page({
   data: {
   },
 
-  getItems: function(){
-    this.setData({
-      items: app.common.getData.getItems(this.data.param)
-    })
-  },
-
   chooseCate: function(event){
-    var id = app.common.getId(event)
+    var id = util.eventUtil.getId(event)
     this.setData({
       selectedCateId: id
     })
 
-    this.getItems()
+    this.data.param["cateId"] = id
+    this.setData({
+      param: this.data.param,
+      items: []
+    })
+    this.cleanPageParam()
+    this.queryItems()
   },
 
   /**
@@ -30,12 +36,20 @@ Page({
   onLoad: function (options) {
     this.setData(app.globalData)
 
-    var param = {}
+    var param = {
+      pageSize: 10,
+      pageIndex: -1
+    }
     if(options.cate != undefined){
       var cate = JSON.parse(options.cate)
       this.setData({
-        selectedCateId: cate.id,
-        cates: app.common.getData.getAllCates(),
+        selectedCateId: cate.id
+      })
+      var that = this
+      requestDataUtil.getData.getAllCates(function(data){
+        that.setData({
+          cates: data
+        })
       })
 
       param["cateId"] = cate.id
@@ -63,8 +77,82 @@ Page({
 
     this.setData({
       param: param,
-      items: app.common.getData.getItems(param)
+      hasGotAll: false
     })
+
+    this.queryItems()
+  },
+  cleanPageParam: function(){
+    var param = this.data.param
+    if(!util.objectUtil.verifyValidObject(param)){
+      param = {}
+    }
+    param.pageIndex = -1
+    param.pageSize = 10
+    this.setData({
+      param: param,
+      hasGotAll: false,
+      queringItem: false
+    })
+  },
+  startQuery : function(){
+    this.setData({
+      queringItem: true
+    })
+  },
+  endQuery: function () {
+    this.setData({
+      queringItem: false
+    })
+  },
+  isQuering: function () {
+    this.data.queringItem
+  },
+  // 避免同时多次查询，判断已查所有，分页，查询
+  queryItems: function(){
+    if (this.isQuering()) {
+      return
+    }
+
+    if (this.data.hasGotAll){
+      wx.showToast({
+        title: '没有更多喽',
+      })
+      return
+    }
+
+    var that = this
+    that.startQuery()
+    var param = that.data.param
+    param.pageIndex++
+    this.setData({
+      param: param
+    })
+    requestDataUtil.getData.getItems(
+      param,
+      function (data) {
+        that.endQuery()
+        if(!util.jsonUtil.hasData(data)){
+          that.setData(
+            {
+              hasGotAll : true
+            }
+          )
+          return
+        }
+        var items = that.data.items
+        if (!util.objectUtil.verifyValidObject(items)){
+          items = []
+        }
+        items = items.concat(data)
+        that.setData({
+          items: items
+        })
+      },
+      function () {
+        that.endQuery()
+      }
+    )
   },
 
   /**
@@ -106,19 +194,7 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    if (this.data.items.length > 15) {
-      wx.showToast({
-        title: 'hasGotAll',
-      })
-      this.setData({
-        hasGotAll: true
-      })
-      return
-    }
-    var temp = this.data.items.concat([this.data.items[0], this.data.items[1], this.data.items[2]])
-    this.setData({
-      items: temp
-    })
+    this.queryItems()
   },
 
   /**

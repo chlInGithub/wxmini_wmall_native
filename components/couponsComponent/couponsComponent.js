@@ -1,4 +1,7 @@
 // components/couponsComponent/couponsComponent.js
+const util = require('../../utils/util.js')
+const goPageUtil = require('../../utils/goPage.js')
+const requestDataUtil = require('../../utils/requestData.js')
 
 const app = getApp()
 
@@ -32,9 +35,10 @@ Component({
   methods: {
     dealCoupons: function (event) {
       console.log(event)
-      var id = app.common.getId(event)
+      var id = util.eventUtil.getId(event)
       console.log("ID = " + id)
-      var got = 1
+      var ele = util.arrayUtil.getEleById(this.properties.coupons, id)
+      var got = ele.got
       if (got == 1) {
         this.goCoupons(id)
       } else {
@@ -43,7 +47,11 @@ Component({
     },
 
     getCoupons: function (id) {
-
+      var that = this
+      requestDataUtil.postData.getCoupons(id, function (id) {
+        var ele = util.arrayUtil.getEleById(that.properties.coupons, id)
+        ele.got = 1
+      })
     },
 
     goCoupons: function (id) {
@@ -51,12 +59,12 @@ Component({
         console.log("do not go coupons")
         return
       }
-      var ele = app.common.getEleById(this.properties.coupons, id)
+      var ele = util.arrayUtil.getEleById(this.properties.coupons, id)
       var param = ""
       if (ele != undefined) {
         param = '?coupons=' + JSON.stringify(ele)
       }
-      app.common.goPage.goItemList(param)
+      goPageUtil.goPage.goItemList(param)
     },
   }
 })

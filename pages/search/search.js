@@ -1,4 +1,10 @@
 // pages/search/search.js
+const util = require('../../utils/util.js')
+const goPageUtil = require('../../utils/goPage.js')
+const requestUtil = require('../../utils/request.js')
+const requestDataUtil = require('../../utils/requestData.js')
+const tokenUtil = require('../../utils/token.js')
+const saleStrategyUtil = require('../../utils/saleStrategy.js')
 const app = getApp()
 Page({
 
@@ -6,13 +12,12 @@ Page({
    * 页面的初始数据
    */
   data: {
-    history: ["搜索1", "搜索1b", "搜索1c","搜索1d"],
     val: "",
     historyCacheKey: "historyCacheKey"
   },
 
   goShop: function(){
-    app.common.goPage.goShop()
+    goPageUtil.goPage.goShop()
   },
 
   /**
@@ -90,7 +95,7 @@ Page({
   bindconfirm: function(){
     var val = this.data.val
 
-    if(undefined == val){
+    if (!util.objectUtil.verifyValidObject(val)){
       wx.showToast({
         title: "输入关键字",
       })
@@ -103,16 +108,14 @@ Page({
   },
   do_search: function(){
     var val = this.data.val
-    if (undefined == val || "" == val) {
+    if (!util.objectUtil.verifyValidObject(val)) {
       wx.showToast({
         title: "输入关键字",
       })
       return
     }
-
-    wx.navigateTo({
-      url: '../itemList/itemList?itemName=' + val
-    })
+    var param = '?itemName='+val
+    goPageUtil.goItemList(param)
   },
 
   historyChosed: function(event){
