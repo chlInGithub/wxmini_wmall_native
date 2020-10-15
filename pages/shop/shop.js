@@ -22,13 +22,27 @@ Page({
   onLoad: function (options) {
 
     this.setData(app.globalData)
+    
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
     var that = this
-    requestDataUtil.getData.getAllActivities(function(data){
+    requestDataUtil.getData.getAllActivities(function (data) {
       that.setData({
         activies: data
       })
     })
-    requestDataUtil.getData.getAllCates(function(data){
+    requestDataUtil.getData.getAllCates(function (data) {
       that.setData({
         cates: data
       })
@@ -47,23 +61,6 @@ Page({
       that.setData({
         items: data
       })
-    })
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-    wx.showToast({
-      title: 'onShow',
     })
   },
 
