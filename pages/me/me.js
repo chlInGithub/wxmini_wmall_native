@@ -39,7 +39,6 @@ Page({
    */
   onLoad: function (options) {
     this.setData(app.globalData)
-    this.getOrderStatusCount()
 
     var that = this
     requestDataUtil.getData.getRecommendedItemList(function(data){
@@ -61,7 +60,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.setData(app.globalData)
+    this.getOrderStatusCount()
   },
 
   /**

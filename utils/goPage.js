@@ -48,11 +48,11 @@ var goPage = {
     })
   },
   /**
-   * param: ?orderId=xx
+   * orderId
    */
-  goPay: function (param) {
+  goPay: function (orderId) {
     wx.navigateTo({
-      url: '/pages/pay/pay' + param
+      url: '/pages/pay/pay?orderId=' + orderId
     })
   },
   /**

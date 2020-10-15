@@ -15,7 +15,7 @@ Page({
     currentEditDeliver: {}
 
   },
-  regionChange: function(event){
+  regionChange: function(event) {
     console.log(event.detail)
     var code = event.detail.code.join(" ")
     var value = event.detail.value.join(" ")
@@ -26,7 +26,7 @@ Page({
       currentEditDeliverPostcode: postcode
     })
   },
-  chooseReceiver: function(event){
+  chooseReceiver: function(event) {
     console.log("chooseReceiver")
     var index = util.eventUtil.getIndex(event)
     var deliver = this.data.delivers[index]
@@ -34,12 +34,13 @@ Page({
       choosedDeliver: deliver
     })
     this.showChooseReceiveModal()
+    this.compute()
   },
-  showChooseReceiveModal: function(){
+  showChooseReceiveModal: function() {
     var t = this.selectComponent(".deliverListModal")
     t.triggleModal()
   },
-  setCurrentEditDeliver: function(){
+  setCurrentEditDeliver: function() {
     var currentEditDeliver = this.data.currentEditDeliver
     if (undefined == currentEditDeliver) {
       this.setData({
@@ -49,19 +50,20 @@ Page({
         currentEditDeliverAddress: "",
         currentEditDeliverDefaultSelected: false
       })
-    }else{
+    } else {
       this.setData({
         currentEditDeliverName: currentEditDeliver["name"],
         currentEditDeliverMobile: currentEditDeliver["mobile"],
         currentEditDeliverCity: currentEditDeliver["city"],
+        currentEditDeliverCode: currentEditDeliver["code"],
         currentEditDeliverAddress: currentEditDeliver["address"],
         currentEditDeliverDefaultSelected: currentEditDeliver["currentEditDeliverDefaultSelected"]
       })
     }
   },
-  getCurrentEditDeliver: function(){
+  getCurrentEditDeliver: function() {
     var currentEditDeliver = this.data.currentEditDeliver
-    if(undefined == currentEditDeliver){
+    if (undefined == currentEditDeliver) {
       currentEditDeliver = {}
     }
     currentEditDeliver["name"] = this.data.currentEditDeliverName
@@ -72,21 +74,23 @@ Page({
     currentEditDeliver["address"] = this.data.currentEditDeliverAddress
     currentEditDeliver["currentEditDeliverDefaultSelected"] = this.data.currentEditDeliverDefaultSelected
     return currentEditDeliver
-  }, 
-  cleanCurrentEditDeliver: function () {
-    this.setData({currentEditDeliver: {}})
   },
-  saveDeliver: function(){
+  cleanCurrentEditDeliver: function() {
+    this.setData({
+      currentEditDeliver: {}
+    })
+  },
+  saveDeliver: function() {
     var currentEditDeliver = this.getCurrentEditDeliver()
-    if (!util.stringUtil.isNotEmpty(currentEditDeliver.name)){
+    if (!util.stringUtil.isNotEmpty(currentEditDeliver.name)) {
       util.showMsg("请填写收货人姓名")
       return
     }
-    if (!util.stringUtil.isNotEmpty(currentEditDeliver.mobile)) {
-      util.showMsg("请填写收货人手机号")
+    if (!util.stringUtil.isNotEmpty(currentEditDeliver.mobile) || currentEditDeliver.mobile.length != 11) {
+      util.showMsg("收货人手机号未填写或错误")
       return
     }
-    if (!util.stringUtil.isNotEmpty(currentEditDeliver.city) || !util.stringUtil.isNotEmpty(currentEditDeliver.postcode)) {
+    if (!util.stringUtil.isNotEmpty(currentEditDeliver.city) || !util.stringUtil.isNotEmpty(currentEditDeliver.code)) {
       util.showMsg("请填写收货人地址")
       return
     }
@@ -94,13 +98,12 @@ Page({
       util.showMsg("请填写收货人详细地址")
       return
     }
-    
-    var that = this
-    requestDataUtil.postcode.saveDeliver(
-      currentEditDeliver, 
-      function(data){
-        var newId = data;
 
+    var that = this
+    requestDataUtil.postData.saveDeliver(
+      currentEditDeliver,
+      function(data) {
+        var newId = data;
 
         if (currentEditDeliver.id != undefined) {
           var ele = util.arrayUtil.getEleById(that.data.delivers, currentEditDeliver.id)
@@ -112,7 +115,7 @@ Page({
           ele["address"] = currentEditDeliver.address
           ele["defaultSelected"] = currentEditDeliver.defaultSelected
 
-          if (currentEditDeliver.id == that.data.choosedDeliver.id) {
+          if (util.objectUtil.isNotUndefined(that.data.choosedDeliver) && currentEditDeliver.id == that.data.choosedDeliver.id) {
             that.setData({
               choosedDeliver: ele
             })
@@ -120,6 +123,14 @@ Page({
         } else {
           currentEditDeliver["id"] = newId
           util.arrayUtil.addEle(that.data.delivers, currentEditDeliver)
+        }
+
+        if (currentEditDeliver.defaultSelected) {
+          var delivers = that.data.delivers
+          for (var i = 0; i < delivers.length; i++) {
+            delivers[i]['defaultSelected'] = false
+          }
+          currentEditDeliver.defaultSelected = true
         }
 
         that.setData({
@@ -131,28 +142,28 @@ Page({
       }
     )
   },
-  deleteDeliver: function(event){
+  deleteDeliver: function(event) {
     var id = util.eventUtil.getId(event)
     var currentEditDeliver = this.data.currentEditDeliver
-    if(id != currentEditDeliver.id){
+    if (id != currentEditDeliver.id) {
       wx.showModal({
         title: '提示',
         content: 'ID错误',
       })
-    }else{
+    } else {
       console.log(currentEditDeliver)
       //TODO
       var that = this
-      requestDataUtil.saveDeliver.delDeliver(
+      requestDataUtil.postData.delDeliver(
         id,
-        function(id){
+        function(id) {
           util.arrayUtil.delEleById(that.data.delivers, id)
           that.setData({
             delivers: that.data.delivers,
             currentEditDeliver: {}
           })
 
-          if (currentEditDeliver.id == that.data.choosedDeliver.id) {
+          if (util.objectUtil.isNotUndefined(that.data.choosedDeliver) && currentEditDeliver.id == that.data.choosedDeliver.id) {
             that.setData({
               choosedDeliver: false
             })
@@ -162,12 +173,12 @@ Page({
     }
     this.showEditReceiveModal()
   },
-  addReceiver: function (event) {
+  addReceiver: function(event) {
     this.setCurrentEditDeliver()
     this.showEditReceiveModal()
     console.log(this.data.currentEditDeliver)
   },
-  editReceiver: function(event){
+  editReceiver: function(event) {
     var index = util.eventUtil.getIndex(event)
     var deliver = this.data.delivers[index]
     this.setData({
@@ -177,11 +188,11 @@ Page({
     this.showEditReceiveModal()
     console.log(this.data.currentEditDeliver)
   },
-  showEditReceiveModal: function () {
+  showEditReceiveModal: function() {
     var t = this.selectComponent(".deliverEditModal")
     t.triggleModal()
   },
-  chooseDeliverType: function(event){
+  chooseDeliverType: function(event) {
     var index = event.detail.value
     var deliverType = this.data.deliverTypes[index]
     if (deliverType == undefined) {
@@ -193,8 +204,9 @@ Page({
     this.setData({
       choosedDeliverType: deliverType
     })
+    this.compute()
   },
-  choosePayType: function (event) {
+  choosePayType: function(event) {
     var index = event.detail.value
     var payType = this.data.payTypes[index]
     if (payType == undefined) {
@@ -206,8 +218,9 @@ Page({
     this.setData({
       choosedPayType: payType
     })
+    this.compute()
   },
-  compute: function(){
+  compute: function() {
     var items = this.data.items
     if (items.length < 1) {
       util.showMsg("缺少商品")
@@ -220,20 +233,20 @@ Page({
     }
 
     var usedPaytype = this.data.choosedPayType
-    if (usedPaytype.code == undefined) {
+    if (usedPaytype == undefined || usedPaytype.code == undefined) {
       util.showMsg("请选择支付类型")
       return false
     }
 
     var usedDeliverType = this.data.choosedDeliverType
-    if (usedDeliverType.code == undefined) {
+    if (usedDeliverType == undefined || usedDeliverType.code == undefined) {
       util.showMsg("请选择配送方式")
       return false
     }
 
     var temp = [];
 
-    items.forEach(function (item) {
+    items.forEach(function(item) {
       temp.push(item.itemId + "_" + item.skuId + "_" + item.count);
     })
 
@@ -248,50 +261,122 @@ Page({
     var that = this
     requestDataUtil.getData.computeSettle(
       data,
-      function (result) {
+      function(result) {
         saleStrategyUtil.parseList(items)
         that.setData({
-          computeResult: result.d,
-          choosedDeliver: result.d.usedReceiveInfo
+          computeResult: result/**,
+          choosedDeliver: result.usedReceiveInfo**/
+        })
+      },
+      function(m){
+        that.setData({
+          computeResult: {}
         })
       }
     )
   },
-  createOrder: function(){
+  createOrder: function() {
+    var items = this.data.items
+    if (items.length < 1) {
+      util.showMsg("缺少商品")
+      return false
+    }
+    var usedReceiveInfo = this.data.choosedDeliver
+    if (usedReceiveInfo == undefined || usedReceiveInfo.id == undefined) {
+      util.showMsg("请选择收货地址")
+      return false
+    }
+
+    var usedPaytype = this.data.choosedPayType
+    if (usedPaytype == undefined || usedPaytype.code == undefined) {
+      util.showMsg("请选择支付类型")
+      return false
+    }
+
+    var usedDeliverType = this.data.choosedDeliverType
+    if (usedDeliverType == undefined || usedDeliverType.code == undefined) {
+      util.showMsg("请选择配送方式")
+      return false
+    }
+
+    var computeResult = this.data.computeResult
+    if (!util.objectUtil.verifyValidObject(computeResult) ||
+      !util.objectUtil.verifyValidObject(computeResult.itemCount) ||
+      computeResult.itemCount < 1 ||
+      !util.objectUtil.verifyValidObject(computeResult.total) ||
+      computeResult.total < 0) {
+      util.showMsg("缺少订单金额")
+      return false
+    }
+
+    var temp = [];
+
+    items.forEach(function (item) {
+      temp.push(item.itemId + "_" + item.skuId + "_" + item.count);
+    })
+
+    var data = {
+      items: temp.toString(),
+      deliverId: usedReceiveInfo.id,
+      deliverType: usedDeliverType.code,
+      referTotal: computeResult.total,
+      payType: usedPaytype.code
+    }
+
+    var that = this
+
     // TODO 创建订单
-
-    var orderId = xxx
-
-    // 
-    goPageUtil.goPay("?orderId="+orderId)
+    requestDataUtil.postData.createOrder(
+      data,
+      function(orderId){
+        goPageUtil.goPage.goPay(orderId)
+      },
+      function(m){
+        
+      }
+    )
   },
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function(options) {
     this.setData(app.globalData)
 
     var itemsParam = options.items
 
-    if (!util.stringUtil.isNotEmpty(itemsParam)){
+    if (!util.stringUtil.isNotEmpty(itemsParam)) {
       util.showMsg("缺少商品数据")
       return
     }
 
-    this.setData(
-      {
-        itemsParam: itemsParam
-      }
-    )
+    this.setData({
+      itemsParam: itemsParam
+    })
 
-   //this.getItems(itemsParam)
+    //this.getItems(itemsParam)
 
+
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function() {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function() {
     var that = this
-    requestDataUtil.getData.getSettleItems(
-      {
-        items: itemsParam
-      },
+    requestDataUtil.getData.getSettleItems({
+      items: this.data.itemsParam
+    },
       function (items) {
+        if(!util.arrayUtil.isArray(items)){
+          items = []
+        }
         saleStrategyUtil.parseList(items)
         that.setData({
           items: items
@@ -299,26 +384,46 @@ Page({
 
         requestDataUtil.getData.getDelivers(
           function (delivers) {
+            if (!util.arrayUtil.isArray(delivers)) {
+              delivers = []
+            }
             that.setData({
               delivers: delivers
             })
 
+            if (delivers.length > 0) {
+              var defaultDeliver = delivers[0]
+              for (var i = 0; i < delivers.length; i++) {
+                if (delivers[i]['defaultSelected']) {
+                  defaultDeliver = delivers[i]
+                  break
+                }
+              }
+              that.setData({
+                choosedDeliver: defaultDeliver
+              })
+            }
+
             requestDataUtil.getData.getPayTypes(
               function (payTypes) {
+                if (!util.arrayUtil.isArray(payTypes)) {
+                  payTypes = []
+                }
                 var payDescs = []
                 for (var i = 0; i < payTypes.length; i++) {
                   var temp = payTypes[i]
                   payDescs.push(temp.desc)
                 }
-                that.setData(
-                  {
-                    payTypes: payTypes,
-                    payDescs: payDescs
-                  }
-                )
+                that.setData({
+                  payTypes: payTypes,
+                  payDescs: payDescs
+                })
 
                 requestDataUtil.getData.getDeliverTypes(
                   function (deliverTypes) {
+                    if (!util.arrayUtil.isArray(deliverTypes)) {
+                      deliverTypes = []
+                    }
                     var deliverDescs = []
                     for (var i = 0; i < deliverTypes.length; i++) {
                       var temp = deliverTypes[i]
@@ -331,7 +436,7 @@ Page({
                       deliverDescs: deliverDescs
                     })
 
-                    that.compute()
+                    //that.compute()
                   }
                 )
               }
@@ -345,51 +450,37 @@ Page({
   },
 
   /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
+  onHide: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {
+  onUnload: function() {
 
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function() {
 
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
+  onReachBottom: function() {
 
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
 
   }
 })

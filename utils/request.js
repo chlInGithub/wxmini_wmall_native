@@ -51,6 +51,7 @@ var dealParams = function(url, data) {
   // 最终的data数据
   var finalData = lastData + "&sign=" + sign
 
+  //finalData = encodeURI(finalData)
   return finalData
 }
 
@@ -137,7 +138,7 @@ var request = function(context) {
         return
       }
 
-      failCallBack(res)
+      failCallBack(resultStr)
     },
     success(res) {
       var resultStr = JSON.stringify(res)
@@ -163,7 +164,13 @@ var request = function(context) {
           return
         }
 
-        failCallBack(res)
+        var msg = res.data
+        if (util.objectUtil.isNotUndefined(res.data.m)) {
+          msg = res.data.m
+        } else if (util.objectUtil.isNotUndefined(res.data.message)){
+          msg = res.data.message
+        }
+        failCallBack(msg)
       }
     }
   })

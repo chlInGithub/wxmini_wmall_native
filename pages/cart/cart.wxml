@@ -34,6 +34,9 @@
         </view>
       </view>
     </block>
+    <block wx:if="{{items == undefined || items.length < 1}}">
+    <button class="fs8 big-button" type="primary" bindtap="goShop">赶快选购吧</button>
+    </block>
   </view>
 
   <!-- 放在这里的原因： 和footer同级，避免弹层覆盖footer-->

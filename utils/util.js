@@ -50,6 +50,9 @@ const EventUtil = {
 }
 
 const ArrayUtil = {
+  isArray: function (v) {
+    return Array.isArray(v)
+  },
   getEleByIndex: function(arrays, index) {
     var ele = arrays[index]
     return ele
@@ -124,10 +127,10 @@ const ObjectUtil = {
     return undefined === v
   },
   isFunction: function (v) {
-    return typeof v === 'function'
+    return ObjectUtil.verifyValidObject(v) &&  typeof v === 'function'
   },
   verifyValidObject: function(o) {
-    return o !== null && o !== undefined && o !== "" && o !== "null"
+    return o !== null && o !== undefined && o !== "" && o !== "null" && o !== "undefined"
   }
 }
 
@@ -141,7 +144,10 @@ const JsonUtil = {
     return false
   },
   toJson: function(v) {
-    return JSON.parse(v)
+    if(typeof v === 'string' && v.indexOf('{') != -1){
+      return JSON.parse(v)
+    }
+    return v
   },
   /**
    * json key 的 数组，已安正序排序

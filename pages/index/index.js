@@ -20,33 +20,36 @@ Page({
       app.setScene(scene)
     }
 
-    // TODO 登录系统 存储token
+  },
+  onShow: function(){
+
+    // 登录系统 存储token
 
     var that = this
-    
+
     tokenUtil.newToken(
-      function(res){
+      function (res) {
         // 店铺 用户 基本信息
         requestDataUtil.getData.getShopSimpleInfo()
         //getApp().globalData.simple = simple
 
         // 处理分享
         var scene = getApp().getAndClearScene()
-        if(util.objectUtil.verifyValidObject(scene)){
+        if (util.objectUtil.verifyValidObject(scene)) {
           shareUtil.getShareInfoAndGo(scene)
           return
-        }else{
+        } else {
           goPageUtil.goPage.goShop()
         }
-      }, function(){
-        util.showMsg("获取token失败", function(){
+      }, function () {
+        util.showMsg("获取token失败", function () {
           goPageUtil.goPage.goIndex()
         })
       }
     )
-  
 
   },
+
   binderror: function (e) {
     console.log(e)
   },

@@ -17,26 +17,21 @@ Page({
     preCheckedAll: false,
     checkedAll: false,
     computeResult: {
-      /**total: 80,
-      coupon: 20,
+      total: 0,
+      coupon: 0,
       couponDetail: {
-        totalNoCoupon: 100,
-        coupons: [{
-            desc: '优惠A熟练度附近',
-            amount: 10
-          },
-          {
-            desc: '优惠B熟练度附近',
-            amount: 10
-          }
-        ],
-        coupon: 20,
-        total: 80
+        totalNoCoupon: 0,
+        coupons: [],
+        coupon: 0,
+        total: 0
       },
-      itemCount: 10**/
+      itemCount: 0
     }
   },
 
+  goShop: function(){
+    goPageUtil.goPage.goShop()
+  },
   goSettle: function(){
     goPageUtil.goPage.goSettle("?items=" + this.get_settle_data())
   },
@@ -55,7 +50,7 @@ Page({
     for (var i = 0; i < checkedItems.length; i++) {
       var item = checkedItems[i]
       var v = item.itemId + "_" + item.skuId
-      temp.push()
+      temp.push(v)
     }
 
     return temp.toString()
@@ -303,8 +298,11 @@ Page({
   },
   deleteCount: function(event) {
     var id = util.eventUtil.getIndex(event)
-    var item = util.eventUtil.delEleByIndex(this.data.items, id)
-    this.data.preCheckedVals.splice(id, 1)
+    var item = util.arrayUtil.delEleByIndex(this.data.items, id)
+    if (util.objectUtil.verifyValidObject(this.data.preCheckedVals)){
+      this.data.preCheckedVals.splice(id, 1)
+    }
+    
     requestDataUtil.postData.addCart({
       itemId: item.itemId,
       skuId: item.skuId,
@@ -325,20 +323,44 @@ Page({
     var item = util.arrayUtil.getEleByIndex(this.data.items, id)
     item.count += 1
     var items = this.data.items
-    this.updateItems()
+    var that = this
+    requestDataUtil.postData.changeCountCart({
+      itemId: item.itemId,
+      skuId: item.skuId,
+      count: item.count
+    },
+    function(data){
+      that.updateItems()
+      that.compute()
+    }
+    )
   },
   deductCount: function(event) {
     var id = util.eventUtil.getIndex(event)
     var item = util.arrayUtil.getEleByIndex(this.data.items, id)
-    if (item.count > 0) {
+    if (item.count > 1) {
       item.count -= 1
-      this.updateItems()
+
+      var that = this
+      requestDataUtil.postData.changeCountCart({
+        itemId: item.itemId,
+        skuId: item.skuId,
+        count: item.count
+      },
+        function (data) {
+          that.updateItems()
+          that.compute()
+        }
+      )
     }
   },
 
   getCartItems: function() {
     var that = this
     requestDataUtil.getData.getAllCartItems(function(data){
+      if(!util.arrayUtil.isArray(data)){
+        data = []
+      }
       var items = data
       var itemIds = []
       var indexs = []
@@ -364,8 +386,6 @@ Page({
       defaultComputeResult: this.data.computeResult
     })
     this.setData(app.globalData)
-
-    this.getCartItems()
   },
 
   /**
@@ -379,7 +399,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
-
+    this.getCartItems()
   },
 
   /**
@@ -400,7 +420,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function() {
-    // this.getCartItems()
+    this.getCartItems()
   },
 
   /**

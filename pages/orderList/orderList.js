@@ -14,6 +14,28 @@ Page({
   data: {
 
   },
+  successOrder: function (event) {
+    var id = util.eventUtil.getId(event)
+    var that = this
+    requestDataUtil.postData.successOrder(
+      id,
+      function(data){
+        var ele = util.objectUtil.arrayUtil.getEleById(that.data.orders, id)
+        ele.status = 40
+        ele.statusDes = "交易成功"
+        that.setData({
+          orders: this.data.orders
+        })
+      })
+  },
+  goPay: function (event) {
+    var id = util.eventUtil.getId(event)
+    goPageUtil.goPage.goPay(id)
+  },
+  delOrder: function(event){
+    var id = util.eventUtil.getId(event)
+    requestDataUtil.postData.delOrder(id)
+  },
   goOrderDetail:function(event){
     var id = util.eventUtil.getId(event)
     goPageUtil.goPage.goOrderDetail(id)
@@ -100,8 +122,9 @@ Page({
       pageSize: 10,
       pageIndex: -1
     }
-    if (util.objectUtil.verifyValidObject(options.status)){
-      param['status'] = options.status
+    console.log(options.code)
+    if (util.objectUtil.verifyValidObject(options.code)){
+      param['status'] = options.code
     }
     
     this.setData({
@@ -110,8 +133,6 @@ Page({
     })
 
     this.setData(app.globalData)
-
-    this.getOrders()
 
     var that = this
     requestDataUtil.getData.getRecommendedItemList(function (data) {
@@ -132,7 +153,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.getOrders()
   },
 
   /**

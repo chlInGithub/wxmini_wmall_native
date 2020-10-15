@@ -2,7 +2,103 @@ const util = require('./util.js')
 const requestUtil = require('./request.js')
 
 var postData = {
-  delDeliver: function (receiveId, sucCallback) {
+  successOrder: function (orderId, sucCallback, failCallBack){
+    requestUtil.request({
+      url: "/wmall/order/success",
+      data: {
+        orderId: orderId
+      },
+      method: 'POST',
+      successCallBack: function (data) {
+        if (util.objectUtil.isFunction(sucCallback)) {
+          sucCallback(data)
+        }
+      },
+      failCallBack: function (m) {
+        util.showMsg("确认收货失败!" + m)
+        if (util.objectUtil.isFunction(failCallback)) {
+          failCallback(data)
+        }
+      }
+    })
+  },
+  refundApply: function (data, sucCallback, failCallBack) {
+    if (data.type == undefined) {
+      util.showMsg("请选择退款类型");
+      return false;
+    }
+    if (data.cause == undefined || data.cause.length < 1) {
+      util.showMsg("请填写退款原因")
+      return false
+    }
+    if (data.applyFee == undefined) {
+      util.showMsg("请填写退款金额")
+      return false
+    }
+    if (data.orderId == undefined) {
+      util.showMsg("缺少订单ID")
+      return false
+    }
+
+    requestUtil.request({
+      url: "/wmall/order/refundApply",
+      data: data,
+      method: 'POST',
+      successCallBack: function (data) {
+        if (util.objectUtil.isFunction(sucCallback)) {
+          sucCallback(data)
+        }
+      },
+      failCallBack: function (m) {
+        util.showMsg("申请退款失败!" + m)
+        if (util.objectUtil.isFunction(failCallback)) {
+          failCallback(data)
+        }
+      }
+    })
+  },
+  createOrder: function(data, sucCallback, failCallback){
+    requestUtil.request({
+      url: "/wmall/order/new",
+      data: data,
+      method: 'POST',
+      successCallBack: function (data) {
+        if (util.objectUtil.isFunction(sucCallback)) {
+          sucCallback(data)
+        }
+      },
+      failCallBack: function (m) {
+        util.showMsg("创建订单失败!" + m)
+        if (util.objectUtil.isFunction(failCallback)) {
+          failCallback(data)
+        }
+      }
+    })
+  },
+  delOrder: function (orderId, sucCallback, failCallback) {
+    requestUtil.request({
+      url: "/wmall/order/del",
+      data: {
+        orderId: orderId
+      },
+      method: 'POST',
+      successCallBack: function (data) {
+        util.showMsg("删除订单成功")
+        getApp().delCache('orderDetail' + orderId)
+        if (util.objectUtil.isFunction(sucCallback)) {
+          sucCallback(data)
+        }
+      },
+      failCallBack: function (m) {
+        util.showMsg("删除订单失败!" + m)
+        if (util.objectUtil.isFunction(failCallback)) {
+          failCallback(data)
+        }
+      }
+    })
+
+  },
+  delDeliver: function (receiveId, sucCallback, failCallback) {
     requestUtil.request({
       url: "/wmall/deliver/del",
       data: {
@@ -13,11 +109,11 @@ var postData = {
         util.showMsg("删除收货地址成功")
         getApp().delCache('delivers')
         if (util.objectUtil.isFunction(sucCallback)) {
-          sucCallback(receiveId)
+          sucCallback(data)
         }
       },
-      failCallBack: function () {
-        util.showMsg("删除收货地址失败")
+      failCallBack: function (m) {
+        util.showMsg("删除收货地址失败!" + m)
         if (util.objectUtil.isFunction(failCallback)) {
           failCallback(data)
         }
@@ -25,7 +121,7 @@ var postData = {
     })
 
   },
-  saveDeliver: function (param, sucCallback) {
+  saveDeliver: function (param, sucCallback, failCallback) {
     requestUtil.request({
       url: "/wmall/deliver/save",
       data: param,
@@ -38,8 +134,8 @@ var postData = {
           sucCallback(data)
         }
       },
-      failCallBack: function () {
-        util.showMsg("保存收货地址失败")
+      failCallBack: function (m) {
+        util.showMsg("保存收货地址失败!" + m)
         if (util.objectUtil.isFunction(failCallback)) {
           failCallback(data)
         }
@@ -50,7 +146,7 @@ var postData = {
   /**
    * param : {itemId: xx, skuId: xx, count: xx}
    */
-  addCart: function(param, sucCallback) {
+  addCart: function (param, sucCallback, failCallback) {
     console.log("addCart")
     console.log(param)
 
@@ -59,14 +155,43 @@ var postData = {
       data: param,
       method: 'POST',
       successCallBack: function (data) {
-        util.showMsg("已加入购物车")
+        var msg = "已加入购物车"
+        if(param.count < 1){
+          msg = "商品已移出购物车"
+        }
+        util.showMsg(msg)
         getApp().delCache('cartItems')
         if (util.objectUtil.isFunction(sucCallback)) {
           sucCallback(data)
         }
       },
-      failCallBack: function () {
-        util.showMsg("加入购物车失败")
+      failCallBack: function (m) {
+        var msg = "加入购物车失败!"
+        if (param.count < 1) {
+          msg = "商品移出购物车失败!"
+        }
+        util.showMsg(msg + m)
+        if (util.objectUtil.isFunction(failCallback)) {
+          failCallback(data)
+        }
+      }
+    })
+
+  },
+  changeCountCart: function (param, sucCallback, failCallback) {
+    requestUtil.request({
+      url: "/wmall/cart/addItem",
+      data: param,
+      method: 'POST',
+      successCallBack: function (data) {
+        getApp().delCache('cartItems')
+        if (util.objectUtil.isFunction(sucCallback)) {
+          sucCallback(data)
+        }
+      },
+      failCallBack: function (m) {
+        var msg = "变更购物车商品失败!"
+        util.showMsg(msg + m)
         if (util.objectUtil.isFunction(failCallback)) {
           failCallback(data)
         }
@@ -89,14 +214,14 @@ var postData = {
         }
         util.showMsg("领取优惠券成功")
       },
-      failCallBack: function () {
-        util.showMsg("领取优惠券失败")
+      failCallBack: function (m) {
+        util.showMsg("领取优惠券失败!" + m)
       }
     })
   }
 }
 var getData = {
-  getPrePay: function (orderId, sucCallback){
+  getPrePay: function (orderId, sucCallback, failCallback){
     requestUtil.request(
       {
         url: '/wmall/wxpay/prePay',
@@ -111,8 +236,8 @@ var getData = {
             sucCallback(data)
           }
         },
-        failCallBack: function () {
-          util.showMsg("生成预支付订单失败")
+        failCallBack: function (m) {
+          util.showMsg("生成预支付订单失败!" + m)
           if (util.objectUtil.isFunction(failCallback)) {
             failCallback(data)
           }
@@ -125,8 +250,8 @@ var getData = {
     var cacheKey = 'orderDetail' + id
     var cache = getApp().getCache(cacheKey)
     if (util.objectUtil.verifyValidObject(cache)) {
-      if (util.objectUtil.isFunction(callback)) {
-        callback(cache)
+      if (util.objectUtil.isFunction(sucCallback)) {
+        sucCallback(cache)
       }
       return
     }
@@ -147,8 +272,8 @@ var getData = {
           sucCallback(data)
         }
       },
-      failCallBack: function () {
-        util.showMsg("获取订单信息失败")
+      failCallBack: function (m) {
+        util.showMsg("获取订单信息失败!" + m)
         if (util.objectUtil.isFunction(failCallback)) {
           failCallback(data)
         }
@@ -167,8 +292,8 @@ var getData = {
           sucCallback(data)
         }
       },
-      failCallBack: function () {
-        util.showMsg("获取商品信息失败")
+      failCallBack: function (m) {
+        util.showMsg("获取商品信息失败!" + m)
         if (util.objectUtil.isFunction(failCallback)) {
           failCallback(data)
         }
@@ -198,12 +323,12 @@ var getData = {
           callback(data)
         }
       },
-      failCallBack: function () {
-        // util.showMsg("获取订单信息失败")
+      failCallBack: function (m) {
+        util.showMsg("获取订单状态数量失败!" + m)
       }
     })
   },
-  computeSettle: function(data, sucCallback){
+  computeSettle: function(data, callback,failCallback){
     requestUtil.request({
       url: "/wmall/settle/compute",
       data: data,
@@ -213,8 +338,11 @@ var getData = {
           callback(data)
         }
       },
-      failCallBack: function () {
-        util.showMsg("计算订单金额失败")
+      failCallBack: function (m) {
+        util.showMsg("计算订单金额失败!" + m)
+        if (util.objectUtil.isFunction(failCallback)) {
+          failCallback(data)
+        }
       }
     })
   },
@@ -229,8 +357,8 @@ var getData = {
           callback(data)
         }
       },
-      failCallBack: function () {
-        util.showMsg("计算购物车金额失败")
+      failCallBack: function (m) {
+        util.showMsg("计算购物车金额失败!" + m)
       }
     })
   },
@@ -257,23 +385,23 @@ var getData = {
           callback(data)
         }
       },
-      failCallBack: function () {
-        util.showMsg("获取购物车信息失败")
+      failCallBack: function (m) {
+        util.showMsg("获取购物车信息失败!" + m)
       }
     })
   },
   getSettleItems: function(data, callback){
     requestUtil.request({
       url: "/wmall/cart/items",
-      data: {},
+      data: data,
       method: 'GET',
       successCallBack: function (data) {
         if (util.objectUtil.isFunction(callback)) {
           callback(data)
         }
       },
-      failCallBack: function () {
-        util.showMsg("获取下单商品失败")
+      failCallBack: function (m) {
+        util.showMsg("获取下单商品失败!" + m)
       }
     })
   },
@@ -282,8 +410,8 @@ var getData = {
     var cacheKey = 'cacheItemDetail' + id
     var cache = getApp().getCache(cacheKey)
     if (util.objectUtil.verifyValidObject(cache)) {
-      if (util.objectUtil.isFunction(callback)) {
-        callback(cache)
+      if (util.objectUtil.isFunction(sucCallback)) {
+        sucCallback(cache)
       }
       return
     }
@@ -304,8 +432,8 @@ var getData = {
           sucCallback(data)
         }
       },
-      failCallBack: function () {
-        util.showMsg("获取商品信息失败")
+      failCallBack: function (m) {
+        util.showMsg("获取商品信息失败!" + m)
         if (util.objectUtil.isFunction(failCallback)) {
           failCallback(data)
         }
@@ -329,30 +457,12 @@ var getData = {
         console.log(data)
         getApp().globalData.simple = data
       },
-      failCallBack: function(){
-        util.showMsg("获取店铺信息失败")
+      failCallBack: function(m){
+        util.showMsg("获取店铺信息失败!" + m)
       }
     })
-
-    /**var result = {
-      "d": {
-        "shop": {
-          "id": "1",
-          "img": "39059c4feb06ee3ed00b1e859f4c3264",
-          "name": "\u5E97\u94FA\u540D\u79F02"
-        },
-        "user": {
-          "hasPhone": true,
-          "id": "4520070814340810001",
-          "img": "https:\/\/wx.qlogo.cn\/mmopen\/vi_32\/DYAIOgq83eoHhjCfjpicq5Aynkhqcsr84GVtMSxB5AePA5JBnWqSyRUzZ6T5BMEVxJx68WqAtfN1HHFbKnibLD0A\/132",
-          "name": "Henry"
-        }
-      },
-      "s": true
-    }
-    return result.d**/
   },
-  getDelivers: function(sucCallback) {
+  getDelivers: function(callback) {
     // cache
     var cacheKey = 'delivers'
     var cache = getApp().getCache(cacheKey)
@@ -376,12 +486,12 @@ var getData = {
           callback(data)
         }
       },
-      failCallBack: function () {
-        util.showMsg("获取收货地址信息失败")
+      failCallBack: function (m) {
+        util.showMsg("获取收货地址信息失败!" + m)
       }
     })
   },
-  getDeliverTypes: function() {
+  getDeliverTypes: function(callback) {
     var result = [{
       desc: '自提',
       code: 0
@@ -391,9 +501,9 @@ var getData = {
       code: 2
     }
     ]
-    return result
+    callback(result)
   },
-  getPayTypes: function(sucCallback) {
+  getPayTypes: function(callback) {
     // cache
     var cacheKey = 'payTypes'
     var cache = getApp().getCache(cacheKey)
@@ -417,8 +527,8 @@ var getData = {
           callback(data)
         }
       },
-      failCallBack: function () {
-        util.showMsg("获取支付方式失败")
+      failCallBack: function (m) {
+        util.showMsg("获取支付方式失败!" + m)
       }
     })
   },
@@ -446,8 +556,8 @@ var getData = {
           callback(data)
         }
       },
-      failCallBack: function () {
-        util.showMsg("获取类目信息失败")
+      failCallBack: function (m) {
+        util.showMsg("获取类目信息失败!" + m)
       }
     })
   },
@@ -475,29 +585,10 @@ var getData = {
           callback(data)
         }
       },
-      failCallBack: function () {
-        util.showMsg("获取优惠券信息失败")
+      failCallBack: function (m) {
+        util.showMsg("获取优惠券信息失败!" + m)
       }
     })
-
-    /**var coupons = [{
-      id: 11,
-      meet: 50,
-      discount: 5,
-      name: "某某优惠券1",
-      validTime: "2020-09-11 00:00:00",
-      invalidTime: "2020-10-11 00:00:00",
-      got: 1
-    }, {
-      id: 21,
-      meet: 50,
-      discount: 10,
-      name: "某某优惠券2",
-      validTime: "2020-09-11 00:00:00",
-      invalidTime: "2020-10-11 00:00:00",
-      got: 1
-    }]
-    return coupons**/
   },
   getAllActivities: function(callback) {
     // cache
@@ -522,30 +613,10 @@ var getData = {
           callback(data)
         }
       },
-      failCallBack: function () {
-        util.showMsg("获取活动信息失败")
+      failCallBack: function (m) {
+        util.showMsg("获取活动信息失败!" + m)
       }
     })
-
-
-    /**var activies = [{
-      id: 111,
-      name: "中秋活动",
-      img: "4d90e412c5297ccdcaae2ac200614794",
-      validTime: "2020-09-11 00:00:00",
-      invalidTime: "2020-10-11 00:00:00",
-      desc: "你好好 塑料袋分离式的傅雷家书了地方了水电费螺丝刀傅雷家书两地分居数量决定父类数据辅导老师解放东路手机登录飞机上两地分居酸辣粉塑料袋发牢骚发牢骚杰弗里斯雷锋精神两地分居数量积分乐山大佛老司机地漏房"
-    },
-    {
-      id: 112,
-      name: "国庆活动",
-      img: "4d90e412c5297ccdcaae2ac200614794",
-      validTime: "2020-09-11 00:00:00",
-      invalidTime: "2020-10-11 00:00:00",
-      desc: "你好好 塑料袋分离式的傅雷家书了地方了水电费螺丝刀傅雷家书两地分居数量决定父类数据辅导老师解放东路手机登录飞机上两地分居酸辣粉塑料袋发牢骚发牢骚杰弗里斯雷锋精神两地分居数量积分乐山大佛老司机地漏房"
-    }
-    ]
-    return activies**/
   },
   getRecommendedItemList: function(callback){
     // cache
@@ -573,8 +644,8 @@ var getData = {
           callback(data)
         }
       },
-      function () {
-        util.showMsg("获取推荐商品信息失败")
+      function (m) {
+        util.showMsg("获取推荐商品信息失败!" + m)
       }
       )
   },
@@ -604,8 +675,8 @@ var getData = {
           callback(data)
         }
       },
-      function () {
-        util.showMsg("获取今日低价商品信息失败")
+      function (m) {
+        util.showMsg("获取今日低价商品信息失败!" + m)
       }
     )
   },
@@ -624,10 +695,10 @@ var getData = {
           sucCallback(data)
         }
       },
-      failCallBack: function () {
-        util.showMsg("获取商品信息失败")
+      failCallBack: function (m) {
+        //util.showMsg("获取商品信息失败")
         if (util.objectUtil.isFunction(failCallback)) {
-          failCallback(data)
+          failCallback(m)
         }
       }
     })

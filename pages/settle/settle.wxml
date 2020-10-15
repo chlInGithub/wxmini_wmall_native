@@ -46,6 +46,9 @@
       </view>
     </view>
   </view>
+  <view wx:else class="outter-view not-first-outter ptb10">
+    <view class="cred ta-c" style="line-height:6vh">不存在需要结算的商品</view>
+  </view>
 
   <view class="outter-view not-first-outter">
     <view class="fs8 ptb10">

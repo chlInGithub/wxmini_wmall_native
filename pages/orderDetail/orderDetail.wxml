@@ -7,7 +7,8 @@
       <view class="col30 ta-l fl fs8 pl10">
         {{detail.statusDes}}
       </view>
-      <view class="col60 ta-c fr fs7 pr10">{{detail.payVO.typeDesc}}</view>
+      <view class="col60 ta-c fr fs7 pr10" wx:if="{{detail.payVO}}">{{detail.payVO.typeDesc}}</view>
+      <view class="col60 ta-c fr fs7 pr10" wx:if="{{detail.status == 10 && detail.payVO.type == 2}}">待商家确认已付款</view>
       <view class="clearboth"></view>
     </view>
   </view>
@@ -79,13 +80,15 @@
     </view>
   </view>
 
-    <view class="outter-view not-first-outter ptb10 ">
-      <button wx:if="{{detail.status==10}}" class="big-button fs8 cwhite" style="background-color: red">付款</button>
-      <view class="operate-view pr10 ptb10 fs7 ">
-        <view class="col15 ta-c fr button ">删除</view>
-        <view class="clearboth"></view>
-      </view>
+  <view class="outter-view not-first-outter ptb10 ">
+    <button wx:if="{{detail.status==10 && detail.payVO.type != 2}}" class="big-button fs8 button cwhite" style="background-color: red" data-id="{{detail.id}}" bindtap="goPay">付款</button>
+    <view class="operate-view pr10 ptb10 fs7 ">
+      <view wx:if="{{detail.status == 30}}" class="col15 ta-c fr button cwhite" style="background-color: green" bindtap="successOrder" data-id="{{detail.id}}">已收货</view>
+      <view wx:if="{{detail.canRefund == true}}" class="col15 ta-c fr button cwhite" style="background-color: lightcoral" bindtap="showRefund" data-id="{{detail.id}}">退款</view>
+      <view class="col15 ta-c fr button " bindtap="delOrder" data-id="{{detail.id}}">删除</view>
+      <view class="clearboth"></view>
     </view>
+  </view>
 
   <view class="outter-view not-first-outter ptb10 ">
     <view class="fs8">
@@ -103,3 +106,42 @@
   <itemListComponent title="精品推荐" items="{{items}}" class="item-list-outer not-first-outter">
   </itemListComponent>
 </view>
+
+
+<!-- 必须设置class，以便 this.selectComponent(".className") -->
+<infoModalComponent title="申请退款" class="refundApplyModal" modal-top="modal-top">
+  <view slot="slot-body">
+    <view class="cell mt10 fs8 pl10 pr10">
+      <view class="col20 fl">类型</view>
+      <view class="col70 fl input-view">
+        <picker mode="selector" range="{{refundTypeDescs}}" value="0" bindchange="chooseRefundType">
+          <view wx:if="{{choosedRefundType}}" class="picker inline-block ta-c">
+            {{choosedRefundType.desc}}
+            <text class="pl10 pr10 cgray">></text>
+          </view>
+          <view wx:else class="cred">选择退货类型
+            <text class="pl10 pr10 cgray">></text>
+          </view>
+        </picker>
+      </view>
+      <view class="clearboth"></view>
+    </view>
+    <view class="cell mt10 fs8 pl10 pr10">
+      <view class="col20 fl">金额</view>
+      <view class="col70 fl input-view">
+        <text class="fl">￥</text><input class="fl" type="number" model:value="{{refundApplyFee}}" placeholder="退款金额"></input><text class="fl">元</text>
+      </view>
+      <view class="col70 fr ta-l cred">最多退￥{{ detail.realFee }}元</view>
+      <view class="clearboth"></view>
+    </view>
+    <view class="cell mt10 fs8 pl10 pr10">
+      <view class="col20 fl">原因</view>
+      <view class="col70 fl input-view">
+        <input type="text" model:value="{{refundApplyCause}}" placeholder="退款原因，如质量"></input>
+      </view>
+    </view>
+    <view class="cell mt10 fs8 pl10 pr10 block">
+      <button class="big-button" type="primary" bindtap="refundApply">确认</button>
+    </view>
+  </view>
+</infoModalComponent>

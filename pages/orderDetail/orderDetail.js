@@ -12,9 +12,101 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    refundTypeDescs: ['退货退款', '仅退款','换货'],
+    refundTypeCodes: [1,2,3],
+    refundTypes: [
+      {
+        code: 1,
+        desc: '退货退款'
+      },
+      {
+        code: 2,
+        desc: '仅退款'
+      },
+      {
+        code: 3,
+        desc: '换货'
+      }
+    ],
+    choosedRefundType: false,
+    refundApplyFee:"",
+    refundApplyCause: ""
   },
+  refundApply: function(){
+    if (!util.objectUtil.verifyValidObject(this.data.choosedRefundType)){
+      util.showMsg("请选择退款类型")
+      return
+    }
 
+    if (!util.objectUtil.verifyValidObject(this.data.refundApplyFee) || this.data.refundApplyFee < 0 || this.data.refundApplyFee > this.data.detail.realFee){
+      util.showMsg("申请金额不对哦")
+      return
+    }
+
+    if (!util.objectUtil.verifyValidObject(this.data.refundApplyCause)) {
+      util.showMsg("请选择退款原因")
+      return
+    }
+
+    var refund = {
+      type: this.data.choosedRefundType.code,
+      cause: this.data.refundApplyCause,
+      applyFee: this.data.refundApplyFee,
+      orderId: this.data.detail.id
+    }
+
+    var that = this
+    requestDataUtil.postData.refundApply(
+      refund,
+      function(data){
+        that.data.detail.canRefund = false
+        that.data.detail.status = 60
+        that.data.detail.statusDes = "申请退款"
+        that.setData({
+          detail: that.data.detail
+        })
+        that.showRefund()
+      }
+    )
+  },
+  chooseRefundType: function (event) {
+    var index = event.detail.value
+    var refundType = this.data.refundTypes[index]
+    this.setData({
+      choosedRefundType: refundType
+    })
+  },
+  showRefund: function(event){
+    this.setData({
+      choosedRefundType: false,
+      refundApplyFee: "",
+      refundApplyCause: ""
+    })
+    var t = this.selectComponent(".refundApplyModal")
+    t.triggleModal()
+  },
+  successOrder: function (event) {
+    var id = util.eventUtil.getId(event)
+    var that = this
+    requestDataUtil.postData.successOrder(
+      id,
+      function (data) {
+        that.data.detail.status = 40
+        that.data.detail.statusDes = "交易成功"
+        that.setData({
+          detail: that.data.detail
+        })
+      }
+    )
+  },
+  goPay: function (event) {
+    var id = util.eventUtil.getId(event)
+    goPageUtil.goPage.goPay(id)
+  },
+  delOrder: function (event) {
+    var id = util.eventUtil.getId(event)
+    requestDataUtil.postData.delOrder(id)
+  },
   getOrderDetail: function(id){
     var that = this
     requestDataUtil.getData.getOrderDetail(
@@ -27,6 +119,7 @@ Page({
             subOrderVO.presell = JSON.parse(subOrderVO.presell)
           }
         }
+
         that.setData({
           detail: detail
         })
@@ -55,8 +148,6 @@ Page({
       id: id
     })
 
-    this.getOrderDetail(id)
-
     var that = this
     requestDataUtil.getData.getRecommendedItemList(function (data) {
       that.setData({
@@ -76,7 +167,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.getOrderDetail(this.data.id)
   },
 
   /**
