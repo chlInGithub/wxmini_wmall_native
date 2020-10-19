@@ -1,6 +1,9 @@
+<page-meta page-style="background-color:{{bgColor}};min-height:100vh;">
+</page-meta>
+
 <!--index.wxml-->
 <view class="container">
-  <view class="page-body" style="width:90%">
+  <view class="page-body" style="width:90%;">
     <view class="page-section">
       <view class="page-section-title" style="margin: 1rem 0 0 0;text-align:center;padding: .5rem 0;background-color: #FF0000;color: white;">
         VIP头像与昵称
@@ -10,7 +13,7 @@
           <text>{{shopName}}</text>
         </view>
         <view class="flex-item flex-item-V ta-c" style="margin-top:.5rem;">
-          <image style="width:50vw;height:50vw;border-radius: 50%;border: 1px solid gold" src="{{shopImg}}"></image>
+          <image class="shopImg" src="{{shopImg}}"></image>
         </view>
         <view class="flex-item flex-item-V" style="text-align:center;margin-top:1rem;">
           <view class="userInfo">

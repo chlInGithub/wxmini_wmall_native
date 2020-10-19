@@ -51,6 +51,9 @@ Component({
       requestDataUtil.postData.getCoupons(id, function (id) {
         var ele = util.arrayUtil.getEleById(that.properties.coupons, id)
         ele.got = 1
+        that.triggerEvent('gotevent', {
+          id: id
+        }, {})
       })
     },
 

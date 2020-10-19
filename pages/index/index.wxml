@@ -1,6 +1,9 @@
+<page-meta page-style="background-color:{{bgColor}};min-height:100vh;">
+</page-meta>
+
 <view class="container">
   <view class="page-body">
-  <view>
+  <view style="margin-top:15vh">
       <cover-image src="{{shopImg}}" class="shopImg"></cover-image>
       <view style="text-align:center;margin-top:5px;">
         <text>{{shopName}}</text>

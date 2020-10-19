@@ -1,4 +1,4 @@
-<page-meta page-style="background-color:#EEEEEE">
+<page-meta page-style="background-color:{{bgColor}};min-height:100vh;">
 </page-meta>
 
 <view class="container">
@@ -42,10 +42,10 @@
       </block>
   </scroll-view>
 
-  <couponsComponent coupons="{{coupons}}" invalidGoCoupons="{{true}}" class="outter-view not-first-outter">
+  <couponsComponent bindgotevent="gotCouponsEvent" wx:if="{{coupons && coupons.length>0}}" coupons="{{coupons}}" invalidGoCoupons="{{true}}" class="outter-view not-first-outter">
   </couponsComponent>
 
-  <view class="outter-view not-first-outter">
+  <view wx:if="{{todayItems && todayItems.length > 0}}" class="outter-view not-first-outter">
     <view class="title-view">
       今日低价
     </view>
@@ -63,7 +63,7 @@
     </view>
   </view>
   
-  <itemListComponent title="精品推荐" items="{{items}}"  class="item-list-outer not-first-outter">
+  <itemListComponent wx:if="{{items && items.length > 0}}" title="精品推荐" items="{{items}}"  class="item-list-outer not-first-outter">
   </itemListComponent>
 
 </view>

@@ -34,7 +34,16 @@ Page({
   },
   delOrder: function(event){
     var id = util.eventUtil.getId(event)
-    requestDataUtil.postData.delOrder(id)
+    var that = this
+    requestDataUtil.postData.delOrder(
+      id,
+      function(){
+        util.arrayUtil.delEleById(that.data.orders, id)
+        that.setData({
+          orders: that.data.orders
+        })
+      }
+    )
   },
   goOrderDetail:function(event){
     var id = util.eventUtil.getId(event)
@@ -50,9 +59,6 @@ Page({
     }
 
     if (this.data.hasGotAll) {
-      wx.showToast({
-        title: '没有更多喽',
-      })
       return
     }
 
@@ -118,6 +124,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    util.initPage(this)
+
     var param = {
       pageSize: 10,
       pageIndex: -1
@@ -131,8 +139,6 @@ Page({
       param: param,
       hasGotAll: false
     })
-
-    this.setData(app.globalData)
 
     var that = this
     requestDataUtil.getData.getRecommendedItemList(function (data) {

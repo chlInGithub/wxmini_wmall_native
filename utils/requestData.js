@@ -83,7 +83,7 @@ var postData = {
       },
       method: 'POST',
       successCallBack: function (data) {
-        util.showMsg("删除订单成功")
+        util.showToast("删除订单成功")
         getApp().delCache('orderDetail' + orderId)
         if (util.objectUtil.isFunction(sucCallback)) {
           sucCallback(data)
@@ -106,7 +106,7 @@ var postData = {
       },
       method: 'POST',
       successCallBack: function (data) {
-        util.showMsg("删除收货地址成功")
+        util.showToast("删除收货地址成功")
         getApp().delCache('delivers')
         if (util.objectUtil.isFunction(sucCallback)) {
           sucCallback(data)
@@ -127,7 +127,7 @@ var postData = {
       data: param,
       method: 'POST',
       successCallBack: function (data) {
-        util.showMsg("保存收货地址成功")
+        util.showToast("保存收货地址成功")
 
         getApp().delCache('delivers')
         if (util.objectUtil.isFunction(sucCallback)) {
@@ -147,9 +147,6 @@ var postData = {
    * param : {itemId: xx, skuId: xx, count: xx}
    */
   addCart: function (param, sucCallback, failCallback) {
-    console.log("addCart")
-    console.log(param)
-
     requestUtil.request({
       url: "/wmall/cart/addItem",
       data: param,
@@ -159,7 +156,7 @@ var postData = {
         if(param.count < 1){
           msg = "商品已移出购物车"
         }
-        util.showMsg(msg)
+        util.showToast(msg)
         getApp().delCache('cartItems')
         if (util.objectUtil.isFunction(sucCallback)) {
           sucCallback(data)
@@ -212,7 +209,7 @@ var postData = {
         if(util.objectUtil.verifyValidObject(couponsEle)){
           couponsEle.got = 1
         }
-        util.showMsg("领取优惠券成功")
+        util.showToast("领取优惠券成功")
       },
       failCallBack: function (m) {
         util.showMsg("领取优惠券失败!" + m)
@@ -221,6 +218,28 @@ var postData = {
   }
 }
 var getData = {
+  getShareInfo: function (data, sucCallback, failCallback){
+    requestUtil.request(
+      {
+        url: '/wmall/share/info',
+        data: data,
+        method: 'GET',
+        successCallBack: function (data) {
+          console.log(data)
+
+          if (util.objectUtil.isFunction(sucCallback)) {
+            sucCallback(data)
+          }
+        },
+        failCallBack: function (m) {
+          util.showMsg("获取分享数据失败!" + m)
+          if (util.objectUtil.isFunction(failCallback)) {
+            failCallback(data)
+          }
+        }
+      }
+    )
+  },
   getPrePay: function (orderId, sucCallback, failCallback){
     requestUtil.request(
       {
@@ -444,6 +463,9 @@ var getData = {
     // cache
     var cache = getApp().globalData.simple
     if (util.objectUtil.verifyValidObject(cache)) {
+      if(util.objectUtil.isFunction(sucCallback)){
+        sucCallback()
+      }
       return
     }
 
@@ -456,6 +478,9 @@ var getData = {
       successCallBack: function(data){
         console.log(data)
         getApp().globalData.simple = data
+        if (util.objectUtil.isFunction(sucCallback)) {
+          sucCallback()
+        }
       },
       failCallBack: function(m){
         util.showMsg("获取店铺信息失败!" + m)
@@ -579,7 +604,37 @@ var getData = {
       successCallBack: function (data) {
         console.log(data)
         if (util.jsonUtil.hasData(data)) {
-          getApp().addCache(cacheKey, data)
+          getApp().addCache(cacheKey, data, 60)
+        }
+        if (util.objectUtil.isFunction(callback)) {
+          callback(data)
+        }
+      },
+      failCallBack: function (m) {
+        util.showMsg("获取优惠券信息失败!" + m)
+      }
+    })
+  },
+
+  getUserCoupons: function (callback) {
+    // cache
+    var cacheKey = 'userCoupons'
+    var cache = getApp().getCache(cacheKey)
+    if (util.objectUtil.verifyValidObject(cache)) {
+      if (util.objectUtil.isFunction(callback)) {
+        callback(cache)
+      }
+      return
+    }
+
+    requestUtil.request({
+      url: "/wmall/user/coupons",
+      data: {},
+      method: 'GET',
+      successCallBack: function (data) {
+        console.log(data)
+        if (util.jsonUtil.hasData(data)) {
+          getApp().addCache(cacheKey, data, 20)
         }
         if (util.objectUtil.isFunction(callback)) {
           callback(data)

@@ -20,7 +20,7 @@ Page({
   },
 
   onLoad: function (option) {
-    this.setData(app.globalData)
+    util.initPage(this)
     // app.refreshLoginCode()
   },
 

@@ -20,9 +20,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
-    this.setData(app.globalData)
-    
+    util.initPage(this)
   },
 
   /**
@@ -110,7 +108,14 @@ Page({
   onShareAppMessage: function () {
 
   },
-
+  gotCouponsEvent: function(detail){
+    var id = detail.detail.id
+    var ele = util.arrayUtil.getEleById(this.data.coupons, id)
+    ele.got = 1
+    this.setData({
+      coupons: this.data.coupons
+    })
+  },
   search_focus: function(){
     wx.navigateTo({
       url: '../search/search'

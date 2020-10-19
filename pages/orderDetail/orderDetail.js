@@ -106,6 +106,7 @@ Page({
   delOrder: function (event) {
     var id = util.eventUtil.getId(event)
     requestDataUtil.postData.delOrder(id)
+    wx.navigateBack()
   },
   getOrderDetail: function(id){
     var that = this
@@ -131,7 +132,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.setData(app.globalData)
+    util.initPage(this)
 
     var id = options.id
     if (!util.objectUtil.verifyValidObject(id)){

@@ -1,5 +1,8 @@
-<page-meta page-style="background-color:#EEEEEE;min-height: 100%;display: flex;flex-direction: column;">
+
+<page-meta page-style="background-color:{{bgColor}};min-height:100vh; display: flex;flex-direction: column;">
 </page-meta>
+
+
 <checkbox-group bindchange="bindchange">
 
   <view class="container flex-container">

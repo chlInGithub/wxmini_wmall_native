@@ -12,7 +12,11 @@ App({
     this.globalData.requestDomain = wx.getExtConfigSync().requestDomain
     this.globalData.requestUrlPrefix = "https://" + this.globalData.requestDomain + "/"
     this.globalData.shopImg = this.globalData.requestUrlPrefix + "/img/" + wx.getExtConfigSync().shopImg
-    this.globalData.imgPrefix = this.globalData.requestUrlPrefix + "/img/"
+    this.globalData.imgPrefix = "https://" + this.globalData.domain + "/img/"
+
+    this.globalData.bgColor = util.objectUtil.verifyValidObject(wx.getExtConfigSync().bgColor) ? wx.getExtConfigSync().bgColor : '#EEEEEE'
+    this.globalData.ngbgColor = util.objectUtil.verifyValidObject(wx.getExtConfigSync().ngbgColor) ? wx.getExtConfigSync().ngbgColor : '#ffffff'
+    this.globalData.ngFrontColor = util.objectUtil.verifyValidObject(wx.getExtConfigSync().ngFrontColor) ? wx.getExtConfigSync().ngFrontColor : '#000000'
 
     // 获取用户信息
     wx.getSetting({

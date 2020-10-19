@@ -20,7 +20,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "Weixin",
+    "navigationBarTitleText": "小商店",
     "navigationBarTextStyle": "black",
     "navigationStyle": "default",
     "enablePullDownRefresh": true
@@ -28,7 +28,8 @@
   "usingComponents": {
     "itemListComponent": "/components/itemListComponent/itemListComponent",
     "couponsComponent": "/components/couponsComponent/couponsComponent",
-    "infoModalComponent": "/components/infoModalComponent/infoModalComponent"
+    "infoModalComponent": "/components/infoModalComponent/infoModalComponent",
+    "rightUtilComponent": "/components/rightUtilComponent/rightUtilComponent"
   },
   "tabBar": {
     "color": "#AAAAAA",

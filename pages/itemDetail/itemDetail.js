@@ -89,12 +89,37 @@ Page({
       count: 1
     })
   },
+  share: function(){
+    var data = {
+      id: this.data.itemId
+    }
+    var shareUrl = this.data.requestUrlPrefix + '/wmall/item/share?' + requestUtil.dealParams("share", data)
+    this.setData(
+      {
+        shareUrl: shareUrl
+      }
+    )
 
+     var t = this.selectComponent(".infoModalComponent")
+     t.triggleModal()
+  },
+  shareImgloadedCallback: function(){
+    this.setData({
+      shareImgloaded: true
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.setData(app.globalData)
+    util.initPage(this)
+
+
+    /**this.setData(
+      {
+        shareUrl: false
+      }
+    )**/
 
     if (options.id == undefined) {
       wx.showModal({

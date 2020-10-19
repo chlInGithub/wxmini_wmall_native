@@ -103,7 +103,7 @@ Page({
     }
 
     // TODO 计算
-    console.log("计算购物车金额")
+    //console.log("计算购物车金额")
     var that = this
     requestDataUtil.getData.coumputeCart(
       {
@@ -375,6 +375,7 @@ Page({
       that.setData({
         items: items
       })
+      that.compute()
     })
   },
 
@@ -385,7 +386,7 @@ Page({
     this.setData({
       defaultComputeResult: this.data.computeResult
     })
-    this.setData(app.globalData)
+    util.initPage(this)
   },
 
   /**
@@ -406,7 +407,10 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function() {
-
+    this.setData({
+      items: []
+    })
+    this.cleanComputeResult()
   },
 
   /**

@@ -1,3 +1,6 @@
+<page-meta page-style="background-color:{{bgColor}};min-height:100vh;">
+</page-meta>
+
 <view class="container">
   <view class="outter-view search-view">
     <input model:value="{{val}}" class="search fl col80" type="text" maxlength="10" confirm-type="搜索" bindconfirm="bindconfirm" placeholder="输入你要搜索的关键字，最多10个字"></input>
@@ -15,3 +18,7 @@
     
   </view>
 </view>
+
+
+<rightUtilComponent>
+</rightUtilComponent>

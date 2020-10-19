@@ -2,6 +2,14 @@
 
 @import "/font-awesome/font-awesome.wxss";
 
+.shopImg {
+  border-radius: 50%;
+  width: 50vw;
+  height: 50vw;
+  margin: auto;
+  border: 4px solid goldenrod
+}
+
 .clearboth{
   clear: both
 }
@@ -252,7 +260,7 @@ checkbox .wx-checkbox-input {
 }
 
 .search{
-  border: 1px solid #CCCCCC;
+  border: 1px solid green;
   border-radius: 10px;
   height: 20px;
   padding-left: 10px;
@@ -273,7 +281,7 @@ checkbox .wx-checkbox-input {
 .swiper swiper-item .swiper-view{
   height: 100%;
   border-radius: 10px;
-  margin: 0 2px;
+  margin: 0;
 }
 
 .activy-img{

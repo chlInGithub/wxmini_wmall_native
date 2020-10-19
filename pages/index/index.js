@@ -11,9 +11,10 @@ Page({
   data: {
   },
   onLoad: function (option) {
-    this.setData(app.globalData)
+    util.initPage(this)
 
     // scene 需要使用 decodeURIComponent 才能获取到生成二维码时传入的 scene
+    // option.scene = 'aaa'
     if (util.objectUtil.verifyValidObject(option.scene)) {
       var scene = decodeURIComponent(option.scene)
       console.log(scene)
@@ -36,6 +37,7 @@ Page({
         // 处理分享
         var scene = getApp().getAndClearScene()
         if (util.objectUtil.verifyValidObject(scene)) {
+          util.showToast("即将跳转到分享内容")
           shareUtil.getShareInfoAndGo(scene)
           return
         } else {

@@ -41,10 +41,10 @@ var newToken = function(successCallBack, failCallBack) {
   }
   wx.login({
     success: res => {
-      console.log(res)
+      //console.log(res)
       var code = res.code
       getApp().globalData.loginCode = code
-      console.log("globalData : " + getApp().globalData)
+      //console.log("globalData : " + getApp().globalData)
 
       var data = {
         shopId: getApp().globalData.shopId,

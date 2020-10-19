@@ -10,7 +10,13 @@ Page({
 
   getCanUsedCoupons: function(){
     var that = this
-    requestDataUtil.getData.getAllCoupons(function(coupons){
+    requestDataUtil.getData.getUserCoupons(function(coupons){
+      if(util.jsonUtil.hasData(coupons)){
+        for (var i = 0; i < coupons.length; i++) {
+          coupons[i]['got'] = 1
+        }
+      }
+      
       that.setData({
         coupons: coupons
       })
@@ -29,6 +35,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    util.initPage(this)
     
     var that = this
     requestDataUtil.getData.getRecommendedItemList(function (items){
@@ -49,7 +56,6 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
     this.getCanUsedCoupons()
   },
 

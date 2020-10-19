@@ -1,3 +1,5 @@
+<page-meta page-style="background-color:{{bgColor}};min-height:100vh;">
+</page-meta>
 
 <view class="container">
   <view class="page-body" style="width:90%">
@@ -41,3 +43,7 @@
     </view>
   </view>
 </view>
+
+
+<rightUtilComponent>
+</rightUtilComponent>

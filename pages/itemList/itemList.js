@@ -34,7 +34,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.setData(app.globalData)
+    util.initPage(this)
 
     var param = {
       pageSize: 10,
@@ -68,11 +68,11 @@ Page({
       })
       param["activityId"] = activity.id
     }
-    if (options.itemName != undefined) {
+    if (options.title != undefined) {
       this.setData({
-        itemName: options.itemName
+        title: options.title
       })
-      param["title"] = itemName
+      param["title"] = this.data.title
     }
 
     this.setData({

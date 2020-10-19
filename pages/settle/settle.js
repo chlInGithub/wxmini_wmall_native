@@ -223,24 +223,24 @@ Page({
   compute: function() {
     var items = this.data.items
     if (items.length < 1) {
-      util.showMsg("缺少商品")
+      util.showToast("缺少商品")
       return false
     }
     var usedReceiveInfo = this.data.choosedDeliver
     if (usedReceiveInfo == undefined || usedReceiveInfo.id == undefined) {
-      util.showMsg("请选择收货地址")
+      util.showToast("请选择收货地址")
       return false
     }
 
     var usedPaytype = this.data.choosedPayType
     if (usedPaytype == undefined || usedPaytype.code == undefined) {
-      util.showMsg("请选择支付类型")
+      util.showToast("请选择支付类型")
       return false
     }
 
     var usedDeliverType = this.data.choosedDeliverType
     if (usedDeliverType == undefined || usedDeliverType.code == undefined) {
-      util.showMsg("请选择配送方式")
+      util.showToast("请选择配送方式")
       return false
     }
 
@@ -340,7 +340,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    this.setData(app.globalData)
+    util.initPage(this)
 
     var itemsParam = options.items
 
@@ -377,6 +377,7 @@ Page({
         if(!util.arrayUtil.isArray(items)){
           items = []
         }
+      
         saleStrategyUtil.parseList(items)
         that.setData({
           items: items

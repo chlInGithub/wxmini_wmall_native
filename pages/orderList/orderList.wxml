@@ -1,4 +1,4 @@
-<page-meta page-style="background-color:#EEEEEE;">
+<page-meta page-style="background-color:{{bgColor}};min-height:100vh;">
 </page-meta>
 
 <view class="container">
@@ -51,3 +51,8 @@
   <itemListComponent title="精品推荐" items="{{items}}" class="item-list-outer not-first-outter">
   </itemListComponent>
 </view>
+
+
+
+<rightUtilComponent>
+</rightUtilComponent>

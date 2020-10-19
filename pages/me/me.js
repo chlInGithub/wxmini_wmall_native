@@ -38,7 +38,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.setData(app.globalData)
+    util.initPage(this)
 
     var that = this
     requestDataUtil.getData.getRecommendedItemList(function(data){
@@ -60,7 +60,12 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    var that = this
     this.getOrderStatusCount()
+    requestDataUtil.getData.getShopSimpleInfo(function(){
+      var globalData = getApp().globalData
+      that.setData(globalData)
+    })
   },
 
   /**

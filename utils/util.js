@@ -14,6 +14,25 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
+var initPage = function(that){
+  var globalData = getApp().globalData
+  that.setData(globalData)
+
+  wx.setNavigationBarTitle({
+    title: globalData.shopName
+  })
+  wx.setNavigationBarColor(
+    {
+      frontColor: globalData.ngFrontColor,
+      backgroundColor: globalData.ngbgColor
+    }
+  )
+  // 不生效
+  /**wx.setBackgroundColor({
+    backgroundColor: globalData.bgColor
+  })**/
+}
+
 const EventUtil = {
   getParaFromEvent: function(event, name, must) {
     var id = event.currentTarget.dataset[name]
@@ -136,8 +155,12 @@ const ObjectUtil = {
 
 const JsonUtil = {
   hasData: function(v){
+    if(!ObjectUtil.verifyValidObject(v) || v == '[]'){
+      return false
+    }
+    v = JsonUtil.toJson(v)
     for (var key in v) {
-      if(ObjectUtil.isNotUndefined){
+      if (ObjectUtil.verifyValidObject(v[key])){
         return true
       }
     }
@@ -218,12 +241,20 @@ var showMsg = function(msg, callback) {
   })
 }
 
+
+var showToast = function (msg) {
+  wx.showToast({
+    title: msg,
+    duration: 2000
+  })
+}
+
 var getCurrentS = function () {
   return Math.floor(new Date().getTime() / 1000)
 }
 
 var replace4Spe = function(v){
-  return v.replace(/[\\+]+/g, "==plus==")
+  return v.replace(/[\\+]{1}/g, "==plus==")
 }
 
 module.exports = {
@@ -234,6 +265,8 @@ module.exports = {
   objectUtil: ObjectUtil,
   jsonUtil: JsonUtil,
   showMsg: showMsg,
+  showToast: showToast,
   getCurrentS: getCurrentS,
-  replace4Spe: replace4Spe
+  replace4Spe: replace4Spe,
+  initPage: initPage
 }

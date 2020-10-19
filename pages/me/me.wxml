@@ -1,6 +1,5 @@
-<page-meta page-style="background-color:#EEEEEE">
+<page-meta page-style="background-color:{{bgColor}};min-height:100vh;">
 </page-meta>
-
 <view class="container">
   <!-- 会员卡 -->
   <view class="outter-view">

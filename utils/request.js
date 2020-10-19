@@ -146,6 +146,9 @@ var request = function(context) {
       console.log(res.data)
       if (res.data.s) {
         if (util.objectUtil.isString(res.data.d)){
+          if (res.data.d == '[]'){
+            res.data.d = []
+          }
           res.data.d = util.jsonUtil.toJson(res.data.d)
         }
         successCallBack(res.data.d)
@@ -186,5 +189,6 @@ var requestProxy = function (context){
 
 
 module.exports = {
-  request: requestProxy
+  request: requestProxy,
+  dealParams: dealParams
 }

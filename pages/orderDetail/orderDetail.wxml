@@ -1,4 +1,4 @@
-<page-meta page-style="background-color:#EEEEEE;">
+<page-meta page-style="background-color:{{bgColor}};min-height:100vh;">
 </page-meta>
 
 <view class="container">
@@ -80,6 +80,35 @@
     </view>
   </view>
 
+
+  <view wx:if="{{detail.refundVO}}" class="outter-view not-first-outter ptb10">
+    <view>
+      <view class="col50 ta-l pl10 fs8 fl">退款处理状态</view>
+      <view class="col40 ta-r fs7 fr pr10">{{detail.refundVO.statusDesc}}</view>
+      <view class="clearboth"></view>
+    </view>
+    <view class="mt5">
+      <view class=" col50 ta-l pl10 fs8 fl">退款类型</view>
+      <view class="col40 ta-r fs7 fr pr10">{{detail.refundVO.typeDesc}}</view>
+      <view class="clearboth"></view>
+    </view>
+    <view class="mt5">
+      <view class="col50 ta-l pl10 fs8 fl">退款申请金额</view>
+      <view class="col40 ta-r fs7 fr pr10">￥{{detail.refundVO.applyFee}}</view>
+      <view class="clearboth"></view>
+    </view>
+    <view class="mt5">
+      <view class="col50 ta-l pl10 fs9 fl">退款原因</view>
+      <view class="col40 ta-r fs8 fr pr10">{{detail.refundVO.cause}}</view>
+      <view class="clearboth"></view>
+    </view>
+    <view class="mt5" wx:if="{{detail.refundVO.process}}">
+      <view class="col50 ta-l pl10 fs9 fl">过程概览</view>
+      <view class="col40 ta-r fs8 fr pr10">{{detail.refundVO.process}}</view>
+      <view class="clearboth"></view>
+    </view>
+  </view>
+
   <view class="outter-view not-first-outter ptb10 ">
     <button wx:if="{{detail.status==10 && detail.payVO.type != 2}}" class="big-button fs8 button cwhite" style="background-color: red" data-id="{{detail.id}}" bindtap="goPay">付款</button>
     <view class="operate-view pr10 ptb10 fs7 ">
@@ -145,3 +174,7 @@
     </view>
   </view>
 </infoModalComponent>
+
+
+<rightUtilComponent>
+</rightUtilComponent>

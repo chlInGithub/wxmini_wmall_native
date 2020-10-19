@@ -1,0 +1,12 @@
+<view class="right-view">
+  <view class="ele">
+    <view class="fa fa-home icon" bindtap="goShop"></view>
+  </view>
+  <view class="ele">
+    <view class="fa fa-shopping-cart icon" bindtap="goCart"></view>
+  </view>
+  <view class="ele">
+    <view class="fa fa-user icon" bindtap="goMe"></view>
+  </view>
+
+</view>

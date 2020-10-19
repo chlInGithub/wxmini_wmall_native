@@ -1,3 +1,6 @@
+<page-meta page-style="background-color:{{bgColor}};min-height:100vh;">
+</page-meta>
+
 <!--pages/couponsList/couponsList.wxml-->
 <view class="container">
   <block wx:if="{{coupons}}" wx:for="{{coupons}}" wx:key="*this">
@@ -12,3 +15,5 @@
 </view>
 
 
+<rightUtilComponent>
+</rightUtilComponent>

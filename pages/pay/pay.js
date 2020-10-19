@@ -28,11 +28,12 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (option) {
+    util.initPage(this)
+
     if (!util.objectUtil.verifyValidObject(option.orderId)){
       return util.showMsg("缺少订单ID")
     }
 
-    this.setData(app.globalData)
     this.setData({
       orderId: option.orderId
     })

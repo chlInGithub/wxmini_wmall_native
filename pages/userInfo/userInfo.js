@@ -14,7 +14,7 @@ Page({
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
   onLoad: function(option) {
-    this.setData(app.globalData)
+    util.initPage(this)
 
     var that = this
 

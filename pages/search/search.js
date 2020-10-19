@@ -114,8 +114,8 @@ Page({
       })
       return
     }
-    var param = '?itemName='+val
-    goPageUtil.goItemList(param)
+    var param = '?title='+val
+    goPageUtil.goPage.goItemList(param)
   },
 
   historyChosed: function(event){

@@ -1,4 +1,5 @@
-<page-meta page-style="background-color:#EEEEEE" page-style="min-height: 100%;display: flex;flex-direction: column;">
+
+<page-meta page-style="background-color:{{bgColor}};min-height:100vh; display: flex;flex-direction: column;">
 </page-meta>
 
 <view class="flex-container">
@@ -45,7 +46,7 @@
     <view class="pl10 inline-block">
       <text class="col70 fl ta-l fs8">{{detail.title}}</text>
       <view class="col25 fr fs5 cgray">
-        <view class="inline-block">
+        <view class="inline-block" bindtap="share">
           <view class="fs8 fa fa-share-alt inline-block"></view>
           <view>分享</view>
         </view>
@@ -94,6 +95,21 @@
     <rich-text nodes="{{detail.detail}}" style="overflow: scroll;"></rich-text>
   </view>
 </view>
+
+
+
+  <!-- 放在这里的原因： 和footer同级，避免弹层覆盖footer-->
+  <!-- 必须设置class，以便 this.selectComponent(".className") -->
+  <infoModalComponent wx:if="{{shareUrl != false}}" title="分享小程序码" class="infoModalComponent">
+    <view slot="slot-body" class="ta-c">
+      <image src="{{shareUrl}}" class="img" style="width:50vw;height:50vw;" bindload="shareImgloadedCallback" show-menu-by-longpress='true'></image>
+      <view class="cell">
+        <view class="fs6 cgreen">请长按小程序码选择保存或分享。</view>
+      </view>
+    </view>
+  </infoModalComponent>
+
+
 <view class="footer">
   <view bindtap="goShop" class="col30 fl">
     <image mode="aspectFit" src="/img/shop.png" class="img"></image>

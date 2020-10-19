@@ -1,7 +1,7 @@
 @import "/font-awesome/font-awesome.wxss";
 
 .modal-cover-top{
-  position: absolute;
+  position: fixed;
   top: 0;
   background-color: #EEEEEE;
   opacity: .9;
@@ -9,7 +9,7 @@
   width: 100vw;
 }
 .modal-cover-bottom{
-  position: absolute;
+  position: fixed;
   top: 70vh;
   background-color: #EEEEEE;
   opacity: .9;
@@ -17,7 +17,7 @@
   width: 100vw;
 }
 .modal{
-  position: absolute;
+  position: fixed;
   top: 30vh;
   background-color: white;
   width: 100vw;
