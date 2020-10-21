@@ -20,7 +20,7 @@ Page({
     requestDataUtil.getData.getItemDetail(
       id,
       function(detail){
-        var detailHtml = detail.detail.replace(/\/img\//g, app.globalData.imgPrefix)
+        var detailHtml = detail.detail.replace(/"\/img\//g, "\"" +app.globalData.imgPrefix)
         console.log(detailHtml)
         detail.detail = detailHtml
         console.log(detail)
@@ -99,6 +99,21 @@ Page({
         shareUrl: shareUrl
       }
     )
+
+    /**
+    wx.previewImage(
+      {
+        urls: [shareUrl],
+        success: function(res){
+          console.log(res)
+        },
+        fail: function (res) {
+          console.log(res)
+        }
+      },
+      true
+    )
+    **/
 
      var t = this.selectComponent(".infoModalComponent")
      t.triggleModal()
