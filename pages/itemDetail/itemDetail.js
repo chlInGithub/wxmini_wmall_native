@@ -148,7 +148,7 @@ Page({
       itemId: options.id
     })
 
-    // this.getItemDetail(this.data.itemId)
+    this.getItemDetail(this.data.itemId)
   },
 
   /**
@@ -162,7 +162,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.getItemDetail(this.data.itemId)
+
   },
 
   /**

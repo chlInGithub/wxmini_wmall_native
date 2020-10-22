@@ -36,26 +36,41 @@ Page({
   onShow: function () {
     var that = this
     requestDataUtil.getData.getAllActivities(function (data) {
+      if (!util.jsonUtil.hasData(data)){
+        return
+      }
       that.setData({
         activies: data
       })
     })
     requestDataUtil.getData.getAllCates(function (data) {
+      if (!util.jsonUtil.hasData(data)) {
+        return
+      }
       that.setData({
         cates: data
       })
     })
     requestDataUtil.getData.getAllCoupons(function (data) {
+      if (!util.jsonUtil.hasData(data)) {
+        return
+      }
       that.setData({
         coupons: data
       })
     })
     requestDataUtil.getData.getTodayLowPriceItemList(function (data) {
+      if (!util.jsonUtil.hasData(data)) {
+        return
+      }
       that.setData({
         todayItems: data
       })
     })
     requestDataUtil.getData.getRecommendedItemList(function (data) {
+      if (!util.jsonUtil.hasData(data)) {
+        return
+      }
       that.setData({
         items: data
       })

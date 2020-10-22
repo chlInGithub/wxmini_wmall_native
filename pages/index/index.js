@@ -14,7 +14,7 @@ Page({
     util.initPage(this)
 
     // scene 需要使用 decodeURIComponent 才能获取到生成二维码时传入的 scene
-    // option.scene = 'aaa'
+    // option.scene = 'ceDRQ'
     if (util.objectUtil.verifyValidObject(option.scene)) {
       var scene = decodeURIComponent(option.scene)
       console.log(scene)

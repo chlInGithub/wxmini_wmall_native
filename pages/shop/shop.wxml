@@ -11,7 +11,7 @@
   </view>
 
 <!-- 活动 -->
-  <view wx:if="{{activies.length > 0}}" class="outter-view not-first-outter">
+  <view wx:if="{{activies && activies.length > 0}}" class="outter-view not-first-outter">
     <swiper class="swiper" indicator-color="#BBBBBB" indicator-active-color="white" indicator-dots="true" autoplay="true" circular="true" easing-function="easeInOutCubic" >
       <block wx:for="{{activies}}" wx:key="*this">
           <swiper-item>
@@ -33,7 +33,7 @@
     </block>
   </view>
 
-  <scroll-view scroll-x="true" style="white-space: nowrap;" class="outter-view not-first-outter cate-view ta-l">
+  <scroll-view scroll-x="true"  wx:if="{{cates}}" style="white-space: nowrap;" class="outter-view not-first-outter cate-view ta-l">
       <block wx:for="{{cates}}" wx:key="*this">
             <view class="item {{selectedCateId == item.id ? 'selectedCate' : ''}}" style="display: inline-block;" data-id="{{item.id}}" bindtap="goCate">
               <image mode="aspectFit" class="img" src="{{imgPrefix + item.img}}"></image>
