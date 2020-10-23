@@ -11,7 +11,7 @@ App({
     this.globalData.domain = wx.getExtConfigSync().domain
     this.globalData.requestDomain = wx.getExtConfigSync().requestDomain
     this.globalData.requestUrlPrefix = "https://" + this.globalData.requestDomain + "/"
-    this.globalData.shopImg = this.globalData.requestUrlPrefix + "/img/" + wx.getExtConfigSync().shopImg
+    this.globalData.shopImg = "https://" + this.globalData.domain + "/img/" + wx.getExtConfigSync().shopImg
     this.globalData.imgPrefix = "https://" + this.globalData.domain + "/img/"
 
     this.globalData.bgColor = util.objectUtil.verifyValidObject(wx.getExtConfigSync().bgColor) ? wx.getExtConfigSync().bgColor : '#EEEEEE'

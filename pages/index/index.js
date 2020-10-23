@@ -23,16 +23,18 @@ Page({
 
   },
   onShow: function(){
-
     // 登录系统 存储token
-
+    this.deal()
+  },
+  onReady: function(){
+  },
+  deal: function(){
     var that = this
 
     tokenUtil.newToken(
       function (res) {
         // 店铺 用户 基本信息
         requestDataUtil.getData.getShopSimpleInfo()
-        //getApp().globalData.simple = simple
 
         // 处理分享
         var scene = getApp().getAndClearScene()
@@ -51,7 +53,6 @@ Page({
     )
 
   },
-
   binderror: function (e) {
     console.log(e)
   },

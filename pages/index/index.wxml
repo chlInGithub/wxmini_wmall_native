@@ -13,7 +13,5 @@
         <progress percent="95" active stroke-width="3" />
       </view>
     </view>
-    <web-view src="{{src}}" bindload="bindload" binderror="binderror">
-    </web-view>
   </view>
 </view>

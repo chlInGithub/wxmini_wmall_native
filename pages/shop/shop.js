@@ -27,16 +27,19 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    this.readyData()
+  },
+
+  readyData: function(){
     var that = this
     requestDataUtil.getData.getAllActivities(function (data) {
-      if (!util.jsonUtil.hasData(data)){
+      if (!util.jsonUtil.hasData(data)) {
         return
       }
       that.setData({
@@ -76,7 +79,6 @@ Page({
       })
     })
   },
-
   /**
    * 生命周期函数--监听页面隐藏
    */
