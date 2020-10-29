@@ -68,6 +68,7 @@ Page({
               }
               app.globalData.simple.user['img'] = res.data.d.thirdImg
               app.globalData.simple.user['name'] = res.data.d.thirdNick
+              app.globalData.simple.user['hasPhone'] = true
             }
 
             currentPage.setData({

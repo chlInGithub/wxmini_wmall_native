@@ -1,8 +1,13 @@
 const util = require('./util.js')
 const requestUtil = require('./request.js')
+const goPageUtil = require('./goPage.js')
 
 var postData = {
-  successOrder: function (orderId, sucCallback, failCallBack){
+  successOrder: function (orderId, sucCallback, failCallBack) {
+    var checkResult = goPageUtil.goPage.checkLogin()
+    if (!checkResult) {
+      return
+    }
     requestUtil.request({
       url: "/wmall/order/success",
       data: {
@@ -23,6 +28,10 @@ var postData = {
     })
   },
   refundApply: function (data, sucCallback, failCallBack) {
+    var checkResult = goPageUtil.goPage.checkLogin()
+    if (!checkResult) {
+      return
+    }
     if (data.type == undefined) {
       util.showMsg("请选择退款类型");
       return false;
@@ -58,6 +67,10 @@ var postData = {
     })
   },
   createOrder: function(data, sucCallback, failCallback){
+    var checkResult = goPageUtil.goPage.checkLogin()
+    if (!checkResult) {
+      return
+    }
     requestUtil.request({
       url: "/wmall/order/new",
       data: data,
@@ -76,6 +89,10 @@ var postData = {
     })
   },
   delOrder: function (orderId, sucCallback, failCallback) {
+    var checkResult = goPageUtil.goPage.checkLogin()
+    if (!checkResult) {
+      return
+    }
     requestUtil.request({
       url: "/wmall/order/del",
       data: {
@@ -99,6 +116,10 @@ var postData = {
 
   },
   delDeliver: function (receiveId, sucCallback, failCallback) {
+    var checkResult = goPageUtil.goPage.checkLogin()
+    if (!checkResult) {
+      return
+    }
     requestUtil.request({
       url: "/wmall/deliver/del",
       data: {
@@ -122,6 +143,10 @@ var postData = {
 
   },
   saveDeliver: function (param, sucCallback, failCallback) {
+    var checkResult = goPageUtil.goPage.checkLogin()
+    if (!checkResult) {
+      return
+    }
     requestUtil.request({
       url: "/wmall/deliver/save",
       data: param,
@@ -147,6 +172,10 @@ var postData = {
    * param : {itemId: xx, skuId: xx, count: xx}
    */
   addCart: function (param, sucCallback, failCallback) {
+    var checkResult = goPageUtil.goPage.checkLogin()
+    if(!checkResult){
+      return
+    }
     requestUtil.request({
       url: "/wmall/cart/addItem",
       data: param,
@@ -176,6 +205,10 @@ var postData = {
 
   },
   changeCountCart: function (param, sucCallback, failCallback) {
+    var checkResult = goPageUtil.goPage.checkLogin()
+    if (!checkResult) {
+      return
+    }
     requestUtil.request({
       url: "/wmall/cart/addItem",
       data: param,
@@ -241,6 +274,10 @@ var getData = {
     )
   },
   getPrePay: function (orderId, sucCallback, failCallback){
+    var checkResult = goPageUtil.goPage.checkLogin()
+    if (!checkResult) {
+      return
+    }
     requestUtil.request(
       {
         url: '/wmall/wxpay/prePay',
@@ -348,6 +385,10 @@ var getData = {
     })
   },
   computeSettle: function(data, callback,failCallback){
+    var checkResult = goPageUtil.goPage.checkLogin()
+    if (!checkResult) {
+      return
+    }
     requestUtil.request({
       url: "/wmall/settle/compute",
       data: data,
@@ -366,7 +407,10 @@ var getData = {
     })
   },
   coumputeCart: function (data,callback) {
-
+    var checkResult = goPageUtil.goPage.checkLogin()
+    if (!checkResult) {
+      return
+    }
     requestUtil.request({
       url: "/wmall/cart/compute",
       data: data,
@@ -382,6 +426,10 @@ var getData = {
     })
   },
   getAllCartItems: function (callback) {
+    var checkResult = goPageUtil.goPage.checkLogin()
+    if (!checkResult) {
+      return
+    }
     // cache
     var cacheKey = 'cartItems'
     var cache = getApp().getCache(cacheKey)
@@ -410,6 +458,10 @@ var getData = {
     })
   },
   getSettleItems: function(data, callback){
+    var checkResult = goPageUtil.goPage.checkLogin()
+    if (!checkResult) {
+      return
+    }
     requestUtil.request({
       url: "/wmall/cart/items",
       data: data,
@@ -488,6 +540,10 @@ var getData = {
     })
   },
   getDelivers: function(callback) {
+    var checkResult = goPageUtil.goPage.checkLogin()
+    if (!checkResult) {
+      return
+    }
     // cache
     var cacheKey = 'delivers'
     var cache = getApp().getCache(cacheKey)

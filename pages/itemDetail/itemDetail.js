@@ -90,12 +90,17 @@ Page({
     })
   },
   share: function(){
+    var checkResult = goPageUtil.goPage.checkLogin()
+    if (!checkResult) {
+      return
+    }
     var data = {
       id: this.data.itemId
     }
     var shareUrl = this.data.requestUrlPrefix + '/wmall/item/share?' + requestUtil.dealParams("share", data)
     this.setData(
       {
+        getShareImgDone: false,
         shareUrl: shareUrl
       }
     )
@@ -120,7 +125,7 @@ Page({
   },
   shareImgloadedCallback: function(){
     this.setData({
-      shareImgloaded: true
+      getShareImgDone: true
     })
   },
   /**

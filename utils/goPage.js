@@ -22,6 +22,14 @@ var goPage = {
       url: '/pages/wxLogin/wxLogin'
     })
   },
+  checkLogin: function () {
+    if (getApp().globalData.simple.user.hasPhone == true) {
+      return true
+    } else {
+      goPage.goWXLogin()
+      return false
+    }
+  },
   goUserInfo: function () {
     wx.navigateTo({
       url: '/pages/userInfo/userInfo'
