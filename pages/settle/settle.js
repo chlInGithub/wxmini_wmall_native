@@ -244,7 +244,7 @@ Page({
       return false
     }
 
-    if(usedDeliverType.code == 2){
+    if(usedDeliverType.code == 1){
       // 验证是否在商家服务区域内
       if (util.objectUtil.verifyValidObject(this.data.shopDeliveryAreas) && this.data.shopDeliveryAreas.length > 0) {
         var shopDeliveryAreas = this.data.shopDeliveryAreas

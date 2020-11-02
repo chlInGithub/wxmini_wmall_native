@@ -605,16 +605,33 @@ var getData = {
     })
   },
   getDeliverTypes: function(callback) {
-    var result = [{
-      desc: '自提',
-      code: 0
-    },
-    {
-      desc: '快递/配送',
-      code: 2
+    // cache
+    var cacheKey = 'deliveryTypes'
+    var cache = getApp().getCache(cacheKey)
+    if (util.objectUtil.verifyValidObject(cache)) {
+      if (util.objectUtil.isFunction(callback)) {
+        callback(cache)
+      }
+      return
     }
-    ]
-    callback(result)
+
+    requestUtil.request({
+      url: "/wmall/shop/deliveryType",
+      data: {},
+      method: 'GET',
+      successCallBack: function (data) {
+        console.log(data)
+        if (util.jsonUtil.hasData(data)) {
+          getApp().addCache(cacheKey, data)
+        }
+        if (util.objectUtil.isFunction(callback)) {
+          callback(data)
+        }
+      },
+      failCallBack: function (m) {
+        util.showMsg("获取交付方式失败!" + m)
+      }
+    })
   },
   getPayTypes: function(callback) {
     // cache
