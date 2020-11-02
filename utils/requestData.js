@@ -528,7 +528,6 @@ var getData = {
       },
       method: 'POST',
       successCallBack: function(data){
-        console.log(data)
         getApp().globalData.simple = data
         if (util.objectUtil.isFunction(sucCallback)) {
           sucCallback()
@@ -536,6 +535,39 @@ var getData = {
       },
       failCallBack: function(m){
         util.showMsg("获取店铺信息失败!" + m)
+      }
+    })
+  },
+  getShopDeliveryAreas: function(callback) {
+    var checkResult = goPageUtil.goPage.checkLogin()
+    if (!checkResult) {
+      return
+    }
+    // cache
+    var cacheKey = 'shopDeliveryAreas'
+    var cache = getApp().getCache(cacheKey)
+    if (util.objectUtil.verifyValidObject(cache)) {
+      if (util.objectUtil.isFunction(callback)) {
+        callback(cache)
+      }
+      return
+    }
+
+    requestUtil.request({
+      url: "/wmall/shop/deliveryAreas",
+      data: {},
+      method: 'GET',
+      successCallBack: function (data) {
+        if (util.jsonUtil.hasData(data)) {
+          getApp().globalData.shopDeliveryAreas = data
+          getApp().addCache(cacheKey, data)
+        }
+        if (util.objectUtil.isFunction(callback)) {
+          callback(data)
+        }
+      },
+      failCallBack: function (m) {
+        util.showMsg("获取配送地址范围失败!" + m)
       }
     })
   },

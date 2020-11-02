@@ -244,6 +244,25 @@ Page({
       return false
     }
 
+    if(usedDeliverType.code == 2){
+      // 验证是否在商家服务区域内
+      if (util.objectUtil.verifyValidObject(this.data.shopDeliveryAreas) && this.data.shopDeliveryAreas.length > 0) {
+        var shopDeliveryAreas = this.data.shopDeliveryAreas
+        var match1 = false
+        for (var index = 0; index < shopDeliveryAreas.length; index++) {
+            var matchIndex = usedReceiveInfo.code.indexOf(shopDeliveryAreas[index].code);
+            if (matchIndex > -1) {
+              match1 = true
+              continue
+            }
+        }
+        if(!match1){
+          util.showToast("不在配送区域")
+          return  false
+        }
+      }
+    }
+
     var temp = [];
 
     items.forEach(function(item) {

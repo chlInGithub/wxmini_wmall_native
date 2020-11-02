@@ -76,6 +76,10 @@ infoModalComponent .cell{
   margin-top: 3px;
 }
 
+.lh-1d5{
+  line-height: 1.5vh;
+}
+
 .itemDetailTag {
   color: red;
   background: linear-gradient(to right,#FFFF33,#FFCC33);

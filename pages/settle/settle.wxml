@@ -19,6 +19,17 @@
       </view>
       <text class="fr pr10 cgray goedit">></text>
       <view class="clearboth"></view>
+      <view wx:if="{{shopDeliveryAreas && shopDeliveryAreas.length > 0 && choosedDeliverType && choosedDeliverType.code == 2}}" class="pl10 mt10 cred fs6 ta-l lh-1d5">
+        <view>配送范围：</view>
+        <view wx:for="{{shopDeliveryAreas}}" wx:key="*this" class="pl10">
+          <text wx:if="{{item.desc}}" class="inline-block">
+            {{item.desc}}
+          </text>
+          <text wx:if="{{item.other}}" class="ml3 inline-block">
+            {{item.other}}
+          </text>
+        </view>
+      </view>
     </view>
 
   </view>

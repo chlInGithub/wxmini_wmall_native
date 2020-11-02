@@ -34,17 +34,20 @@ Page({
     tokenUtil.newToken(
       function (res) {
         // 店铺 用户 基本信息
-        requestDataUtil.getData.getShopSimpleInfo()
+        requestDataUtil.getData.getShopSimpleInfo(function(){
+          requestDataUtil.getData.getShopDeliveryAreas()
 
-        // 处理分享
-        var scene = getApp().getAndClearScene()
-        if (util.objectUtil.verifyValidObject(scene)) {
-          util.showToast("即将跳转到分享内容")
-          shareUtil.getShareInfoAndGo(scene)
-          return
-        } else {
-          goPageUtil.goPage.goShop()
-        }
+          // 处理分享
+          var scene = getApp().getAndClearScene()
+          if (util.objectUtil.verifyValidObject(scene)) {
+            util.showToast("即将跳转到分享内容")
+            shareUtil.getShareInfoAndGo(scene)
+            return
+          } else {
+            goPageUtil.goPage.goShop()
+          }
+        })
+        
       }, function () {
         util.showMsg("获取token失败", function () {
           goPageUtil.goPage.goIndex()
