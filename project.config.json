@@ -27,7 +27,8 @@
     "userConfirmedUseCompilerModuleSwitch": false,
     "packNpmManually": false,
     "packNpmRelationList": [],
-    "minifyWXSS": true
+    "minifyWXSS": true,
+    "scopeDataCheck": false
   },
   "compileType": "miniprogram",
   "libVersion": "2.13.0",

@@ -10,7 +10,7 @@ App({
     this.globalData.shopName = wx.getExtConfigSync().shopName
     this.globalData.domain = wx.getExtConfigSync().domain
     this.globalData.requestDomain = wx.getExtConfigSync().requestDomain
-    this.globalData.requestUrlPrefix = "https://" + this.globalData.requestDomain + "/"
+    this.globalData.requestUrlPrefix = "https://" + this.globalData.requestDomain
     this.globalData.shopImg = "https://" + this.globalData.domain + "/img/" + wx.getExtConfigSync().shopImg
     this.globalData.imgPrefix = "https://" + this.globalData.domain + "/img/"
 

@@ -7,7 +7,7 @@
         <block wx:for="{{items}}" wx:key="*this">
           <view wx:if="{{index%2 == 1}}" class="item" bindtap="goItemDetail" data-id="{{item.id}}">
             <view class="img-view">
-              <image mode="aspectFit" class="img" src="{{imgPrefix + item.img}}"></image>
+              <image mode="aspectFit" class="img" src="{{imgPrefix + item.img}}" show-menu-by-longpress='true'></image>
             </view>
             <view class="title">
               {{item.title}}
@@ -25,10 +25,10 @@
             <view wx:if="{{item.labelPrice != undefined}}" class="labelPrice">
               ￥{{item.labelPrice}}
             </view>
-            <view class="price">
+            <view wx:if="{{item.price}}" class="price">
               ￥{{item.price}}
             </view>
-            <view class="sale">
+            <view wx:if="{{item.sale}}" class="sale">
               已售{{item.sales}}件
             </view>
             <view wx:if="{{item.inventory > 0}}" class="fa fa-shopping-cart  cart fr"></view>
@@ -40,7 +40,7 @@
         <block wx:for="{{items}}" wx:key="*this">
           <view wx:if="{{index%2 == 0}}" class="item" bindtap="goItemDetail" data-id="{{item.id}}">
             <view class="img-view">
-              <image mode="aspectFit" class="img" src="{{imgPrefix + item.img}}"></image>
+              <image mode="aspectFit" class="img" src="{{imgPrefix + item.img}}" show-menu-by-longpress='true'></image>
             </view>
             <view class="title">
               {{item.title}}

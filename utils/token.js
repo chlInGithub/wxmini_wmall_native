@@ -55,7 +55,7 @@ var newToken = function(successCallBack, failCallBack) {
       }
 
       requestUtil.request({
-        url: "wmall/token/newToken",
+        url: "/wmall/token/newToken",
         data: data,
         method: 'POST',
         successCallBack: sucCall,

@@ -9,7 +9,7 @@
       <block wx:for="{{detail.imgs}}" wx:key="*this">
         <swiper-item>
           <view class="swiper-view">
-            <image bindtap="showImg" data-img="{{item}}" src="{{imgPrefix + item}}" class="img"></image>
+            <image bindtap="showImg" data-img="{{item}}" src="{{imgPrefix + item}}" class="img" show-menu-by-longpress='true'></image>
           </view>
         </swiper-item>
       </block>
