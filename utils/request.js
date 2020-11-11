@@ -15,6 +15,7 @@ var dealParams = function(url, data) {
   }
 
   var dataStrWithSortedKey = util.jsonUtil.toParamWithSortedKey(data)
+  var dataEncodeStrWithSortedKey = util.jsonUtil.toParamWithSortedKey(data, true)
 
   var newToken = url.indexOf('newToken') !== -1
   // 检查token
@@ -36,10 +37,13 @@ var dealParams = function(url, data) {
   var appendDataStrWithSortedKey = util.jsonUtil.toParam(appendData)
 
   var lastData = ""
+  var lastDataEncode = ""
   if (util.stringUtil.isEmpty(dataStrWithSortedKey)) {
     lastData = appendDataStrWithSortedKey
+    lastDataEncode = appendDataStrWithSortedKey
   } else {
     lastData = dataStrWithSortedKey + "&" + appendDataStrWithSortedKey
+    lastDataEncode = dataEncodeStrWithSortedKey + "&" + appendDataStrWithSortedKey
   }
 
   // 生成sign
@@ -49,7 +53,7 @@ var dealParams = function(url, data) {
   sign = util.replace4Spe(sign)
 
   // 最终的data数据
-  var finalData = lastData + "&sign=" + sign
+  var finalData = lastDataEncode + "&sign=" + sign
 
   //finalData = encodeURI(finalData)
   return finalData
