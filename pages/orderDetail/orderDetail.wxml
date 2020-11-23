@@ -132,6 +132,13 @@
     </view>
   </view>
 
+  <view class="outter-view not-first-outter">
+      <canvas class="canvas-code" canvas-id="itemQrcode" style="background:#fff;width: 200px;height: 200px;margin:auto;"/>
+      <view class="ta-c fs6 margin-auto"  style="width:90vw;" disabled="disabled">
+        可向商家展示订单二维码
+      </view>
+  </view> 
+
   <itemListComponent title="精品推荐" items="{{items}}" class="item-list-outer not-first-outter">
   </itemListComponent>
 </view>

@@ -5,6 +5,8 @@ const requestUtil = require('../../utils/request.js')
 const requestDataUtil = require('../../utils/requestData.js')
 const tokenUtil = require('../../utils/token.js')
 const saleStrategyUtil = require('../../utils/saleStrategy.js')
+const qrcode = require('../../utils/qrcode.js')
+
 const app = getApp()
 Page({
 
@@ -117,12 +119,23 @@ Page({
         for (var i = 0; i < subOrderVOS.length; i++) {
           var subOrderVO = subOrderVOS[i]
           if (undefined != subOrderVO.presell) {
-            subOrderVO.presell = JSON.parse(subOrderVO.presell)
+            console.log(subOrderVO.presell)
+            subOrderVO.presell = util.jsonUtil.toJson(subOrderVO.presell)
           }
         }
 
         that.setData({
           detail: detail
+        })
+
+        new qrcode('itemQrcode',{
+          text: detail.id,
+          width: 200,
+          height: 200,
+          padding: 12, // 生成二维码四周自动留边宽度，不传入默认为0
+          correctLevel: qrcode.CorrectLevel.L, // 二维码可辨识度
+          callback: (res) => {
+          }
         })
       }
     )

@@ -69,8 +69,14 @@ App({
    * k: key
    * o: 数据
    * s: 超时相对秒数， 默认3600秒
+   * l: use storage
    */
-  addCache: function(k, o, s){
+  addCache: function(k, o, s, l){
+    if(util.objectUtil.verifyValidObject(l) && l == true){
+      wx.setStorageSync(k + "", o)
+      return;
+    }
+
     if (util.objectUtil.isUndefined(this.globalData.cache)) {
       this.globalData['cache'] = {}
     }
@@ -90,13 +96,22 @@ App({
 
     this.globalData['cache'][k] = val
   },
-  delCache: function(k){
+  delCache: function(k, l){
+    if(util.objectUtil.verifyValidObject(l) && l == true){
+      wx.removeStorageSync(k + "")
+      return;
+    }
+
     if (util.objectUtil.isUndefined(this.globalData.cache) || util.objectUtil.isUndefined(this.globalData.cache[k])) {
       return
     }
     this.globalData.cache[k] = undefined
   },
-  getCache: function(k){
+  getCache: function(k, l){
+    if(util.objectUtil.verifyValidObject(l) && l == true){
+      return wx.getStorageSync(k + "")
+    }
+
     if (util.objectUtil.isUndefined(this.globalData.cache) || util.objectUtil.isUndefined(this.globalData.cache[k])){
       return undefined
     }
