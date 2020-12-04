@@ -39,7 +39,7 @@ Page({
   },
 
   goShop() {
-    goPageUtil.goPage.goShop()
+    goPageUtil.goPage.rederictShop()
   },
 
   getUserInfo: function(e) {
@@ -70,7 +70,7 @@ Page({
           })
           app.globalData.simple.user['img'] = userInfo.avatarUrl
           app.globalData.simple.user['name'] = userInfo.nickName
-          goPageUtil.goPage.goIndex()
+          goPageUtil.goPage.rederictIndex()
         },
         failCallBack: function (res) {
           util.showMsg(JSON.stringify(res))

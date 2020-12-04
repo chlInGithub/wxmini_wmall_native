@@ -18,7 +18,7 @@ Page({
   },
 
   goOrderDetail: function(){
-    goPageUtil.goPage.goOrderDetail(this.data.orderId)
+    goPageUtil.goPage.rederictOrderDetail(this.data.orderId)
   },
   payResult : function (data) {
     this.setData(data)

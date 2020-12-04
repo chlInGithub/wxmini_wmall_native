@@ -348,7 +348,11 @@ Page({
     requestDataUtil.postData.createOrder(
       data,
       function(orderId){
-        goPageUtil.goPage.goPay(orderId)
+        if(data.payType == 2){
+          goPageUtil.goPage.rederictOrderDetail(orderId)
+        }else{
+          goPageUtil.goPage.rederictPay(orderId)
+        }
       },
       function(m){
         

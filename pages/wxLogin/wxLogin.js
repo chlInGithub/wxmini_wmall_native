@@ -16,7 +16,7 @@ Page({
   },
 
   goShop: function(){
-    goPageUtil.goPage.goShop()
+    goPageUtil.goPage.rederictShop()
   },
 
   onLoad: function (option) {
@@ -78,9 +78,9 @@ Page({
             })
 
             if (util.objectUtil.verifyValidObject(app.globalData.userInfo)) {
-              goPageUtil.goPage.goIndex()
+              goPageUtil.goPage.rederictIndex()
             } else {
-              goPageUtil.goPage.goUserInfo()
+              goPageUtil.goPage.rederictUserInfo()
             }
           },
           failCallBack: function(res){

@@ -6,6 +6,11 @@ var goPage = {
       url: '/pages/index/index'
     })
   },
+  rederictIndex: function () {
+    wx.redirectTo({
+      url: '/pages/index/index'
+    })
+  },
   /**
    * param ( ?key=xx&key=xx...)
    */
@@ -35,6 +40,11 @@ var goPage = {
       url: '/pages/userInfo/userInfo'
     })
   },
+  rederictUserInfo: function () {
+    wx.redirectTo({
+      url: '/pages/userInfo/userInfo'
+    })
+  },
   goCouponsList: function () {
     wx.navigateTo({
       url: '/pages/couponsList/couponsList'
@@ -42,6 +52,11 @@ var goPage = {
   },
   goShop: function () {
     wx.switchTab({
+      url: '/pages/shop/shop'
+    })
+  },
+  rederictShop: function () {
+    wx.redirectTo({
       url: '/pages/shop/shop'
     })
   },
@@ -63,6 +78,11 @@ var goPage = {
       url: '/pages/pay/pay?orderId=' + orderId
     })
   },
+  rederictPay: function (orderId) {
+    wx.redirectTo({
+      url: '/pages/pay/pay?orderId=' + orderId
+    })
+  },
   /**
    * param: '?code=val&key=val&...'
    */
@@ -76,6 +96,11 @@ var goPage = {
   },
   goOrderDetail: function (id) {
     wx.navigateTo({
+      url: '/pages/orderDetail/orderDetail?id=' + id,
+    })
+  },
+  rederictOrderDetail: function (id) {
+    wx.redirectTo({
       url: '/pages/orderDetail/orderDetail?id=' + id,
     })
   },
