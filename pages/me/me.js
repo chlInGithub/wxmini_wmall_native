@@ -15,6 +15,9 @@ Page({
 
   },
 
+  goAboutShop: function(){
+    goPageUtil.goPage.goAboutShop()
+  },
   goWXLogin: function(){
     goPageUtil.goPage.goWXLogin()
   },

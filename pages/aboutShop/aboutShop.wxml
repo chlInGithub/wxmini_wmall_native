@@ -1,0 +1,34 @@
+<page-meta page-style="background-color:{{bgColor}};min-height:100vh;">
+</page-meta>
+
+<view class="container">
+  <view class="outter-view ptb10">
+    <view class="fs7 ta-l pl10 fl">
+      {{shopName}}
+    </view>
+  </view>
+
+  <view class="outter-view not-first-outter ptb10">
+    <view class="fs7 ta-l pl10 fl">
+      门店地址 {{simple.shop.address}}
+    </view>
+  </view>
+
+  <view class="outter-view not-first-outter ptb10">
+    <view class="fs7 ta-l pl10 fl">
+      联系电话 {{simple.shop.mobile}}
+    </view>
+  </view>
+
+  <view class="outter-view not-first-outter ptb10">
+    <view>
+       <image src="{{shopImg}}" style="width:70vw;height:70vw" mode="aspectFit" show-menu-by-longpress='true'></image>
+    </view>
+  </view>
+
+  <view class="outter-view not-first-outter ptb10">
+    <view class="fs7 ta-l pl10 fl" bindtap="goBYInfo">
+      关于 技术服务商
+    </view>
+  </view>
+</view>

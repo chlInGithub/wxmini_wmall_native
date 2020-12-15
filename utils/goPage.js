@@ -1,6 +1,16 @@
 const util = require("./util.js")
 
 var goPage = {
+  goBYInfo: function(){
+    wx.navigateTo({
+      url: '/pages/byInfo/byInfo'
+    })
+  },
+  goAboutShop: function(){
+    wx.navigateTo({
+      url: '/pages/aboutShop/aboutShop'
+    })
+  },
   goIndex: function () {
     wx.navigateTo({
       url: '/pages/index/index'

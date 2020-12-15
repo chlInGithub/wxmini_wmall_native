@@ -57,7 +57,7 @@ var getSaleStrategyTags = function(itemJson) {
     tags.push('预售')
   }
   if (ObjectCommonUtil.isNotUndefined(row.strategyJson.minFee)) {
-    tags.push('订单最少' + row.strategyJson.minFee.minFee + '元')
+    tags.push('满购:订单最少' + row.strategyJson.minFee.minFee + '元')
   }
   if (ObjectCommonUtil.isNotUndefined(row.strategyJson.minCount)) {
     tags.push(row.strategyJson.minCount.minCount + '件起售')

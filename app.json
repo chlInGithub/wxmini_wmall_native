@@ -14,7 +14,8 @@
     "pages/wxLogin/wxLogin",
     "pages/userInfo/userInfo",
     "pages/orderDetail/orderDetail",
-    "pages/pay/pay"
+    "pages/pay/pay",
+    "pages/aboutShop/aboutShop"
   ],
   "entryPagePath": "pages/index/index",
   "window": {
