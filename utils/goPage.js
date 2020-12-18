@@ -1,6 +1,11 @@
 const util = require("./util.js")
 
 var goPage = {
+  goMyShare: function(){
+    wx.navigateTo({
+      url: '/pages/myShare/myShare'
+    })
+  },
   goBYInfo: function(){
     wx.navigateTo({
       url: '/pages/byInfo/byInfo'

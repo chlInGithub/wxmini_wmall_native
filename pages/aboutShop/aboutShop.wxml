@@ -27,7 +27,7 @@
   </view>
 
   <view class="outter-view not-first-outter ptb10">
-    <view class="fs7 ta-l pl10 fl" bindtap="goBYInfo">
+    <view class="fs7 ta-l pl10 fl cred" bindtap="goBYInfo">
       关于 技术服务商
     </view>
   </view>

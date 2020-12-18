@@ -15,6 +15,9 @@ Page({
 
   },
 
+  goMyShare: function(){
+    goPageUtil.goPage.goMyShare()
+  },
   goAboutShop: function(){
     goPageUtil.goPage.goAboutShop()
   },

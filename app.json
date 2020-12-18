@@ -15,7 +15,8 @@
     "pages/userInfo/userInfo",
     "pages/orderDetail/orderDetail",
     "pages/pay/pay",
-    "pages/aboutShop/aboutShop"
+    "pages/aboutShop/aboutShop",
+    "pages/myShare/myShare"
   ],
   "entryPagePath": "pages/index/index",
   "window": {

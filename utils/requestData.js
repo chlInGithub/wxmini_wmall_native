@@ -891,6 +891,33 @@ var getData = {
       }
     })
   },
+  getMyShare: function(sucCallback){
+    // cache
+    var cacheKey = 'myShares'
+    var cache = getApp().getCache(cacheKey)
+    if (util.objectUtil.verifyValidObject(cache)) {
+      if (util.objectUtil.isFunction(sucCallback)) {
+        sucCallback(cache)
+      }
+      return
+    }
+    requestUtil.request({
+      url: "/wmall/user/myShares",
+      data: {},
+      method: 'GET',
+      successCallBack: function(data){
+        if (util.jsonUtil.hasData(data)) {
+          getApp().addCache(cacheKey, data, 30)
+        }
+        if (util.objectUtil.isFunction(sucCallback)) {
+          sucCallback(data)
+        }
+      },
+      failCallBack: function(m){
+        util.showMsg("获取我的分享失败!")
+      }
+    })
+  }
 }
 
 module.exports = {

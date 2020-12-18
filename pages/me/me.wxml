@@ -69,6 +69,12 @@
   </view>
 
   <view class="outter-view not-first-outter ptb10">
+    <view class="fs7 ta-l pl10 fl" bindtap="goMyShare">
+      我的分享
+    </view>
+  </view>
+
+  <view class="outter-view not-first-outter ptb10">
     <view class="fs7 ta-l pl10 fl" bindtap="goAboutShop">
       关于 {{shopName}}
     </view>

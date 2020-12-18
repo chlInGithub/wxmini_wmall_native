@@ -1,0 +1,20 @@
+<page-meta page-style="background-color:{{bgColor}};min-height:100vh;">
+</page-meta>
+
+<view class="container">
+  <view class="outter-view ptb10">
+    <view class="fs8 ta-c pl10 cred">
+      仅显示为近30天的分享记录
+    </view>
+  </view>
+
+  <block  wx:if="{{myShares}}">
+    <view class="outter-view not-first-outter ptb10" wx:for="{{myShares}}">
+      <view class="fs7 ta-l pl10 fl">
+        <text class="mr10">{{item.time}}</text>
+        <text class="mr10">{{item.scene}}</text>
+        <text>引流新客{{item.gainCount}}位</text>
+      </view>
+    </view>
+  </block>
+</view>
