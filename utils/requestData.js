@@ -446,7 +446,7 @@ var getData = {
       method: 'GET',
       successCallBack: function (data) {
         if (util.jsonUtil.hasData(data)) {
-          getApp().addCache(cacheKey, data, 60 * 10)
+          getApp().addCache(cacheKey, data, 10)
         }
         if (util.objectUtil.isFunction(callback)) {
           callback(data)

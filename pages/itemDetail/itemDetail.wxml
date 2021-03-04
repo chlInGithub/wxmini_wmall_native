@@ -78,20 +78,19 @@
 
   </view>
 
-  <view wx:if="detail.skus" class="outter-view borderradius0" style="margin-top:10px;">
-    <view class="pl10 ta-l fs6">
-      <view class="fa fa-hand-o-right fa-lg fl col10 pl10 cred"></view>
+  <view wx:if="detail.skus" class="outter-view borderradius0 ptb5 mt10 inline-block">
+    <view class="pl10 ta-l fs7">
+      <view class="fa fa-hand-o-right fa-sm fl col10 pl10 cred"><text class="fs6">已选</text></view>
       <picker class="fl pl10 col70" mode="selector" range="{{skuTitles}}" value="0" bindchange="chooseSku">
-        <view class="picker inline-block" style="border-bottom: 1px solid gray">
+        <view class="picker inline-block ta-c w100" style="border-bottom: 1px solid gray">
           {{choosedSku.title}}
         </view>
       </picker>
-      <view class="fa fa-angle-right cgray fa-lg"></view>
     </view>
   </view>
 
 
-  <view class="outter-view borderradius0 fs8" style="padding-top:10px;overflow: scroll;">
+  <view class="outter-view borderradius0 fs8 ptb5 mt10" style="overflow: scroll;">
     <rich-text nodes="{{detail.detail}}" style="overflow: scroll;"></rich-text>
   </view>
 </view>

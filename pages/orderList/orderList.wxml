@@ -34,7 +34,7 @@
         <view class="fs8 ta-r pr10">优惠后合计:￥{{order.realFee}}</view>
       </view>
       <view class="operate-view pr10 ptb10 fs7">
-        <view wx:if="{{order.status==10}}" class="col15 ta-c fr button cwhite" style="background-color: red" data-id="{{order.id}}" bindtap="goPay">付款</view>
+        <view wx:if="{{order.status==10 && order.payVO.type != 2}}" class="col15 ta-c fr button cwhite" style="background-color: red" data-id="{{order.id}}" bindtap="goPay">付款</view>
         <view wx:if="{{order.status == 30}}" class="col15 ta-c fr button cwhite"  style="background-color: green" bindtap="successOrder" data-id="{{detail.id}}">已收货</view>
         <view class="col15 ta-c fr button"  data-id="{{order.id}}" bindtap="delOrder">删除</view>
         <view class="clearboth"></view>
