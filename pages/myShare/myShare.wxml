@@ -4,7 +4,7 @@
 <view class="container">
   <view class="outter-view ptb10">
     <view class="fs8 ta-c pl10 cred">
-      仅显示为近30天的分享记录
+      仅显示近30天的分享记录
     </view>
   </view>
 
