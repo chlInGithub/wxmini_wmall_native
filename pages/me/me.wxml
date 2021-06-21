@@ -5,17 +5,24 @@
   <view class="outter-view">
     <view class="vip-card cwhite" wx:if="{{simple.user.id}}">
       <view class="title fs9">VIP会员卡</view>
-      <view wx:if="{{simple.user.img}}" class="wx-info">
-        <view class="col30 fl">
-          <image src="{{simple.user.img}}"></image>
+      <view wx:if="{{simple.user.hasPhone}}">
+        <view wx:if="{{simple.user.img}}" class="wx-info">
+          <view class="col30 fl">
+            <image src="{{simple.user.img}}"></image>
+          </view>
+          <view class="col60 ta-l fs8 fl name">
+            {{simple.user.name}}
+          </view>
         </view>
-        <view class="col60 ta-l fs8 fl name">
-          {{simple.user.name}}
+        <view wx:else class="ptb10">
+          <button class="fs8 big-button" type="primary" bindtap="goUserInfo">已绑定微信，您可以点击添加头像</button>
         </view>
       </view>
       <view wx:else class="ptb10">
         <button class="fs8 big-button" type="primary" bindtap="goWXLogin">使用微信登录</button>
       </view>
+
+      
       <view class="ta-c fs8 userid">
         {{simple.user.id}}
       </view>

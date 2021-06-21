@@ -24,6 +24,9 @@ Page({
   goWXLogin: function(){
     goPageUtil.goPage.goWXLogin()
   },
+  goUserInfo: function(){
+    goPageUtil.goPage.goUserInfo()
+  },
   goCouponsList: function(){
     goPageUtil.goPage.goCouponsList()
   },

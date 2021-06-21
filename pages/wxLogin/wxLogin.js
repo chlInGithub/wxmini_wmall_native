@@ -61,6 +61,9 @@ Page({
             app.globalData.phone = data.mobile
             // app.globalData.shopImg = app.globalData.domain + "/img/" + res.data.d.shopImg
             // app.globalData.shopName = res.data.d.shopName
+            if (util.objectUtil.verifyValidObject(data.mobile)) {
+              app.globalData.simple.user['hasPhone'] = true
+            }
             if (util.objectUtil.verifyValidObject(data.thirdImg)) {
               app.globalData.userInfo = {
                 avatarUrl: res.data.d.thirdImg,
@@ -68,7 +71,6 @@ Page({
               }
               app.globalData.simple.user['img'] = res.data.d.thirdImg
               app.globalData.simple.user['name'] = res.data.d.thirdNick
-              app.globalData.simple.user['hasPhone'] = true
             }
 
             currentPage.setData({
@@ -77,11 +79,15 @@ Page({
               buttonText: currentPage.data.buttonTextDefault
             })
 
-            if (util.objectUtil.verifyValidObject(app.globalData.userInfo)) {
+            // 直接跳转
+            goPageUtil.goPage.rederictIndex()
+
+            // 简化授权流程，不强制授权用户信息
+            /*if (util.objectUtil.verifyValidObject(app.globalData.userInfo)) {
               goPageUtil.goPage.rederictIndex()
             } else {
               goPageUtil.goPage.rederictUserInfo()
-            }
+            }*/
           },
           failCallBack: function(res){
             util.showMsg(JSON.stringify(res))
