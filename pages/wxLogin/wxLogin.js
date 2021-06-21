@@ -16,7 +16,8 @@ Page({
   },
 
   goShop: function(){
-    goPageUtil.goPage.rederictShop()
+    wx.navigateBack()
+    //goPageUtil.goPage.rederictShop()
   },
 
   onLoad: function (option) {

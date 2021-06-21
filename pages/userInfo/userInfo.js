@@ -11,41 +11,26 @@ Page({
   data: {
     userInfo: {},
     hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    canIUseGetUserProfile: true
   },
   onLoad: function(option) {
     util.initPage(this)
-
-    var that = this
-
-    if (app.globalData.userInfo) {
-      this.goShop()
-    } else if (this.data.canIUse) {
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        console.log("userInfoReady " + res)
-        that.dealUserInfo(res.userInfo)
-      }
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          console.log(res)
-          that.dealUserInfo(res.userInfo)
-        }
-      })
-    }
   },
 
   goShop() {
-    goPageUtil.goPage.rederictShop()
+    wx.navigateBack()
+    //goPageUtil.goPage.rederictShop()
   },
 
-  getUserInfo: function(e) {
-    console.log(e)
-    app.globalData.userInfoResult = e
-    this.dealUserInfo(e.detail.userInfo)
+  getUserProfile: function(e){
+    wx.getUserProfile({
+      desc: '用于完善会员资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+      success: (res) => {
+        console.log(res.userInfo)
+        this.dealUserInfo(res.userInfo)
+      }
+    })
   },
 
   dealUserInfo: function(userInfo) {

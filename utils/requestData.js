@@ -539,7 +539,7 @@ var getData = {
     })
   },
   getShopDeliveryAreas: function(callback) {
-    var checkResult = goPageUtil.goPage.checkLogin()
+    var checkResult = goPageUtil.goPage.checkLogin(false)
     if (!checkResult) {
       return
     }

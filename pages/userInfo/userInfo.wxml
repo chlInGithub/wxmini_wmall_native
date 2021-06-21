@@ -18,7 +18,8 @@
         <view class="flex-item flex-item-V" style="text-align:center;margin-top:1rem;">
           <view class="userInfo">
             <text style="font-size:.8rem;">给您提供炫酷体验</text>
-            <button type="primary" class="big-button mt10 fs8" wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 申请微信头像 </button>
+            <button type="primary" class="big-button mt10 fs8" wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile"> 申请微信头像 </button>
+            <button type="primary" class="big-button mt10 fs8" wx:else open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 申请微信头像 </button>
           </view>
           <view>
             <button bindtap="goShop" class="big-button mt10 fs8">

@@ -42,12 +42,15 @@ var goPage = {
       url: '/pages/wxLogin/wxLogin'
     })
   },
-  checkLogin: function () {
+  checkLogin: function (goWXLogin) {
     if (getApp().globalData.simple.user.hasPhone == true) {
       return true
     } else {
-      goPage.goWXLogin()
-      return false
+      if(util.objectUtil.isUndefined(goWXLogin) || goWXLogin){
+        goPage.goWXLogin()
+      }else{
+        return false
+      } 
     }
   },
   goUserInfo: function () {

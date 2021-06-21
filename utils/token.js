@@ -57,6 +57,9 @@ var newToken = function(successCallBack, failCallBack) {
     return failCallBack(res)
   }
   wx.login({
+    fail: res => {
+      console.log(res)
+    },
     success: res => {
       //console.log(res)
       var code = res.code
