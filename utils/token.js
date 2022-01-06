@@ -1,5 +1,4 @@
 const util = require("./util.js")
-const goPageUtil = require("./goPage.js")
 const requestUtil = require("./request.js")
 
 var getCurrentS = function(){

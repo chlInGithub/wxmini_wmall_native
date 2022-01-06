@@ -70,25 +70,74 @@ const EventUtil = {
 
 const ArrayUtil = {
   isArray: function (v) {
+    if(!ObjectUtil.verifyValidObject(v)){
+      return false
+    }
     return Array.isArray(v)
   },
   getEleByIndex: function(arrays, index) {
+    if(!ObjectUtil.verifyValidObject(arrays)){
+      return
+    }
+    if(!ObjectUtil.verifyValidObject(index)){
+      return
+    }
     var ele = arrays[index]
     return ele
   },
   delEleByIndex: function(arrays, index) {
+    if(!ObjectUtil.verifyValidObject(arrays)){
+      return
+    }
+    if(!ObjectUtil.verifyValidObject(index)){
+      return
+    }
     var ele = arrays[index]
     arrays.splice(index, 1)
     return ele
   },
   getEleById: function(arrays, id) {
+    if(!ObjectUtil.verifyValidObject(arrays)){
+      return
+    }
+    if(!ObjectUtil.verifyValidObject(id)){
+      return
+    }
     var ele = arrays.find((ele, index, arrays) => ele.id == id)
     return ele
   },
+  replaceEleById: function(arrays, newEle) {
+    if(!ObjectUtil.verifyValidObject(arrays)){
+      return
+    }
+    if(!ObjectUtil.verifyValidObject(newEle.id)){
+      return
+    }
+    for (let index = 0; index < arrays.length; index++) {
+      const element = arrays[index];
+      if(element.id == newEle.id){
+        arrays[index] = newEle
+        return index
+      }
+    }
+    return -1
+  },
   addEle: function(arrays, ele) {
+    if(!ObjectUtil.verifyValidObject(arrays)){
+      return
+    }
+    if(!ObjectUtil.verifyValidObject(ele)){
+      return
+    }
     arrays.push(ele)
   },
   delEleById: function(arrays, id) {
+    if(!ObjectUtil.verifyValidObject(arrays)){
+      return
+    }
+    if(!ObjectUtil.verifyValidObject(id)){
+      return
+    }
     var eleIndex = -1
     var ele
     for (var i = 0; i < arrays.length; i++) {

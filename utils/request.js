@@ -124,23 +124,24 @@ var request = function(context) {
     },
     method: method,
     complete(res) {
-      //wx.hideLoading()
+      wx.hideLoading()
     },
     fail(res) {
       wx.hideLoading()
       var resultStr = JSON.stringify(res)
       if (resultStr.indexOf("未登录") !== -1) {
-        wx.showModal({
-          title: '提示',
-          content: '登录失效',
-          success(res) {
-            if (res.confirm) {
-              goPageUtil.goPage.goIndex()
-            }
-          }
+        util.showMsg('登录失效', function(){
+          goPageUtil.goPage.goIndex()
         })
 
-        return
+        return false
+      }
+      if (resultStr.indexOf("notShopMan") !== -1) {
+        util.showMsg('没有绑定店铺', function(){
+          goPageUtil.goPage.goShopMan()
+        })
+
+        return false
       }
 
       failCallBack(resultStr)
@@ -158,19 +159,21 @@ var request = function(context) {
           res.data.d = util.jsonUtil.toJson(res.data.d)
         }
         successCallBack(res.data.d)
+        
       } else {
         if (resultStr.indexOf("未登录") !== -1) {
-          wx.showModal({
-            title: '提示',
-            content: '登录失效',
-            success(res) {
-              if (res.confirm) {
-                goPageUtil.goPage.goIndex()
-              }
-            }
+          util.showMsg('登录失效', function(){
+            goPageUtil.goPage.goIndex()
           })
 
-          return
+          return false
+        }
+        if (resultStr.indexOf("notShopMan") !== -1) {
+          util.showMsg('没有绑定店铺', function(){
+            goPageUtil.goPage.goShopMan()
+          })
+  
+          return false
         }
 
         var msg = res.data
