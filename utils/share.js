@@ -1,6 +1,7 @@
-const util = require("./util.js")
+//const util = require("./util.js")
+const util = require("wxmini_common_js").util
 const goPageUtil = require("./goPage.js")
-const requestUtil = require("./request.js")
+//const requestUtil = require("./request.js")
 const requestDataUtil = require("./requestData.js")
 
 var getShareInfoAndGo = function(scene) {

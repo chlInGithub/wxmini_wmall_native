@@ -1,7 +1,7 @@
 // pages/aboutShop/aboutShop.js
-const util = require('../../utils/util.js')
+
+const util = require("wxmini_common_js").util
 const goPageUtil = require('../../utils/goPage.js')
-const app = getApp()
 
 Page({
 

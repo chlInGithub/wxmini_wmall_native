@@ -1,0 +1,22 @@
+{
+  "name": "wxmini_wmall_native",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chlInGithub/wxmini_wmall_native.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chlInGithub/wxmini_wmall_native/issues"
+  },
+  "homepage": "https://github.com/chlInGithub/wxmini_wmall_native#readme",
+  "dependencies": {
+    "wxmini_common_js": "^1.0.0"
+  }
+}

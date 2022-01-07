@@ -1,9 +1,8 @@
 // pages/itemDetail/itemDetail.js
-const util = require('../../utils/util.js')
+const util = require("wxmini_common_js").util
 const goPageUtil = require('../../utils/goPage.js')
-const requestUtil = require('../../utils/request.js')
+const requestUtil = require("wxmini_common_js").request
 const requestDataUtil = require('../../utils/requestData.js')
-const tokenUtil = require('../../utils/token.js')
 const saleStrategyUtil = require('../../utils/saleStrategy.js')
 const app = getApp()
 Page({

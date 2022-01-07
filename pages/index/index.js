@@ -1,11 +1,9 @@
 
-const util = require('../../utils/util.js')
+const util = require("wxmini_common_js").util
 const goPageUtil = require('../../utils/goPage.js')
-const requestUtil = require('../../utils/request.js')
 const requestDataUtil = require('../../utils/requestData.js')
-const tokenUtil = require('../../utils/token.js')
+const tokenUtil = require("wxmini_common_js").token
 const shareUtil = require('../../utils/share.js')
-const saleStrategyUtil = require('../../utils/saleStrategy.js')
 const app = getApp()
 Page({
   data: {
